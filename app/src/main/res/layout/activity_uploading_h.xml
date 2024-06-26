@@ -5,36 +5,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
+    android:clipChildren="false"
     tools:context=".MainActivity">
 
 
-    <LinearLayout
-        android:layout_width="350dp"
-        android:layout_height="50dp"
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="240dp"
         android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        android:text="어떤 방식으로 작성할까요?"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints">
-
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="어떤 방식으로 작성할까요?"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="300dp"
         android:layout_height="170dp"
+        android:clipChildren="false"
+        android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -47,7 +41,7 @@
             android:layout_width="140dp"
             android:layout_height="120dp"
             android:layout_gravity="center"
-            android:layout_marginRight="16dp"
+            android:layout_marginEnd="10dp"
             android:background="@drawable/upload_button"
             android:drawableTop="@drawable/text_write"
             android:drawablePadding="-21dp"
