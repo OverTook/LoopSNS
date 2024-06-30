@@ -9,6 +9,7 @@
     android:padding="16dp"
     tools:context=".MainActivity">
 
+
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
@@ -56,14 +57,32 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="130dp" />
 
+    <TextView
+        android:id="@+id/lock_category"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/spinner_background"
+        android:text="고정 카테고리"
+        android:textColor="@android:color/black"
+        android:textSize="15sp"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/spinner_category"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_view"
+        tools:ignore="MissingConstraints,SmallSp" />
+
     <Spinner
         android:id="@+id/spinner_category"
         android:layout_width="200dp"
         android:layout_height="50dp"
-        app:layout_constraintTop_toBottomOf="@+id/image_view"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="80dp"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_view" />
 
     <TextView
         android:id="@+id/textView2"
@@ -96,7 +115,7 @@
         app:layout_constraintVertical_bias="0.458" />
 
     <android.widget.Button
-        android:id="@+id/button"
+        android:id="@+id/submit"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -112,4 +131,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         tools:ignore="MissingConstraints"
         style="?android:attr/borderlessButtonStyle" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

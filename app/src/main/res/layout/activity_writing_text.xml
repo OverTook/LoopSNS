@@ -29,32 +29,27 @@
             android:paddingStart="16dp"
             app:title="작성하기"
             app:titleTextColor="@android:color/black" />
-    </com.google.android.material.appbar.AppBarLayout>
 
-    <Spinner
-        android:id="@+id/spinner_category"
-        android:layout_width="200dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="8dp"
-        tools:ignore="MissingConstraints" />
+    </com.google.android.material.appbar.AppBarLayout>
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
         android:layout_marginBottom="12dp"
         android:text="작성 내용 *"
         android:textSize="17sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/edit_text_content"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="41dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints" />
 
     <EditText
         android:id="@+id/edit_text_content"
         android:layout_width="330dp"
         android:layout_height="200dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="400dp"
         android:background="@drawable/rectangle_writing"
         android:gravity="top"
         android:hint="작성 내용을 입력해 주세요. (허위 정보, 불건전한 내용 게재 등 정책에 어긋나는 게시물은 제한될 수 있습니다.)"
@@ -65,24 +60,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.489"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_category"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
         app:layout_constraintVertical_bias="0.458" />
 
-    <android.widget.Button
-        android:id="@+id/button"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:background="@drawable/black_r_button"
-        android:text="작성 완료"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:textColor="@color/white"
-        app:layout_constraintTop_toBottomOf="@+id/edit_text_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="-10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:ignore="MissingConstraints"
-        style="?android:attr/borderlessButtonStyle" />
 </androidx.constraintlayout.widget.ConstraintLayout>
