@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
+    <EditText
+        android:id="@+id/filter"
+        android:layout_width="300dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/map_overview_filter_bg"
+        android:inputType="text"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="Filter"
+        android:textColor="@color/gray"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.kakao.vectormap.MapView
+        android:id="@+id/kakaoMap"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="80dp"
+        app:layout_constraintBottom_toTopOf="@+id/overview_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </com.kakao.vectormap.MapView>
+
+    <TextView
+        android:id="@+id/overview_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:paddingTop="10dp"
+        android:paddingRight="20dp"
+        android:text="지금 단월동에서는\n15 개의 제보가 올라왔어요. (TODO색)"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/overview_time" />
+
+    <TextView
+        android:id="@+id/overview_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="50dp"
+        android:text="2024-07-01 13:00 기준"
+        android:textColor="@color/gray"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

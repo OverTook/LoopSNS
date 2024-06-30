@@ -38,15 +38,14 @@ android {
 }
 
 dependencies {
-    implementation(platform("com.google.firebase:firebase-bom:33.1.1"))
-    implementation("com.google.firebase:firebase-analytics")
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
 
+    implementation(libs.kakaomap)
+    implementation("com.kakao.sdk:v2-all:2.20.2")
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation("com.google.android.gms:play-services:12.0.1")
