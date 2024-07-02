@@ -44,6 +44,7 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
 
+    implementation("com.google.android.flexbox:flexbox:3.0.0")
     implementation(libs.kakaomap)
     implementation("com.kakao.sdk:v2-all:2.20.2")
     implementation(libs.retrofit)
