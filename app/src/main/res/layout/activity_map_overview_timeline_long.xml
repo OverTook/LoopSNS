@@ -8,19 +8,20 @@
     android:background="@drawable/map_overview_timeline_bg"
     android:orientation="vertical">
 
-
-    <ImageView
-        android:id="@+id/top_bar"
-        android:layout_width="150dp"
-        android:layout_height="5dp"
+    <EditText
+        android:id="@+id/filter"
+        android:layout_width="300dp"
+        android:layout_height="30dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/map_overview_timeline_top_bar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
+        android:layout_marginTop="40dp"
+        android:background="@drawable/map_overview_filter_bg"
+        android:fontFamily="@font/pretendard_light"
+        android:inputType="text"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="Filter"
+        android:textColor="@color/gray"
+        android:textSize="14sp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/top_info_layout"
