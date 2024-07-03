@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/shortFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -62,7 +61,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/hot_article"
+        android:id="@+id/article"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -76,7 +75,7 @@
             android:src="@drawable/map_overview_timeline_dotted_line_bg"
             app:layout_constraintBottom_toBottomOf="@id/contents"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/star_icon" />
+            app:layout_constraintTop_toBottomOf="@id/article_icon" />
 
         <TextView
             android:id="@+id/article_time"
@@ -92,7 +91,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/star_icon"
+            android:id="@+id/article_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="80dp"
@@ -109,7 +108,7 @@
             android:layout_marginTop="33dp"
             android:orientation="horizontal"
             app:flexWrap="wrap"
-            app:layout_constraintStart_toEndOf="@+id/star_icon"
+            app:layout_constraintStart_toEndOf="@+id/article_icon"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_max="150dp">
 
@@ -127,8 +126,7 @@
                 android:paddingBottom="2dp"
                 android:text="태그1"
                 android:textColor="@color/tag_blue_text"
-                android:textSize="10sp"
-                tools:layout_editor_absoluteX="5dp" />
+                android:textSize="10sp" />
 
         </com.google.android.flexbox.FlexboxLayout>
 
@@ -154,8 +152,7 @@
                 android:id="@+id/content_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                tools:srcCompat="@null" />
+                android:layout_weight="1" />
 
             <LinearLayout
                 android:id="@+id/article_comment_like"
