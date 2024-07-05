@@ -26,6 +26,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GetTokenResult
 import com.google.firebase.auth.GoogleAuthProvider
+import com.kakao.sdk.common.KakaoSdk
+import com.kakao.sdk.common.util.Utility
 import com.kakao.vectormap.KakaoMapSdk
 
 
@@ -39,6 +41,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         KakaoMapSdk.init(this, "df17ea99e1579611972ffbb1ff069e51");
+        Log.e("KeyHash", Utility.getKeyHash(this))
 
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
