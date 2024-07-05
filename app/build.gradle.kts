@@ -51,6 +51,10 @@ dependencies {
     implementation(libs.converter.gson)
     implementation("com.google.android.gms:play-services:12.0.1")
 
+    implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
