@@ -18,6 +18,6 @@ interface NetworkInterface {
     @POST("/create/article")
     fun createArticle(
         @Query("cat1") cat1: Int, @Query("cat2") cat2: Int, @Query("cat3") cat3: Int, @Query("contents") content: String
-    ): Call<ArticleResponse>
+    ): Call<ArticleCreateResponse>
 
 }
