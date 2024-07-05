@@ -14,25 +14,47 @@ interface NetworkInterface {
     @POST("/get/category")
     fun retrieveCategory(
         @Part images: List<MultipartBody.Part>,
-        @Part("contents") content: RequestBody,
+        @Part("contents") contents: RequestBody,
     ): Call<CategoryResponse>
 
     @Multipart
     @POST("/create/article")
     fun createArticle(
-        @Part images: List<MultipartBody.Part>,
-
-        @Part("title") title: RequestBody,
-        @Part("cat1") cat1: RequestBody,
-        @Part("cat2") cat2: RequestBody,
-        @Part("keywords") keywords: List<RequestBody>,
-
-        @Part("contents") content: RequestBody,
+        @Part images: List<MultipartBody.Part>, //이미지
+        @Part("title") title: RequestBody, //제목
+        @Part("cat1") cat1: RequestBody, //1차 카테고리 (문자열)
+        @Part("cat2") cat2: RequestBody, //2차 카테고리 (문자열)
+        @Part("keywords") keywords: List<RequestBody>, //키워드 목록
+        @Part("contents") contents: RequestBody, //내용
+        //이하 위경도
+        @Part("lat") lat: RequestBody,
+        @Part("lng") lng: RequestBody
     ): Call<ArticleCreateResponse>
+
+    //마커 가져오기
+    @POST("/get/article/marker")
+    fun retrieveArticleMarker(
+        @Query("lat_from") latFrom: Double,
+        @Query("lng_from") lngFrom: Double,
+        @Query("lat_to") latTo: Double,
+        @Query("lng_to") lngTo: Double
+    ): Call<ArticleMarkersResponse>
+
+    @POST("/get/article/timeline")
+    fun retrieveArticleTimeline(
+        @Query("article_lat") articleLat: Double,
+        @Query("article_lng") articleLng: Double
+    ): Call<ArticleTimelineResponse>
+
+    @POST("/get/article/comment")
+    fun retrieveArticleComment(
+        @Query("uid") uid: String
+    ): Call<CommentResponse>
 
     @POST("/create/nickname")
     fun createNickname(
-        @Query("uid") uid: String, @Query("nickname") nickname: String
+        @Query("uid") uid: String,
+        @Query("nickname") nickname: String
     ): Call<NicknameResponse>
 
     @POST("/get/nickname")

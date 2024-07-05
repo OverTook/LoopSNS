@@ -11,9 +11,54 @@ data class CategoryResponse (
 )
 
 //게시글 작성 결과 DTO
-data class ArticleCreateResponse(
+data class ArticleCreateResponse (
     val success: Boolean, //응답 성공 여부
     val msg: String //응답 실패 시 오류 메시지
+)
+
+data class ArticleMarkersResponse (
+    val success: Boolean, //응답 성공 여부
+    val msg: String, //응답 실패 시 오류 메시지
+
+    val markers: List<Marker>, //마커 목록
+    val tolerance: Double //클러스터링 기준치
+)
+
+data class Marker (
+    val lat: Double,
+    val lng: Double
+)
+
+data class ArticleTimelineResponse (
+    val success: Boolean, //응답 성공 여부
+    val msg: String, //응답 실패 시 오류 메시지
+
+    val articles: List<Article> //게시글 목록
+)
+
+data class Article (
+    val uid: String, //게시글 유니크 아이디
+
+    val title: String, //제목
+    val contents: String, //내용
+    val cat1: String, //첫 번째 카테고리
+    val cat2: String, //두 번째 카테고리
+    val keywords: List<String>, //키워드
+    val time: String, //게시글 작성 시간
+    val commentCount: Int, //댓글 수
+    val likeCount: Int //좋아요 수
+)
+
+data class CommentResponse (
+    val success: Boolean, //응답 성공 여부
+    val msg: String, //응답 실패 시 오류 메시지
+
+    val comments: List<Comment>
+)
+
+data class Comment (
+    val contents: String, //내용
+    val time: String //댓글 작성 시간
 )
 
 //닉네임 요청&생성 응답 DTO
