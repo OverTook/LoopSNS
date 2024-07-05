@@ -6,19 +6,17 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.os.Build
-import android.support.v4.app.ActivityCompat
-import android.support.v4.content.ContextCompat
 import androidx.annotation.RequiresApi
 
 class GPSPermission {
 
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun backgroundPermission(activity: Activity){
-        ActivityCompat.requestPermissions(
-            activity,
-            arrayOf(
-                android.Manifest.permission.ACCESS_BACKGROUND_LOCATION,
-            ), 2)
+//        ActivityCompat.requestPermissions(
+//            activity,
+//            arrayOf(
+//                android.Manifest.permission.ACCESS_BACKGROUND_LOCATION,
+//            ), 2)
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
@@ -40,31 +38,31 @@ class GPSPermission {
 
     private fun requestPermission(activity: Activity){
         // 이미 권한이 있으면 그냥 리턴
-        if(ContextCompat.checkSelfPermission(activity, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-            && ContextCompat.checkSelfPermission(activity, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-            && ContextCompat.checkSelfPermission(activity, android.Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED){
-
-            return
-        }
-
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            ActivityCompat.requestPermissions(
-                activity,
-                arrayOf(
-                    android.Manifest.permission.ACCESS_COARSE_LOCATION,
-                    android.Manifest.permission.ACCESS_FINE_LOCATION
-                ), 1)
-            permissionDialog(activity)
-        }
-        // API 23 미만 버전에서는 ACCESS_BACKGROUND_LOCATION X
-        else {
-            ActivityCompat.requestPermissions(
-                activity,
-                arrayOf(
-                    android.Manifest.permission.ACCESS_COARSE_LOCATION,
-                    android.Manifest.permission.ACCESS_FINE_LOCATION
-                ), 1)
-        }
+//        if(ContextCompat.checkSelfPermission(activity, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+//            && ContextCompat.checkSelfPermission(activity, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+//            && ContextCompat.checkSelfPermission(activity, android.Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED){
+//
+//            return
+//        }
+//
+//
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//            ActivityCompat.requestPermissions(
+//                activity,
+//                arrayOf(
+//                    android.Manifest.permission.ACCESS_COARSE_LOCATION,
+//                    android.Manifest.permission.ACCESS_FINE_LOCATION
+//                ), 1)
+//            permissionDialog(activity)
+//        }
+//        // API 23 미만 버전에서는 ACCESS_BACKGROUND_LOCATION X
+//        else {
+//            ActivityCompat.requestPermissions(
+//                activity,
+//                arrayOf(
+//                    android.Manifest.permission.ACCESS_COARSE_LOCATION,
+//                    android.Manifest.permission.ACCESS_FINE_LOCATION
+//                ), 1)
+//        }
     }
 }

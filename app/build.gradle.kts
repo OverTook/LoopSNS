@@ -49,7 +49,6 @@ dependencies {
     implementation("com.kakao.sdk:v2-all:2.20.2")
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
-    implementation("com.google.android.gms:play-services:12.0.1")
 
     implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
     implementation("com.google.firebase:firebase-auth-ktx")

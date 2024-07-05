@@ -20,4 +20,13 @@ interface NetworkInterface {
         @Query("cat1") cat1: Int, @Query("cat2") cat2: Int, @Query("cat3") cat3: Int, @Query("contents") content: String
     ): Call<ArticleCreateResponse>
 
+    @POST("/create/nickname")
+    fun createNickname(
+        @Query("uid") uid: String, @Query("nickname") nickname: String
+    ): Call<NicknameResponse>
+
+    @POST("/get/nickname")
+    fun getNickname(
+        @Query("uid") uid: String
+    ): Call<NicknameResponse>
 }

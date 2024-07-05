@@ -6,15 +6,18 @@ import retrofit2.Retrofit
 object NetworkManager {
     private const val BASE_URL = "http://csgpu.kku.ac.kr:5126/"
 
-
-    private val retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl(BASE_URL)
-        .client(
-            OkHttpClient.Builder()
-            .addInterceptor(UIDInterceptor())
+    private lateinit var retrofit: Retrofit
+    private lateinit var apiService: NetworkInterface
+    public fun initNetworkManager(firebaseToken: String) {
+        retrofit = Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .client(
+                OkHttpClient.Builder()
+                    .addInterceptor(TokenInterceptor(firebaseToken))
+                    .build()
+            )
             .build()
-        )
-        .build()
 
-    val apiService: NetworkInterface = retrofit.create(NetworkInterface::class.java)
+        apiService = retrofit.create(NetworkInterface::class.java)
+    }
 }

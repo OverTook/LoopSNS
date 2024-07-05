@@ -16,18 +16,10 @@ data class ArticleCreateResponse(
     val msg: String //응답 실패 시 오류 메시지
 )
 
-data class RegisterResponse(
+//닉네임 요청&생성 응답 DTO
+data class NicknameResponse (
     val success: Boolean,
     val msg: String,
 
-    val displayName: String,
-    val uuid: String
-)
-
-data class LoginResponse(
-    val success: Boolean,
-    val msg: String,
-
-    val displayName: String,
-    val uuid: String
+    val nickname: String
 )
