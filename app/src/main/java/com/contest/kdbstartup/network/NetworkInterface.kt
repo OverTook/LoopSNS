@@ -17,7 +17,7 @@ interface NetworkInterface {
 
     @POST("/create/article")
     fun createArticle(
-        @Query("cat1") cat1: Int, @Query("cat2") cat2: Int, @Query("keywords") keywords: List<String>, @Query("contents") content: String
+        @Query("cat1") cat1: String, @Query("cat2") cat2: String, @Query("keywords") keywords: List<String>, @Query("contents") content: String
     ): Call<ArticleCreateResponse>
 
     @POST("/create/nickname")
