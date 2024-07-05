@@ -51,14 +51,17 @@ interface NetworkInterface {
         @Query("uid") uid: String
     ): Call<CommentResponse>
 
+    @POST("/create/comment")
+    fun createComment(
+        @Query("uid") uid: String,
+        @Query("contents") contents: String
+    ): Call<CommentCreateResponse>
+
     @POST("/create/nickname")
     fun createNickname(
-        @Query("uid") uid: String,
         @Query("nickname") nickname: String
     ): Call<NicknameResponse>
 
     @POST("/get/nickname")
-    fun getNickname(
-        @Query("uid") uid: String
-    ): Call<NicknameResponse>
+    fun getNickname(): Call<NicknameResponse>
 }

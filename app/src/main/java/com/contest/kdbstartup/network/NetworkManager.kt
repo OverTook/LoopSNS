@@ -8,12 +8,12 @@ object NetworkManager {
 
     private lateinit var retrofit: Retrofit
     private lateinit var apiService: NetworkInterface
-    public fun initNetworkManager(firebaseToken: String) {
+    public fun initNetworkManager(firebaseToken: String, uuid: String) {
         retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(
                 OkHttpClient.Builder()
-                    .addInterceptor(TokenInterceptor(firebaseToken))
+                    .addInterceptor(TokenInterceptor(firebaseToken, uuid))
                     .build()
             )
             .build()

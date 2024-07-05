@@ -139,7 +139,7 @@ class MainActivity : AppCompatActivity() {
                             if (task2.isSuccessful) {
                                 val idToken = task2.result.token
                                 Toast.makeText(applicationContext, "Complete " + idToken.toString(), Toast.LENGTH_SHORT).show();
-                                NetworkManager.initNetworkManager(idToken.toString())
+                                NetworkManager.initNetworkManager(idToken.toString(), user.uid)
 
                                 val intent = Intent(
                                     applicationContext,

@@ -56,6 +56,11 @@ data class CommentResponse (
     val comments: List<Comment>
 )
 
+data class CommentCreateResponse (
+    val success: Boolean, //응답 성공 여부
+    val msg: String, //응답 실패 시 오류 메시지
+)
+
 data class Comment (
     val contents: String, //내용
     val time: String //댓글 작성 시간
