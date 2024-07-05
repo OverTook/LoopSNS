@@ -1,6 +1,7 @@
 package com.contest.kdbstartup.network
 
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.Multipart
 import retrofit2.http.POST
@@ -12,12 +13,21 @@ interface NetworkInterface {
     @Multipart
     @POST("/get/category")
     fun retrieveCategory(
-        @Part images: List<MultipartBody.Part>
+        @Part images: List<MultipartBody.Part>,
+        @Part("contents") content: RequestBody,
     ): Call<CategoryResponse>
 
+    @Multipart
     @POST("/create/article")
     fun createArticle(
-        @Query("cat1") cat1: String, @Query("cat2") cat2: String, @Query("keywords") keywords: List<String>, @Query("contents") content: String
+        @Part images: List<MultipartBody.Part>,
+
+        @Part("title") title: RequestBody,
+        @Part("cat1") cat1: RequestBody,
+        @Part("cat2") cat2: RequestBody,
+        @Part("keywords") keywords: List<RequestBody>,
+
+        @Part("contents") content: RequestBody,
     ): Call<ArticleCreateResponse>
 
     @POST("/create/nickname")
