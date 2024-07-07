@@ -6,10 +6,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <android.widget.Button
+        android:id="@+id/kakao_sign_btn"
+        android:layout_width="244dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="14dp"
+        android:background="@drawable/kakao_login_large_narrow"
+        android:elevation="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/google_sign_btn" />
+
     <com.google.android.gms.common.SignInButton
         android:id="@+id/google_sign_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="252dp"
+        android:layout_height="60dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent"

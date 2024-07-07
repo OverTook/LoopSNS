@@ -42,8 +42,7 @@ interface NetworkInterface {
 
     @POST("/get/article/timeline")
     fun retrieveArticleTimeline(
-        @Query("article_lat") articleLat: Double,
-        @Query("article_lng") articleLng: Double
+        @Query("article_ids") articles: List<String>
     ): Call<ArticleTimelineResponse>
 
     @POST("/get/article/comment")
@@ -64,4 +63,10 @@ interface NetworkInterface {
 
     @POST("/get/nickname")
     fun getNickname(): Call<NicknameResponse>
+
+    @POST("/create/account")
+    fun createAccount(
+        @Query("platform") platform: String,
+        @Query("token") token: String
+    ): Call<AccountCreateResponse>
 }

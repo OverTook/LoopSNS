@@ -46,7 +46,7 @@ dependencies {
 
     implementation("com.google.android.flexbox:flexbox:3.0.0")
     implementation(libs.kakaomap)
-    implementation("com.kakao.sdk:v2-all:2.20.2")
+    implementation("com.kakao.sdk:v2-all:2.20.3")
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
 
