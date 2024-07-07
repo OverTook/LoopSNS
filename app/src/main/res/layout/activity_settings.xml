@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="45dp"
+        android:layout_marginEnd="220dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.404"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/user_circle"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/Allmenu_settings_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="150dp"
+        android:layout_marginTop="55dp"
+        android:fontFamily="@font/pretendard_bold"
+        android:text="닉네임"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/Allmenu_settings_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="150dp"
+        android:layout_marginTop="85dp"
+        android:fontFamily="@font/pretendard_bold"
+        android:text="주소"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="132dp"
+        android:background="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/Allmenu_settings_userprofile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="168dp"
+        android:fontFamily="@font/pretendard_bold"
+        android:text="내 프로필 관리"
+        android:textColor="@color/black"
+        android:textSize="23sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/Allmenu_settings_logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="228dp"
+        android:fontFamily="@font/pretendard_bold"
+        android:text="로그아웃"
+        android:textColor="@color/black"
+        android:textSize="23sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/Allmenu_settings_userprofile"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="292dp"
+        android:background="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/Allmenu_settings_alert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/pretendard_bold"
+        android:text="알림설정"
+        android:textColor="@color/black"
+        android:textSize="23sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/view3"
+        app:layout_constraintStart_toStartOf="@+id/Allmenu_settings_logout"
+        app:layout_constraintTop_toTopOf="@+id/view2" />
+
+    <View
+        android:id="@+id/view3"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="384dp"
+        android:background="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/Allmenu_settings_private"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="95dp"
+        android:fontFamily="@font/pretendard_bold"
+        android:text="개인정보 처리 방침"
+        android:textColor="@color/black"
+        android:textSize="23sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/Allmenu_settings_rule"
+        app:layout_constraintTop_toBottomOf="@+id/view3" />
+
+    <TextView
+        android:id="@+id/Allmenu_settings_question"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:fontFamily="@font/pretendard_bold"
+        android:text="문의사항"
+        android:textColor="@color/black"
+        android:textSize="23sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/Allmenu_settings_private"
+        app:layout_constraintTop_toBottomOf="@+id/Allmenu_settings_private" />
+
+    <View
+        android:id="@+id/view4"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="668dp"
+        android:background="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/Allmenu_settings_quit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="696dp"
+        android:fontFamily="@font/pretendard_bold"
+        android:text="회원 탈퇴"
+        android:textColor="#F20000"
+        android:textSize="23sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/Allmenu_settings_appversion"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/Allmenu_settings_appversion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-25dp"
+        android:fontFamily="@font/pretendard_bold"
+        android:text="버전정보"
+        android:textColor="@color/black"
+        android:textSize="23sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/view4"
+        app:layout_constraintStart_toStartOf="@+id/Allmenu_settings_question"
+        app:layout_constraintTop_toBottomOf="@+id/Allmenu_settings_question" />
+
+    <TextView
+        android:id="@+id/Allmenu_settings_rule"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/pretendard_bold"
+        android:text="이용약관"
+        android:textColor="@color/black"
+        android:textSize="23sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/Allmenu_settings_private"
+        app:layout_constraintStart_toStartOf="@+id/Allmenu_settings_alert"
+        app:layout_constraintTop_toBottomOf="@+id/view3" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

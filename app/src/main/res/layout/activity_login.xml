@@ -17,6 +17,19 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/ic_launcher" />
 
+    <TextView
+        android:id="@+id/login_subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:fontFamily="@font/pretendard_bold"
+        android:gravity="center"
+        android:text="우리들의 연결고리, 루프"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/main_logo" />
+
     <android.widget.Button
         android:id="@+id/kakao_sign_btn"
         android:layout_width="244dp"
