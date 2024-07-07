@@ -63,7 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="7dp"
         android:text="작성 내용 *"
-        android:textSize="17sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/edit_text_content"
         app:layout_constraintStart_toStartOf="@+id/image_view"
@@ -92,6 +92,90 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
+        android:background="@drawable/black_r_button"
+        android:gravity="center"
+        android:text="저장하기"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_content"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="카테고리"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/edit_text_content"
+        app:layout_constraintTop_toBottomOf="@+id/submit"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/category_1"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="-3dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/writing_wpicture_category"
+        android:gravity="center"
+        android:text="카테고리1"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/textView3"
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/category_2"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/writing_wpicture_category"
+        android:gravity="center"
+        android:text="카테고리2"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/category_1"
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/keyword1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="키워드1"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/category_1"
+        app:layout_constraintTop_toBottomOf="@+id/category_1"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/keyword3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="15dp"
+        android:text="키워드2"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/category_1"
+        app:layout_constraintTop_toBottomOf="@+id/category_1"
+        tools:ignore="MissingConstraints" />
+
+    <android.widget.Button
+        android:id="@+id/upload"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="230dp"
         android:background="@drawable/black_r_button"
         android:gravity="center"
         android:text="작성 완료"
