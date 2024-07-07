@@ -59,6 +59,12 @@ class MainActivity : AppCompatActivity() {
 
         init()
 
+        val intent = Intent(
+            applicationContext,
+            MapOverviewActivity::class.java
+        )
+        startActivity(intent)
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -82,7 +88,6 @@ class MainActivity : AppCompatActivity() {
                     //mAuth!!.createUserWithEmailAndPassword("fake@fake.com", "fakepassword")
 
                     retrieveCustomToken("kakao", token.accessToken)
-
                 }
             }
 
@@ -113,25 +118,26 @@ class MainActivity : AppCompatActivity() {
 
     private fun init() {
         activityResultLauncher = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult(),
-            ActivityResultCallback<ActivityResult> { result ->
-                if(result.resultCode == RESULT_OK) {
-                    val intent: Intent? = result.data
-                    val task: Task<GoogleSignInAccount> =
-                        GoogleSignIn.getSignedInAccountFromIntent(intent)
-                    try {
-                        // 구글 로그인은 성공, Firebase에 로그인
-                        val account: GoogleSignInAccount = task.getResult(ApiException::class.java)
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == RESULT_OK) {
+                val intent: Intent? = result.data
+                val task: Task<GoogleSignInAccount> =
+                    GoogleSignIn.getSignedInAccountFromIntent(intent)
+                try {
+                    // 구글 로그인은 성공, Firebase에 로그인
+                    val account: GoogleSignInAccount = task.getResult(ApiException::class.java)
 
-                        firebaseAuthWithGoogle(account)
-                    } catch (e: ApiException) {
-                        // 구글 로그인 실패
-                        Log.e("Error", e.toString())
-                        Snackbar.make(findViewById(R.id.main), "구글 로그인에 실패했습니다.", Snackbar.LENGTH_SHORT).show();
-                    }
+                    firebaseAuthWithGoogle(account)
+                } catch (e: ApiException) {
+                    // 구글 로그인 실패
+                    Log.e("Error", e.toString())
+                    Snackbar.make(findViewById(R.id.main), "구글 로그인에 실패했습니다.", Snackbar.LENGTH_SHORT)
+                        .show();
                 }
+            }
 
-            })
+        }
         configSignIn()
         initAuth()
     }
@@ -226,9 +232,9 @@ class MainActivity : AppCompatActivity() {
                     Snackbar.make(findViewById(R.id.main), "회원 정보 생성에 실패하였습니다.", Snackbar.LENGTH_SHORT).show();
                     return
                 }
-                val token = response.body()!!.token
+                val customToken = response.body()!!.token
 
-                mAuth!!.signInWithCustomToken(token).addOnCompleteListener(
+                mAuth!!.signInWithCustomToken(customToken).addOnCompleteListener(
                     this@MainActivity
                 ) { task ->
                     if (task.isSuccessful) {
@@ -240,7 +246,7 @@ class MainActivity : AppCompatActivity() {
                             .addOnCompleteListener(OnCompleteListener<GetTokenResult> { task2 ->
                                 if (task2.isSuccessful) {
                                     val idToken = task2.result.token
-                                    Toast.makeText(applicationContext, "Complete " + idToken.toString(), Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(applicationContext, "Complete " + idToken.toString(), Toast.LENGTH_SHORT).show();
                                     NetworkManager.initNetworkManager(idToken.toString(), user.uid)
 
                                     val intent = Intent(

@@ -63,6 +63,7 @@ data class CommentCreateResponse (
 )
 
 data class Comment (
+    val uid: String, //댓글 uid
     val writer: String, //글쓴이
     val contents: String, //내용
     val time: String //댓글 작성 시간
