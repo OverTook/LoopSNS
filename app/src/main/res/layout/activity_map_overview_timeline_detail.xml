@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:padding="16dp"
+    tools:context=".MainActivity">
+
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:contentInsetStart="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="16dp">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_gravity="center"
+            android:background="@drawable/header"
+            android:paddingStart="10dp"
+            app:contentInsetStart="0dp"
+            app:navigationIcon="@drawable/baseline_arrow_back_24"
+            app:titleTextColor="@android:color/black" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ImageView
+        android:id="@+id/image_view"
+        android:layout_width="330dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="180dp"
+        android:background="@color/black"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/dateTextview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="5dp"
+        android:text="게시글 업로드 날짜가 여기에 표시됩니다."
+        android:textColor="#646464"
+        android:textSize="15sp"
+        app:layout_constraintStart_toStartOf="@+id/image_view"
+        app:layout_constraintTop_toBottomOf="@+id/image_view"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/maintextview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="70dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="30dp"
+        android:text="내용이 이곳에 표기됩니다. 미리보기로 짧게 보이던 글의 내용 전체를 확인할 수 있습니다. 해당 글에서 키워드와 의도를 분석한 것은 이미지의 상단에 기재해두었습니다. 텍스트 수의 제한은 아직 설정하지 않았습니다."
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_view"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/category_1"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/writing_wpicture_category"
+        android:gravity="center"
+        android:text="카테고리1"
+        android:textColor="#BD2C2C"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/image_view"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/category_2"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="90dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/writing_wpicture_category_2"
+        android:gravity="center"
+        android:text="카테고리2"
+        android:textColor="#2C7EBD"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/category_1"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/keyword1"
+        android:layout_width="70dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/writing_wpicture_keyword"
+        android:gravity="center"
+        android:text="키워드1"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/category_1"
+        app:layout_constraintTop_toBottomOf="@+id/category_1"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/imageView_comment_icon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintStart_toStartOf="@+id/maintextview"
+        app:layout_constraintTop_toBottomOf="@+id/maintextview"
+        app:srcCompat="@drawable/comment"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/imageView_like_icon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintStart_toStartOf="@+id/maintextview"
+        app:layout_constraintTop_toBottomOf="@+id/maintextview"
+        app:srcCompat="@drawable/like"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/comment_title_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="80dp"
+        android:text="댓글"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/maintextview"
+        app:layout_constraintTop_toBottomOf="@+id/maintextview"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/imageView_user_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="130dp"
+        app:layout_constraintStart_toStartOf="@+id/comment_title_textview"
+        app:layout_constraintTop_toBottomOf="@+id/maintextview"
+        app:srcCompat="@drawable/user_circle"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/comment_user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="130dp"
+        android:text="주민1342"
+        android:textColor="@android:color/black"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/maintextview"
+        app:layout_constraintTop_toBottomOf="@+id/maintextview"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/comment_user_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="160dp"
+        android:text="댓글 내용입니다."
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/maintextview"
+        app:layout_constraintTop_toBottomOf="@+id/maintextview"
+        tools:ignore="MissingConstraints" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

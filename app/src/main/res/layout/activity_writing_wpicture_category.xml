@@ -25,10 +25,9 @@
             android:layout_height="70dp"
             android:layout_gravity="center"
             android:background="@drawable/header"
+            android:paddingStart="10dp"
             app:contentInsetStart="0dp"
             app:navigationIcon="@drawable/baseline_arrow_back_24"
-            android:paddingStart="16dp"
-            app:title="작성하기"
             app:titleTextColor="@android:color/black" />
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -107,7 +106,7 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="18dp"
         android:text="카테고리"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -126,6 +125,7 @@
         android:text="카테고리1"
         android:textSize="14sp"
         android:textStyle="bold"
+        android:textColor="#BD2C2C"
         app:layout_constraintStart_toStartOf="@+id/textView3"
         app:layout_constraintTop_toBottomOf="@+id/textView3"
         tools:ignore="MissingConstraints" />
@@ -134,22 +134,25 @@
         android:id="@+id/category_2"
         android:layout_width="80dp"
         android:layout_height="30dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/writing_wpicture_category"
+        android:layout_marginStart="90dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/writing_wpicture_category_2"
         android:gravity="center"
         android:text="카테고리2"
         android:textSize="14sp"
         android:textStyle="bold"
+        android:textColor="#2C7EBD"
         app:layout_constraintStart_toStartOf="@+id/category_1"
         app:layout_constraintTop_toBottomOf="@+id/textView3"
         tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/keyword1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="70dp"
+        android:layout_height="30dp"
         android:layout_marginTop="15dp"
+        android:background="@drawable/writing_wpicture_keyword"
+        android:gravity="center"
         android:text="키워드1"
         android:textSize="14sp"
         android:textStyle="bold"
@@ -158,12 +161,44 @@
         tools:ignore="MissingConstraints" />
 
     <TextView
-        android:id="@+id/keyword3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
+        android:id="@+id/keyword2"
+        android:layout_width="70dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="80dp"
         android:layout_marginTop="15dp"
+        android:background="@drawable/writing_wpicture_keyword"
+        android:gravity="center"
         android:text="키워드2"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/category_1"
+        app:layout_constraintTop_toBottomOf="@+id/category_1"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/keyword3"
+        android:layout_width="70dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="160dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/writing_wpicture_keyword"
+        android:gravity="center"
+        android:text="키워드3"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/category_1"
+        app:layout_constraintTop_toBottomOf="@+id/category_1"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/keyword4"
+        android:layout_width="70dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="240dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/writing_wpicture_keyword"
+        android:gravity="center"
+        android:text="키워드4"
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/category_1"

@@ -94,7 +94,7 @@
         android:layout_marginTop="25dp"
         android:background="@drawable/black_r_button"
         android:gravity="center"
-        android:text="작성 완료"
+        android:text="저장하기"
         android:textColor="@color/white"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -102,5 +102,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_text_content"
         tools:ignore="MissingConstraints" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
