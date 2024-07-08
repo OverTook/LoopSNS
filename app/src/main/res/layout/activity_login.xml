@@ -34,7 +34,7 @@
         android:id="@+id/kakao_sign_btn"
         android:layout_width="244dp"
         android:layout_height="60dp"
-        android:layout_marginBottom="250dp"
+        android:layout_marginBottom="50dp"
         android:background="@drawable/kakao_login_large_narrow"
         android:elevation="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
