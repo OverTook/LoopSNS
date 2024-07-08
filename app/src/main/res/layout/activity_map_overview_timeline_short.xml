@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/shortFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -41,7 +42,7 @@
             android:layout_marginStart="15dp"
             android:layout_marginTop="25dp"
             android:fontFamily="@font/pretendard_semi_bold"
-            android:text="건국대학교 글로컬캠퍼스"
+            android:text="위치 조회 중"
             android:textColor="@color/black"
             android:textSize="22sp"
             app:layout_constraintStart_toEndOf="@+id/top_location_image"
@@ -54,7 +55,7 @@
             android:layout_marginStart="15dp"
             android:layout_marginTop="55dp"
             android:fontFamily="@font/pretendard_medium"
-            android:text="충청북도 충주시 충원대로 268"
+            android:text="위치 조회 중"
             android:textColor="@color/gray"
             app:layout_constraintStart_toEndOf="@+id/top_location_image"
             app:layout_constraintTop_toTopOf="parent" />
@@ -110,7 +111,7 @@
             app:flexWrap="wrap"
             app:layout_constraintStart_toEndOf="@+id/article_icon"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_max="150dp">
+            app:layout_constraintWidth_max="170dp">
 
             <TextView
                 android:id="@+id/tag_1"
@@ -126,7 +127,103 @@
                 android:paddingBottom="2dp"
                 android:text="태그1"
                 android:textColor="@color/tag_blue_text"
-                android:textSize="10sp" />
+                android:textSize="10sp"
+                android:visibility="visible"
+                tools:layout_editor_absoluteX="5dp"
+                tools:layout_editor_absoluteY="5dp" />
+
+            <TextView
+                android:id="@+id/tag_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/map_overview_article_tag_item_bg_blue"
+                android:paddingLeft="10dp"
+                android:paddingTop="2dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="2dp"
+                android:text="태그1"
+                android:textColor="@color/tag_blue_text"
+                android:textSize="10sp"
+                android:visibility="visible"
+                tools:layout_editor_absoluteX="54dp" />
+
+            <TextView
+                android:id="@+id/keyword_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/map_overview_article_tag_item_bg_blue"
+                android:paddingLeft="10dp"
+                android:paddingTop="2dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="2dp"
+                android:text="태그1"
+                android:textColor="@color/tag_blue_text"
+                android:textSize="10sp"
+                android:visibility="gone"
+                tools:layout_editor_absoluteX="102dp" />
+
+            <TextView
+                android:id="@+id/keyword_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/map_overview_article_tag_item_bg_blue"
+                android:paddingLeft="10dp"
+                android:paddingTop="2dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="2dp"
+                android:text="태그1"
+                android:textColor="@color/tag_blue_text"
+                android:textSize="10sp"
+                android:visibility="gone"
+                tools:layout_editor_absoluteX="5dp"
+                tools:layout_editor_absoluteY="24dp" />
+
+            <TextView
+                android:id="@+id/keyword_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/map_overview_article_tag_item_bg_blue"
+                android:paddingLeft="10dp"
+                android:paddingTop="2dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="2dp"
+                android:text="태그1"
+                android:textColor="@color/tag_blue_text"
+                android:textSize="10sp"
+                android:visibility="gone"
+                tools:layout_editor_absoluteX="54dp"
+                tools:layout_editor_absoluteY="24dp" />
+
+            <TextView
+                android:id="@+id/keyword_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/map_overview_article_tag_item_bg_blue"
+                android:paddingLeft="10dp"
+                android:paddingTop="2dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="2dp"
+                android:text="키워드444"
+                android:textColor="@color/tag_blue_text"
+                android:textSize="10sp"
+                android:visibility="gone"
+                tools:layout_editor_absoluteX="102dp"
+                tools:layout_editor_absoluteY="24dp" />
 
         </com.google.android.flexbox.FlexboxLayout>
 
