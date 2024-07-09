@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/search"
+    android:background="#FFFFFF"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <EditText
+        android:id="@+id/filter"
+        android:layout_width="267dp"
+        android:layout_height="66dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/map_overview_filter_bg"
+        android:fontFamily="@font/pretendard_light"
+        android:hint="Filter"
+        android:textColorHint="@color/gray"
+        android:inputType="text"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:textColor="@color/gray"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/lastsearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="최근검색어"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="56dp"
+        tools:layout_editor_absoluteY="105dp" />
+
+    <TextView
+        android:id="@+id/category_1"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:background="@drawable/writing_wpicture_category"
+        android:gravity="center"
+        android:text="검색어1"
+        android:textColor="#BD2C2C"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="56dp"
+        tools:layout_editor_absoluteY="147dp" />
+
+    <TextView
+        android:id="@+id/keyword1"
+        android:layout_width="70dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/writing_wpicture_keyword"
+        android:gravity="center"
+        android:text="키워드1"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/category_1"
+        app:layout_constraintTop_toBottomOf="@+id/category_1"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/bestsearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="최근검색어"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="56dp"
+        tools:layout_editor_absoluteY="257dp" />
+
+    <TextView
+        android:id="@+id/bestexplain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="지금 사람들이 가장 많이 사용한 카테고리예요"
+        android:textColor="@color/gray"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="56dp"
+        tools:layout_editor_absoluteY="278dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
