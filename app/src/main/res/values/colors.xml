@@ -3,8 +3,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#AFAFAF</color>
-    <color name="tag_blue">#8C92FF</color>
-    <color name="tag_blue_text">#1D29FF</color>
-    <color name="tag_red">#F65B5B</color>
-    <color name="tag_red_text">#C61414</color>
+    <color name="tag_blue">#A4E2FF</color>
+    <color name="tag_blue_text">#2C7EBD</color>
+    <color name="tag_red">#BD2C2C</color>
+    <color name="tag_red_text">#FFB2B2</color>
+    <color name="keyword">#E1E9E9E9</color>
 </resources>

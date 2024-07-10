@@ -8,20 +8,38 @@
     android:background="@drawable/map_overview_timeline_bg"
     android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/filter"
-        android:layout_width="300dp"
-        android:layout_height="30dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="40dp"
-        android:background="@drawable/map_overview_filter_bg"
-        android:fontFamily="@font/pretendard_light"
-        android:inputType="text"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:text="Filter"
-        android:textColor="@color/gray"
-        android:textSize="14sp" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/filter_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp">
+
+        <EditText
+            android:id="@+id/filter"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:background="@drawable/map_overview_filter_bg"
+            android:cursorVisible="false"
+            android:fontFamily="@font/pretendard_regular"
+            android:hint="Filter"
+            android:inputType="text"
+            android:paddingStart="50dp"
+            android:textColor="@color/gray"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/search_icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            app:layout_constraintStart_toStartOf="@+id/filter"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/search" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/top_info_layout"
@@ -32,7 +50,7 @@
             android:id="@+id/top_location_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="80dp"
+            android:layout_marginStart="40dp"
             android:layout_marginTop="30dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -64,111 +82,14 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/hot_article_1"
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:paddingTop="15dp">
-
-        <ImageView
-            android:id="@+id/hot_article_icon1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="60dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/vector" />
-
-        <LinearLayout
-            android:id="@+id/hot_article_body1"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="92dp"
-            android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:id="@+id/hot_article_tag1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/map_overview_article_tag_item_bg_blue"
-                android:paddingLeft="10dp"
-                android:paddingTop="2dp"
-                android:paddingRight="10dp"
-                android:paddingBottom="2dp"
-                android:text="태그1"
-                android:textColor="@color/tag_blue_text"
-                android:textSize="10sp" />
-
-            <TextView
-                android:id="@+id/hot_article_content1"
-                android:layout_width="180dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"
-                android:fontFamily="@font/pretendard_medium"
-                android:maxLines="1"
-                android:text="근데 아무리 생각을 해봐도 이건 좀 아닌 것 같은데"
-                android:textSize="12sp" />
-        </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/hot_article_2"
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:paddingTop="10dp">
-
-        <ImageView
-            android:id="@+id/hot_article_icon2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="60dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/vector" />
-
-        <LinearLayout
-            android:id="@+id/hot_article_body2"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="92dp"
-            android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:id="@+id/hot_article_tag2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/map_overview_article_tag_item_bg_blue"
-                android:paddingLeft="10dp"
-                android:paddingTop="2dp"
-                android:paddingRight="10dp"
-                android:paddingBottom="2dp"
-                android:text="태그1"
-                android:textColor="@color/tag_blue_text"
-                android:textSize="10sp" />
-
-            <TextView
-                android:id="@+id/hot_article_content2"
-                android:layout_width="180dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"
-                android:fontFamily="@font/pretendard_medium"
-                android:maxLines="1"
-                android:text="연수동 베라에 불이났네"
-                android:textSize="12sp" />
-        </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/article_recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:clipToPadding="false"
         android:paddingTop="20dp"
-        tools:listitem="@layout/activity_map_overview_timeline_article_item">
+        android:paddingBottom="20dp"
+        tools:listitem="@layout/activity_map_overview_timeline_article_normal_item">
 
 
     </androidx.recyclerview.widget.RecyclerView>

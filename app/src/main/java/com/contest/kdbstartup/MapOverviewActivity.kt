@@ -1,7 +1,6 @@
 package com.contest.kdbstartup
 
-import android.R.attr.text
-import android.R.id.text2
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Location
@@ -10,6 +9,8 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.util.Log
+import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -17,11 +18,14 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.contest.kdbstartup.utils.DoubleBackPressHandler
 import com.contest.kdbstartup.network.ArticleMarkersResponse
 import com.contest.kdbstartup.network.ArticleTimelineResponse
 import com.contest.kdbstartup.network.KakaoResponse
 import com.contest.kdbstartup.network.NetworkManager
 import com.contest.kdbstartup.timeline.HotArticleSheetFragment
+import com.contest.kdbstartup.utils.hideDarkOverlay
+import com.contest.kdbstartup.utils.showDarkOverlay
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -56,16 +60,18 @@ import java.util.concurrent.Executors
 
 class MapOverviewActivity : AppCompatActivity() {
 
-    lateinit var mapView: MapView
-    lateinit var kakaoMap: KakaoMap
+    //뒤로가기
+    private val doubleBackPressHandler = DoubleBackPressHandler(this)
+
+    private lateinit var mapView: MapView
+    private lateinit var kakaoMap: KakaoMap
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
     private lateinit var locationRequest: LocationRequest
+    private lateinit var currentLocationMarker: Label
 
     private val executor = Executors.newSingleThreadScheduledExecutor()
-
-    private var currentLocationMarker: Label? = null
 
     private var markers: ArrayList<Label>? = null
 
@@ -73,10 +79,13 @@ class MapOverviewActivity : AppCompatActivity() {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_map_overview)
+
+        this.showDarkOverlay()
+
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
@@ -90,22 +99,39 @@ class MapOverviewActivity : AppCompatActivity() {
         mapView = findViewById<MapView>(R.id.kakaoMap)
         mapView.start(object : MapLifeCycleCallback() {
             override fun onMapDestroy() {
-                // 지도 API 가 정상적으로 종료될 때 호출됨
+
             }
 
             override fun onMapError(error: Exception) {
-                // 인증 실패 및 지도 사용 중 에러가 발생할 때 호출됨
+                Log.e("KakaoMap Error", error.toString())
             }
         }, object : KakaoMapReadyCallback() {
             override fun onMapReady(kakaoMap: KakaoMap) {
                 this@MapOverviewActivity.kakaoMap = kakaoMap
+
                 initGPS()
                 initMap()
+
+                kakaoMap.logo!!.setPosition(0, 15f, mapView.height.toFloat() - 50);
+                this@MapOverviewActivity.hideDarkOverlay() //지도 준비 완료 후 다크 오버레이 제거
             }
         })
+
+        findViewById<ImageButton>(R.id.gps_move_to_current_btn).setOnClickListener {
+            if (!this::currentLocationMarker.isInitialized) {
+                return@setOnClickListener
+            }
+
+            val cameraUpdate = CameraUpdateFactory.newCenterPosition(
+                LatLng.from(currentLocationMarker.position.latitude, currentLocationMarker.position.longitude)
+            )
+            kakaoMap.moveCamera(cameraUpdate, CameraAnimation.from(200, false, false));
+        }
+
+        doubleBackPressHandler.enable()
     }
 
-    fun initGPS(){
+    private fun initGPS(){
         locationRequest = LocationRequest.Builder(5000)
             .setIntervalMillis(5000)
             .setMinUpdateIntervalMillis(1000)
@@ -119,7 +145,9 @@ class MapOverviewActivity : AppCompatActivity() {
                 locationResult.let {
                     val lastLocation = locationResult.lastLocation
                     lastLocation?.let {
-                        currentLocationMarker?.moveTo(LatLng.from(it.latitude, it.longitude))
+                        if(this@MapOverviewActivity::currentLocationMarker.isInitialized) {
+                            currentLocationMarker.moveTo(LatLng.from(it.latitude, it.longitude))
+                        }
                         return
                     }
                 }
@@ -132,7 +160,7 @@ class MapOverviewActivity : AppCompatActivity() {
         permissionCheck()
     }
 
-    fun permissionCheck(){
+    private fun permissionCheck(){
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
             != PackageManager.PERMISSION_GRANTED) {
             // Permission is not granted, request it
@@ -173,7 +201,6 @@ class MapOverviewActivity : AppCompatActivity() {
                     Snackbar.make(findViewById(R.id.main), "정확한 위치 정보를 받아올 수 없어 정확성이 떨어집니다.", Snackbar.LENGTH_LONG).show()
                 }
 
-                //fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
                 fusedLocationClient.requestLocationUpdates(locationRequest, executor, locationCallback)
 
                 fusedLocationClient.lastLocation.addOnSuccessListener { location : Location? ->
@@ -190,7 +217,7 @@ class MapOverviewActivity : AppCompatActivity() {
 
                         currentLocationMarker = layer!!.addLabel(options)
 
-                        kakaoMap.moveCamera(cameraUpdate, CameraAnimation.from(500, true, true));
+                        kakaoMap.moveCamera(cameraUpdate, CameraAnimation.from(100, true, false));
                         return@addOnSuccessListener
                     }
 
@@ -204,20 +231,24 @@ class MapOverviewActivity : AppCompatActivity() {
         }
     }
 
-    fun initMap(){
+    @Suppress("UNCHECKED_CAST") //타입 일치 검사 완료
+    private fun initMap(){
         kakaoMap.setOnCameraMoveEndListener { _, _, _ ->
             requestMaker()
         }
 
         kakaoMap.setOnLabelClickListener { _: KakaoMap, _: LabelLayer, label: Label ->
-            Log.e("Click", "Click Invoked")
+            this.showDarkOverlay() //요청 중 다크
+            
             val tag = label.tag ?: return@setOnLabelClickListener
-            Log.e("Click", label.tag.toString())
             if(!(tag is List<*> && tag.all { it is String })) {
                 return@setOnLabelClickListener
             }
+
             NetworkManager.apiService.retrieveArticleTimeline(tag as List<String>).enqueue(object : Callback<ArticleTimelineResponse> {
                 override fun onResponse(call: Call<ArticleTimelineResponse>, response: Response<ArticleTimelineResponse>) {
+                    this@MapOverviewActivity.hideDarkOverlay()
+
                     if(!response.isSuccessful) {
                         Snackbar.make(findViewById(R.id.main), "타임라인 요청에 실패했습니다.", Snackbar.LENGTH_LONG).show();
                         return
@@ -231,14 +262,16 @@ class MapOverviewActivity : AppCompatActivity() {
 
                     val list = response.body()!!.articles
 
-                    val bottomSheetFragment = HotArticleSheetFragment(list[0], label.position.latitude, label.position.longitude)
+                    val intent = Intent(this@MapOverviewActivity, MapOverviewTimelineActivity::class.java)
+                    intent.putParcelableArrayListExtra("articles", ArrayList(list))
+
+                    val bottomSheetFragment = HotArticleSheetFragment(intent, list[0], label.position.latitude, label.position.longitude)
                     bottomSheetFragment.show(supportFragmentManager, bottomSheetFragment.tag)
-//                    list.forEach {
-//                        Log.e("Article", it.title)
-//                    }
                 }
 
                 override fun onFailure(call: Call<ArticleTimelineResponse>, err: Throwable) {
+                    this@MapOverviewActivity.hideDarkOverlay()
+
                     Log.e("Marker Request Error", err.toString())
                     Snackbar.make(findViewById(R.id.main), "타임라인 요청에 실패했습니다.", Snackbar.LENGTH_LONG).show();
                 }
@@ -347,10 +380,6 @@ class MapOverviewActivity : AppCompatActivity() {
                             } else {
                                 location = "알 수 없는 지역"
                             }
-                           
-
-
-
 
                             val locationString = buildString {
                                 append("지금 ")
@@ -370,39 +399,23 @@ class MapOverviewActivity : AppCompatActivity() {
                                 (locationString.length + count.toString().length), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                             )
 
-                            findViewById<TextView>(R.id.overview_text).text = spannable
+                            runOnUiThread {
+                                findViewById<TextView>(R.id.overview_text).text = spannable
 
 
-                            val currentDateTime = LocalDateTime.now()
-                            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
-                            findViewById<TextView>(R.id.overview_time).text = buildString {
-                                append(currentDateTime.format(formatter))
-                                append(" 기준")
+                                val currentDateTime = LocalDateTime.now()
+                                val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+                                findViewById<TextView>(R.id.overview_time).text = buildString {
+                                    append(currentDateTime.format(formatter))
+                                    append(" 기준")
+                                }
                             }
-
-
-
-
-
-
-
 
                         } else {
                             Log.e("Kakao Local Error", "Request failed: ${response.code}")
                         }
                     }
                 })
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -432,5 +445,10 @@ class MapOverviewActivity : AppCompatActivity() {
         if(this::mapView.isInitialized) {
             mapView.pause() // MapView 의 pause 호출
         }
+    }
+
+    public override fun onDestroy() {
+        super.onDestroy()
+        doubleBackPressHandler.disable()
     }
 }

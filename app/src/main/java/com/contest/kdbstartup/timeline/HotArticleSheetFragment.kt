@@ -2,13 +2,17 @@ package com.contest.kdbstartup.timeline
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.core.view.marginLeft
+import com.contest.kdbstartup.MapOverviewActivity
+import com.contest.kdbstartup.MapOverviewTimelineActivity
 import com.contest.kdbstartup.R
 import com.contest.kdbstartup.network.Article
 import com.contest.kdbstartup.network.KakaoResponse
@@ -23,7 +27,7 @@ import okhttp3.Response
 import java.io.IOException
 import kotlin.math.ln
 
-class HotArticleSheetFragment(private val article: Article, private val lat: Double, private val lng: Double) : BottomSheetDialogFragment() {
+class HotArticleSheetFragment(private val intent: Intent, private val article: Article, private val lat: Double, private val lng: Double) : BottomSheetDialogFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,16 +69,19 @@ class HotArticleSheetFragment(private val article: Article, private val lat: Dou
                     val roadAddress = kakaoResponse.documents[0].roadAddress
                     val address = kakaoResponse.documents[0].address
 
-                    if(roadAddress != null) {
-                        view.findViewById<TextView>(R.id.location_name).text = roadAddress.buildingName
-                        view.findViewById<TextView>(R.id.location_address).text = roadAddress.addressName
-                    } else if(address != null) {
-                        view.findViewById<TextView>(R.id.location_name).text = address.addressName
-                        view.findViewById<TextView>(R.id.location_address).text = "건물 없음"
-                    } else {
-                        view.findViewById<TextView>(R.id.location_name).text = "위치 조회 실패"
-                        view.findViewById<TextView>(R.id.location_address).text = "위치 조회 실패"
+                    view.rootView.post {
+                        if(roadAddress != null) {
+                            view.findViewById<TextView>(R.id.location_name).text = roadAddress.buildingName
+                            view.findViewById<TextView>(R.id.location_address).text = roadAddress.addressName
+                        } else if(address != null) {
+                            view.findViewById<TextView>(R.id.location_name).text = address.addressName
+                            view.findViewById<TextView>(R.id.location_address).text = "건물 없음"
+                        } else {
+                            view.findViewById<TextView>(R.id.location_name).text = "위치 조회 실패"
+                            view.findViewById<TextView>(R.id.location_address).text = "위치 조회 실패"
+                        }
                     }
+
 
 
                 } else {
@@ -96,9 +103,23 @@ class HotArticleSheetFragment(private val article: Article, private val lat: Dou
 
         for (i in 0 until article.keywords.size) {
             if (i < keywordIds.size) {
+                view.findViewById<TextView>(keywordIds[i]).visibility = View.VISIBLE
                 view.findViewById<TextView>(keywordIds[i]).text = article.keywords[i]
             }
         }
+
+        view.findViewById<Button>(R.id.all_view_btn).setOnClickListener {
+            dismiss()
+            intent.putExtra("name", view.findViewById<TextView>(R.id.location_name).text)
+            intent.putExtra("address", view.findViewById<TextView>(R.id.location_address).text)
+            startActivity(intent)
+        }
+
+        view.findViewById<TextView>(R.id.content_text).text = article.contents.toString()
+
+        view.findViewById<TextView>(R.id.like_count).text = article.likeCount.toString()
+        view.findViewById<TextView>(R.id.comment_count).text = article.commentCount.toString()
+
         return view
     }
 }

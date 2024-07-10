@@ -8,32 +8,50 @@
     android:layout_height="match_parent">
 
 
-    <EditText
-        android:id="@+id/filter"
-        android:layout_width="300dp"
-        android:layout_height="30dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/filter_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:background="@drawable/map_overview_filter_bg"
-        android:fontFamily="@font/pretendard_light"
-        android:inputType="text"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:text="Filter"
-        android:textColor="@color/gray"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <EditText
+            android:id="@+id/filter"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:background="@drawable/map_overview_filter_bg"
+            android:cursorVisible="false"
+            android:fontFamily="@font/pretendard_regular"
+            android:hint="Filter"
+            android:inputType="text"
+            android:paddingStart="50dp"
+            android:textColor="@color/gray"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/search_icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            app:layout_constraintStart_toStartOf="@+id/filter"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/search" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.kakao.vectormap.MapView
         android:id="@+id/kakaoMap"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintBottom_toTopOf="@+id/overview_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/filter_layout">
 
     </com.kakao.vectormap.MapView>
 
@@ -46,7 +64,7 @@
         android:paddingLeft="20dp"
         android:paddingTop="15dp"
         android:paddingRight="20dp"
-        android:text="지금 단월동에서는\n15 개의 제보가 올라왔어요."
+        android:text="위치를 가져오는 중입니다.\n"
         android:textColor="@color/black"
         android:textSize="22sp"
         android:textStyle="bold"
@@ -58,11 +76,33 @@
         android:layout_height="wrap_content"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:paddingBottom="40dp"
-        android:text="2024-07-01 13:00 기준"
+        android:paddingBottom="20dp"
+        android:text="시간을 가져오는 중입니다."
         android:textColor="@color/gray"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/article_write_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="75dp"
+        android:background="@drawable/map_overview_behave_btn_bg"
+        app:layout_constraintBottom_toBottomOf="@+id/kakaoMap"
+        app:layout_constraintEnd_toEndOf="@+id/kakaoMap"
+        app:srcCompat="@drawable/export" />
+
+    <ImageButton
+        android:id="@+id/gps_move_to_current_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/map_overview_behave_btn_bg"
+        app:layout_constraintBottom_toBottomOf="@+id/kakaoMap"
+        app:layout_constraintEnd_toEndOf="@+id/kakaoMap"
+        app:srcCompat="@drawable/mark" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

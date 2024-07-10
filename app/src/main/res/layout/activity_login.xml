@@ -22,16 +22,16 @@
         android:id="@+id/login_subtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="170dp"
+        android:layout_marginTop="-110dp"
         android:fontFamily="@font/pretendard_semi_bold"
         android:gravity="center"
         android:text="우리들의 연결고리, 루프"
         android:textColor="#38B5FE"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/google_sign_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3"
         tools:ignore="MissingConstraints" />
 
     <android.widget.Button

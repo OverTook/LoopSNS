@@ -7,12 +7,12 @@ plugins {
 
 android {
     namespace = "com.contest.kdbstartup"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.contest.kdbstartup"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -56,6 +56,10 @@ dependencies {
     implementation(libs.firebase.firestore)
     implementation(libs.play.services.location)
     implementation(libs.googleid)
+
+    implementation("androidx.credentials:credentials:<latest version>")
+    implementation("androidx.credentials:credentials-play-services-auth:<latest version>")
+    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
