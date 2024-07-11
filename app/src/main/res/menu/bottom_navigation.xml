@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/information"
+        android:icon="@drawable/star_06"
+        android:title="inforamtion"/>
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/home_light"
+        android:title="homebuttion"/>
+    <item
+        android:id="@+id/alertbutton"
+        android:icon="@drawable/star_06"
+        android:title="alertbutton"/>
+</menu>
