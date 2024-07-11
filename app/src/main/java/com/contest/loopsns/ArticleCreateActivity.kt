@@ -1,26 +1,10 @@
-package com.contest.kdbstartup
+package com.contest.loopsns
 
 import android.os.Bundle
-import android.util.Log
-import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.IntentCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.contest.kdbstartup.network.Article
-import com.contest.kdbstartup.network.KakaoResponse
-import com.contest.kdbstartup.timeline.ArticleRecyclerViewAdapter
-import com.google.gson.Gson
-import okhttp3.Call
-import okhttp3.Callback
-import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
-import java.io.IOException
 
 
 class ArticleCreateActivity : AppCompatActivity() {

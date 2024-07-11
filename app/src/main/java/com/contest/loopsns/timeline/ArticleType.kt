@@ -1,4 +1,4 @@
-package com.contest.kdbstartup.timeline
+package com.contest.loopsns.timeline
 
 object ArticleType {
     const val HOT_ARTICLE = 1

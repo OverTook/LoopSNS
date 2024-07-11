@@ -1,11 +1,11 @@
-package com.contest.kdbstartup.utils
+package com.contest.loopsns.utils
 
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.contest.kdbstartup.R
+import com.contest.loopsns.R
 
 // 어두운 오버레이를 추가하는 확장 함수
 

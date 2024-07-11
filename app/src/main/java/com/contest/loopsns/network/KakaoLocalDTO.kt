@@ -1,4 +1,4 @@
-package com.contest.kdbstartup.network
+package com.contest.loopsns.network
 
 import com.google.gson.annotations.SerializedName
 

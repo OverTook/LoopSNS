@@ -1,4 +1,4 @@
-package com.contest.kdbstartup
+package com.contest.loopsns
 
 import org.junit.Test
 

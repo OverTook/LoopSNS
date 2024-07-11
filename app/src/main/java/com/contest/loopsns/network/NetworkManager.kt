@@ -1,4 +1,4 @@
-package com.contest.kdbstartup.network
+package com.contest.loopsns.network
 
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit

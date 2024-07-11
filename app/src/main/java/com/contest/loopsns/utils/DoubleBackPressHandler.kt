@@ -1,4 +1,4 @@
-package com.contest.kdbstartup.utils
+package com.contest.loopsns.utils
 
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback

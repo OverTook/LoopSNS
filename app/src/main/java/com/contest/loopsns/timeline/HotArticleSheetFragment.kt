@@ -1,4 +1,4 @@
-package com.contest.kdbstartup.timeline
+package com.contest.loopsns.timeline
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,9 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import com.contest.kdbstartup.R
-import com.contest.kdbstartup.network.Article
-import com.contest.kdbstartup.network.KakaoResponse
+import com.contest.loopsns.R
+import com.contest.loopsns.network.Article
+import com.contest.loopsns.network.KakaoResponse
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.gson.Gson
 import okhttp3.Call

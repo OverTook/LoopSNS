@@ -1,10 +1,7 @@
-package com.contest.kdbstartup.network
+package com.contest.loopsns.network
 
-import android.media.MediaDrm
-import android.media.UnsupportedSchemeException
 import okhttp3.Interceptor
 import okhttp3.Response
-import java.util.UUID
 
 
 class TokenInterceptor(private val firebaseToken: String, private val userId: String) : Interceptor {

@@ -1,4 +1,4 @@
-package com.contest.kdbstartup
+package com.contest.loopsns
 
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -9,7 +9,6 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.util.Log
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -18,14 +17,14 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.contest.kdbstartup.utils.DoubleBackPressHandler
-import com.contest.kdbstartup.network.ArticleMarkersResponse
-import com.contest.kdbstartup.network.ArticleTimelineResponse
-import com.contest.kdbstartup.network.KakaoResponse
-import com.contest.kdbstartup.network.NetworkManager
-import com.contest.kdbstartup.timeline.HotArticleSheetFragment
-import com.contest.kdbstartup.utils.hideDarkOverlay
-import com.contest.kdbstartup.utils.showDarkOverlay
+import com.contest.loopsns.utils.DoubleBackPressHandler
+import com.contest.loopsns.network.ArticleMarkersResponse
+import com.contest.loopsns.network.ArticleTimelineResponse
+import com.contest.loopsns.network.KakaoResponse
+import com.contest.loopsns.network.NetworkManager
+import com.contest.loopsns.timeline.HotArticleSheetFragment
+import com.contest.loopsns.utils.hideDarkOverlay
+import com.contest.loopsns.utils.showDarkOverlay
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest

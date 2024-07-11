@@ -1,4 +1,4 @@
-package com.contest.kdbstartup.network
+package com.contest.loopsns.network
 
 import android.os.Parcel
 import android.os.Parcelable

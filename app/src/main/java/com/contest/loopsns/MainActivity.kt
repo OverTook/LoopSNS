@@ -1,9 +1,7 @@
-package com.contest.kdbstartup
+package com.contest.loopsns
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.widget.Button
 import androidx.activity.enableEdgeToEdge
@@ -19,11 +17,11 @@ import androidx.credentials.GetCredentialResponse
 import androidx.credentials.PasswordCredential
 import androidx.credentials.exceptions.GetCredentialException
 import androidx.lifecycle.lifecycleScope
-import com.contest.kdbstartup.network.AccountCreateResponse
-import com.contest.kdbstartup.network.NetworkManager
-import com.contest.kdbstartup.utils.DoubleBackPressHandler
-import com.contest.kdbstartup.utils.hideDarkOverlay
-import com.contest.kdbstartup.utils.showDarkOverlay
+import com.contest.loopsns.network.AccountCreateResponse
+import com.contest.loopsns.network.NetworkManager
+import com.contest.loopsns.utils.DoubleBackPressHandler
+import com.contest.loopsns.utils.hideDarkOverlay
+import com.contest.loopsns.utils.showDarkOverlay
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -42,8 +40,6 @@ import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 import com.kakao.vectormap.KakaoMapSdk
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

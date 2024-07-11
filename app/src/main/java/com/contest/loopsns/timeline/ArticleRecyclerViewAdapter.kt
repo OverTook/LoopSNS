@@ -1,4 +1,4 @@
-package com.contest.kdbstartup.timeline
+package com.contest.loopsns.timeline
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.contest.kdbstartup.R
-import com.contest.kdbstartup.network.Article
+import com.contest.loopsns.R
+import com.contest.loopsns.network.Article
 
 class ArticleRecyclerViewAdapter(private var items: List<Article>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
