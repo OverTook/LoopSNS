@@ -120,9 +120,28 @@ data class NicknameResponse (
     val nickname: String
 )
 
-data class AccountCreateResponse(
+data class AccountCreateResponse (
     val success: Boolean,
     val msg: String,
 
     val token: String
+)
+
+//좋아요
+data class LikeResponse (
+    val success: Boolean,
+    val msg: String
+)
+
+data class LikedArticlesResponse (
+    val success: Boolean,
+    val msg: String,
+
+    val articles: List<LikedArticle>
+)
+
+data class LikedArticle (
+    val uid: String, //게시글 유니크 아이디
+
+    val contents: String, //내용
 )

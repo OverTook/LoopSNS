@@ -6,8 +6,16 @@
     android:layout_height="match_parent">
 
 
+    <LinearLayout
+        android:id="@+id/menus"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="120dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"></LinearLayout>
+
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/profileImage"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_marginTop="45dp"
@@ -30,7 +38,7 @@
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toEndOf="@+id/profileImage"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
@@ -45,7 +53,7 @@
         android:textColor="@color/black"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toEndOf="@+id/profileImage"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 

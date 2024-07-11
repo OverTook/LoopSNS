@@ -1,7 +1,5 @@
 package com.contest.kdbstartup.timeline
 
-import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -10,9 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import androidx.core.view.marginLeft
-import com.contest.kdbstartup.MapOverviewActivity
-import com.contest.kdbstartup.MapOverviewTimelineActivity
 import com.contest.kdbstartup.R
 import com.contest.kdbstartup.network.Article
 import com.contest.kdbstartup.network.KakaoResponse
@@ -25,7 +20,6 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import java.io.IOException
-import kotlin.math.ln
 
 class HotArticleSheetFragment(private val intent: Intent, private val article: Article, private val lat: Double, private val lng: Double) : BottomSheetDialogFragment() {
 
@@ -35,7 +29,7 @@ class HotArticleSheetFragment(private val intent: Intent, private val article: A
         savedInstanceState: Bundle?
     ): View? {
 
-        val view = inflater.inflate(R.layout.activity_map_overview_timeline_short, container, false)
+        val view = inflater.inflate(R.layout.bottom_sheet_map_overview_timeline_short, container, false)
 
 
         val client = OkHttpClient()

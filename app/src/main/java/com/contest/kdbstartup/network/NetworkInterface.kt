@@ -48,26 +48,37 @@ interface NetworkInterface {
 
     @POST("/get/article/comment")
     fun retrieveArticleComment(
-        @Query("uid") uid: String
+        @Query("uid") articleId: String
     ): Call<CommentResponse>
 
     @POST("/create/comment")
     fun createComment(
-        @Query("uid") uid: String,
+        @Query("uid") articleId: String,
         @Query("contents") contents: String
     ): Call<CommentCreateResponse>
 
-    @POST("/create/nickname")
+    @POST("/create/users/nickname")
     fun createNickname(
         @Query("nickname") nickname: String
     ): Call<NicknameResponse>
 
-    @POST("/get/nickname")
-    fun getNickname(): Call<NicknameResponse>
+    @POST("/get/users/nickname")
+    fun retrieveNickname(): Call<NicknameResponse>
 
     @POST("/create/account")
     fun createAccount(
         @Query("platform") platform: String,
         @Query("token") token: String
     ): Call<AccountCreateResponse>
+
+    @POST("/create/article/like")
+    fun likeArticle(
+        @Query("uid") articleId: String,
+        @Query("like") like: Boolean
+    ): Call<LikeResponse>
+
+    @POST("/get/users/liked_article")
+    fun retrieveLikedArticles(): Call<LikedArticlesResponse>
+
+
 }
