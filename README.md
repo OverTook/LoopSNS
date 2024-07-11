@@ -1,2 +1,4 @@
-# KDBStartUpApp
- KDB 스타트업 애플리케이션
+# Loop
+ Loop, 우리들의 연결고리 루프!
+
+ 위치 기반 SNS 플랫폼
