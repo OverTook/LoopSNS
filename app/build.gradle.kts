@@ -35,6 +35,13 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures {
+        dataBinding = true
+    }
+
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -63,6 +70,9 @@ dependencies {
     implementation("androidx.credentials:credentials:<latest version>")
     implementation("androidx.credentials:credentials-play-services-auth:<latest version>")
     implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
+
+    implementation ("com.google.android.material:material:1.3.0")
+    implementation ("androidx.viewpager2:viewpager2:1.0.0")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
