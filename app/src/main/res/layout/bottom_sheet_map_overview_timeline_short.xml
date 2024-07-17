@@ -62,7 +62,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/article"
+        android:id="@+id/hot_article_overview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

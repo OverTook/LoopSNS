@@ -15,7 +15,8 @@
         android:layout_marginStart="40dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/vector" />
+        app:srcCompat="@drawable/vector"
+        android:clickable="false"/>
 
     <LinearLayout
         android:id="@+id/hot_article_body"
@@ -26,7 +27,8 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:clickable="false">
 
         <TextView
             android:id="@+id/hot_tag"
@@ -41,7 +43,8 @@
             android:text="태그1"
             android:textColor="@color/tag_red_text"
             android:textSize="12sp"
-            android:visibility="visible" />
+            android:visibility="visible"
+            android:clickable="false"/>
 
         <TextView
             android:id="@+id/hot_article_content"
@@ -52,7 +55,8 @@
             android:maxLines="1"
             android:text="연수동 베라에 불이났네"
             android:textColor="@color/black"
-            android:textSize="13sp" />
+            android:textSize="13sp"
+            android:clickable="false"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

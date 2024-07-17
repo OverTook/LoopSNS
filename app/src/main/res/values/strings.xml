@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">KDBStartUp</string>
-    <string name="google_sdk_id">589625082406-ohpiud12q957kp9nuc1veqefm09t5e8j.apps.googleusercontent.com</string>
+    <string name="app_name">Loop</string>
+    <string name="google_sdk_id">775100543200-k9pr4r5j2n7tm1jd46tsoenqipg831cq.apps.googleusercontent.com</string>
     <string name="underlined_start_guest"><u>게스트로 시작하기</u></string>
 </resources>
