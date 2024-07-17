@@ -2,15 +2,15 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     id("com.google.gms.google-services")
-
+    id("kotlin-parcelize")
 }
 
 android {
-    namespace = "com.contest.kdbstartup"
+    namespace = "com.hci.loopsns"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.contest.kdbstartup"
+        applicationId = "com.hci.loopsns"
         minSdk = 26
         targetSdk = 35
         versionCode = 1
@@ -56,6 +56,9 @@ dependencies {
     implementation(libs.firebase.firestore)
     implementation(libs.play.services.location)
     implementation(libs.googleid)
+
+    implementation("de.hdodenhof:circleimageview:3.1.0")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
 
     implementation("androidx.credentials:credentials:<latest version>")
     implementation("androidx.credentials:credentials-play-services-auth:<latest version>")

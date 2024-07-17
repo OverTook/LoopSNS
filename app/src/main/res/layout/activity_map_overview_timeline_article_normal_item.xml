@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/article"
+    android:id="@+id/hot_article_overview"
     android:background="#FFFFFF"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -18,7 +17,8 @@
         android:src="@drawable/map_overview_timeline_dotted_line_bg"
         app:layout_constraintBottom_toBottomOf="@id/contents"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/article_icon" />
+        app:layout_constraintTop_toBottomOf="@id/article_icon"
+        android:clickable="false"/>
 
     <TextView
         android:id="@+id/article_time_normal"
@@ -31,7 +31,8 @@
         android:textColor="@color/gray"
         android:textSize="10sp"
         app:layout_constraintStart_toEndOf="@+id/tags"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:clickable="false"/>
 
     <ImageView
         android:id="@+id/article_icon"
@@ -41,7 +42,8 @@
         android:layout_marginTop="7dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/group_1" />
+        app:srcCompat="@drawable/group_1"
+        android:clickable="false"/>
 
     <com.google.android.flexbox.FlexboxLayout
         android:id="@+id/tags"
@@ -53,7 +55,8 @@
         app:flexWrap="wrap"
         app:layout_constraintStart_toEndOf="@+id/article_icon"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_max="150dp">
+        app:layout_constraintWidth_max="150dp"
+        android:clickable="false">
 
         <TextView
             android:id="@+id/tag_1_normal"
@@ -69,8 +72,7 @@
             android:textColor="@color/tag_red_text"
             android:textSize="12sp"
             android:visibility="visible"
-            tools:layout_editor_absoluteX="2dp"
-            tools:layout_editor_absoluteY="2dp" />
+            android:clickable="false" />
 
         <TextView
             android:id="@+id/tag_2_normal"
@@ -85,7 +87,8 @@
             android:text="태그1"
             android:textColor="@color/tag_blue_text"
             android:textSize="12sp"
-            android:visibility="visible" />
+            android:visibility="visible"
+            android:clickable="false"/>
 
         <TextView
             android:id="@+id/keyword_1_normal"
@@ -100,7 +103,8 @@
             android:text="태그1"
             android:textColor="@color/black"
             android:textSize="12sp"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:clickable="false"/>
 
         <TextView
             android:id="@+id/keyword_2_normal"
@@ -115,7 +119,8 @@
             android:text="태그1"
             android:textColor="@color/black"
             android:textSize="12sp"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:clickable="false"/>
 
         <TextView
             android:id="@+id/keyword_3_normal"
@@ -130,7 +135,8 @@
             android:text="태그1"
             android:textColor="@color/black"
             android:textSize="12sp"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:clickable="false"/>
 
         <TextView
             android:id="@+id/keyword_4_normal"
@@ -145,7 +151,8 @@
             android:text="키워드444"
             android:textColor="@color/black"
             android:textSize="12sp"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:clickable="false"/>
 
     </com.google.android.flexbox.FlexboxLayout>
 
@@ -157,7 +164,8 @@
         android:layout_marginTop="5dp"
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="@id/dotted_line"
-        app:layout_constraintTop_toBottomOf="@+id/tags">
+        app:layout_constraintTop_toBottomOf="@+id/tags"
+        android:clickable="false">
 
         <TextView
             android:id="@+id/content_text_normal"
@@ -165,19 +173,22 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/pretendard_medium"
             android:text="방학만 되면 먹을 게 없는 듯~~~~~~~~~~~~~~~~~~\n호암동에 맛집 있나요?\n게시글내용테스트 ~~~~~~~~~~~~~~~~"
+            android:clickable="false"
             android:textColor="@color/black" />
 
         <ImageView
             android:id="@+id/content_image_normal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:clickable="false"/>
 
         <LinearLayout
             android:id="@+id/article_comment_like"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:clickable="false">
 
             <ImageView
                 android:id="@+id/comment"
@@ -185,7 +196,8 @@
                 android:layout_height="15dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="3dp"
-                app:srcCompat="@drawable/comment" />
+                app:srcCompat="@drawable/comment"
+                android:clickable="false"/>
 
             <TextView
                 android:id="@+id/comment_count_normal"
@@ -194,7 +206,8 @@
                 android:layout_marginTop="4dp"
                 android:text="30"
                 android:textColor="@color/gray"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:clickable="false"/>
 
             <ImageView
                 android:id="@+id/like"
@@ -203,7 +216,8 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="3dp"
-                app:srcCompat="@drawable/like" />
+                app:srcCompat="@drawable/like"
+                android:clickable="false"/>
 
             <TextView
                 android:id="@+id/like_count_normal"
@@ -212,7 +226,8 @@
                 android:layout_marginTop="4dp"
                 android:text="300"
                 android:textColor="@color/gray"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:clickable="false"/>
 
         </LinearLayout>
     </LinearLayout>
