@@ -95,7 +95,7 @@
         android:layout_marginTop="10dp"
         android:background="@drawable/writing_wpicture_category"
         android:gravity="center"
-        android:text="카테"
+        android:text="카테고리1"
         android:textColor="#BD2C2C"
         android:textSize="14sp"
         android:textStyle="bold"

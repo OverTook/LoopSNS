@@ -1,9 +1,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.LoopSNS" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.KDBStartUp" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
-    <style name="Theme.LoopSNS" parent="Base.Theme.LoopSNS" />
+    <style name="Theme.KDBStartUp" parent="Base.Theme.KDBStartUp" />
 </resources>
