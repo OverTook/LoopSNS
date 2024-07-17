@@ -34,17 +34,17 @@ class MainActivity : AppCompatActivity() {
         }.attach()
 
         // BottomNavigationView의 아이템 선택 리스너 설정
-        binding.bottomNavigation.setOnNavigationItemSelectedListener { item ->
+        binding.BottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.menu_home -> {
+                R.id.home -> {
                     binding.viewPager.currentItem = 0
                     true
                 }
-                R.id.menu_settings -> {
+                R.id.setting_menu -> {
                     binding.viewPager.currentItem = 1
                     true
                 }
-                R.id.menu_notifications -> {
+                R.id.notification -> {
                     binding.viewPager.currentItem = 2
                     true
                 }
@@ -57,9 +57,9 @@ class MainActivity : AppCompatActivity() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 when (position) {
-                    0 -> binding.bottomNavigation.selectedItemId = R.id.menu_home
-                    1 -> binding.bottomNavigation.selectedItemId = R.id.menu_settings
-                    2 -> binding.bottomNavigation.selectedItemId = R.id.menu_notifications
+                    0 -> binding.BottomNavigationView.selectedItemId = R.id.home
+                    1 -> binding.BottomNavigationView.selectedItemId = R.id.setting_menu
+                    2 -> binding.BottomNavigationView.selectedItemId = R.id.notification
                 }
             }
         })
