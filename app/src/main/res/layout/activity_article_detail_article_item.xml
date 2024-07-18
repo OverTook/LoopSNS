@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:id="@+id/article_header"
@@ -207,7 +207,7 @@
                 app:srcCompat="@drawable/comment" />
 
             <TextView
-                android:id="@+id/comment_count_normal"
+                android:id="@+id/comment_count_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="7dp"
@@ -226,7 +226,7 @@
                 app:srcCompat="@drawable/like" />
 
             <TextView
-                android:id="@+id/like_count_normal"
+                android:id="@+id/like_count_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="7dp"

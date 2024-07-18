@@ -7,8 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.bumptech.glide.Glide
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.hci.loopsns.R
 import com.hci.loopsns.network.Article
 import com.hci.loopsns.network.KakaoResponse
@@ -117,6 +121,12 @@ class HotArticleSheetFragment(private val articleClickAction: (Article) -> Unit,
         view.findViewById<ConstraintLayout>(R.id.hot_article_overview).setOnClickListener {
             articleClickAction(article)
         }
+
+        Glide.with(requireContext())
+            .load(article.images[0]) //TODO 한장만?
+            .into(view.findViewById<ImageView>(R.id.content_image))
+
+        (dialog as? BottomSheetDialog)?.behavior?.state = BottomSheetBehavior.STATE_EXPANDED
         return view
     }
 }

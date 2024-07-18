@@ -45,14 +45,18 @@ data class Article (
     val uid: String, //게시글 유니크 아이디
 
     val writer: String, //글쓴이
-    val title: String, //제목
     val contents: String, //내용
     val cat1: String, //첫 번째 카테고리
     val cat2: String, //두 번째 카테고리
     val keywords: List<String>, //키워드
     val time: String, //게시글 작성 시간
+    @SerializedName("comment_count")
     val commentCount: Int, //댓글 수
-    val likeCount: Int //좋아요 수
+    @SerializedName("like_count")
+    val likeCount: Int, //좋아요 수
+
+    @SerializedName("image_urls")
+    val images: List<String>,
 ) : Parcelable
 
 data class ArticleDetailResponse (
@@ -66,7 +70,6 @@ data class ArticleDetailResponse (
 @Parcelize
 data class ArticleDetail (
     val writer: String, //글쓴이
-    val title: String, //제목
     val contents: String, //내용
     val cat1: String, //첫 번째 카테고리
     val cat2: String, //두 번째 카테고리
@@ -89,10 +92,8 @@ data class CommentCreateResponse (
 
 @Parcelize
 data class Comment (
-    @SerializedName("user_id")
     val writer: String, //글쓴이
     val contents: String, //내용
-    @SerializedName("created_at")
     val time: String, //댓글 작성 시간
     @SerializedName("user_img")
     val userImg: String
