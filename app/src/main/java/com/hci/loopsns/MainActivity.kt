@@ -3,9 +3,8 @@ package com.hci.loopsns
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.tabs.TabLayoutMediator
-import com.hci.loopsns.databinding.ActivityMainBinding;
+import com.hci.loopsns.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         adapter = ViewPageAdapter2(this)
         adapter.addFragment(HomeFragment())
         adapter.addFragment(SettingMenuFragment())
-        adapter.addFragment(ThirdFragment())
+        adapter.addFragment(NotificationsFragment())
         binding.viewPager.adapter = adapter
 
         // TabLayout과 ViewPager2를 연결
@@ -34,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         }.attach()
 
         // BottomNavigationView의 아이템 선택 리스너 설정
-        binding.BottomNavigationView.setOnItemSelectedListener { item ->
+        binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.home -> {
                     binding.viewPager.currentItem = 0
@@ -57,9 +56,9 @@ class MainActivity : AppCompatActivity() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 when (position) {
-                    0 -> binding.BottomNavigationView.selectedItemId = R.id.home
-                    1 -> binding.BottomNavigationView.selectedItemId = R.id.setting_menu
-                    2 -> binding.BottomNavigationView.selectedItemId = R.id.notification
+                    0 -> binding.bottomNavigationView.selectedItemId = R.id.home
+                    1 -> binding.bottomNavigationView.selectedItemId = R.id.setting_menu
+                    2 -> binding.bottomNavigationView.selectedItemId = R.id.notification
                 }
             }
         })
