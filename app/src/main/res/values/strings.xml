@@ -4,4 +4,28 @@
     <string name="underlined_start_guest"><u>게스트로 시작하기</u></string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="comment_hint">댓글을 입력하세요</string>
+    <string name="filter_hint">Filter</string>
+    <string name="writing_comment">댓글</string>
+    <string name="writing_comment_number">30</string>
+    <string name="writing_good_number">300</string>
+    <string name="writing_user_name">작성자 이름</string>
+    <string name="date">2024–07-01 12:00</string>
+    <string name="tag">태그1</string>
+    <string name="user_nickname">Nickname</string>
+    <string name="good_list">좋아요 목록</string>
+    <string name="user_location">충청북도 충주시 충원대로 268</string>
+    <string name="main_writing_text">이곳에 내용이 들어갑니다.</string>
+    <string name="loop_subtitle">우리들의 연결고리, 루프</string>
+    <string name="writing_location_1">건국대학교 글로컬캠퍼스</string>
+    <string name="writing_location_2">충청북도 충주시 충원대로 268</string>
+    <string name="writing_complete">작성 완료</string>
+    <string name="save">저장하기</string>
+    <string name="category">카테고리</string>
+    <string name="keyword">키워드</string>
+    <string name="writing_text">작성 내용 *</string>
+    <string name="writing_text_hint">작성 내용을 입력해 주세요. (허위 정보, 불건전한 내용 게재 등 정책에 어긋나는 게시물은 제한될 수 있습니다.)</string>
+    <string name="all_writing">전체 보기</string>
+    <string name="location_loading">위치를 가져오는 중입니다.\n</string>
+    <string name="time_loading">시간을 가져오는 중입니다.\n</string>
 </resources>

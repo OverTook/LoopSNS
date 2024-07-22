@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:fontFamily="@font/pretendard_bold"
-                android:text="작성자 이름"
+                android:text="@string/writing_user_name"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 app:layout_constraintStart_toEndOf="@+id/profile_image"
@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:fontFamily="@font/pretendard_bold"
-                android:text="2024-07-01 12:00"
+                android:text="@string/date"
                 android:textColor="@color/gray"
                 android:textSize="13sp"
                 app:layout_constraintStart_toEndOf="@+id/profile_image"
@@ -79,7 +79,7 @@
             android:paddingTop="4dp"
             android:paddingRight="13dp"
             android:paddingBottom="4dp"
-            android:text="태그1"
+            android:text="@string/tag"
             android:textColor="@color/tag_red_text"
             android:textSize="12sp"
             android:visibility="visible" />
@@ -94,7 +94,7 @@
             android:paddingTop="4dp"
             android:paddingRight="13dp"
             android:paddingBottom="4dp"
-            android:text="태그1"
+            android:text="@string/tag"
             android:textColor="@color/tag_blue_text"
             android:textSize="12sp"
             android:visibility="visible" />
@@ -109,7 +109,7 @@
             android:paddingTop="4dp"
             android:paddingRight="13dp"
             android:paddingBottom="4dp"
-            android:text="태그1"
+            android:text="@string/tag"
             android:textColor="@color/black"
             android:textSize="12sp"
             android:visibility="gone" />
@@ -124,7 +124,7 @@
             android:paddingTop="4dp"
             android:paddingRight="13dp"
             android:paddingBottom="4dp"
-            android:text="태그1"
+            android:text="@string/tag"
             android:textColor="@color/black"
             android:textSize="12sp"
             android:visibility="gone" />
@@ -139,7 +139,7 @@
             android:paddingTop="4dp"
             android:paddingRight="13dp"
             android:paddingBottom="4dp"
-            android:text="태그1"
+            android:text="@string/tag"
             android:textColor="@color/black"
             android:textSize="12sp"
             android:visibility="gone" />
@@ -154,7 +154,7 @@
             android:paddingTop="4dp"
             android:paddingRight="13dp"
             android:paddingBottom="4dp"
-            android:text="키워드444"
+            android:text="@string/tag"
             android:textColor="@color/black"
             android:textSize="12sp"
             android:visibility="gone" />
@@ -186,7 +186,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:fontFamily="@font/pretendard_regular"
-            android:text="이곳에 내용이 들어갑니다."
+            android:text="@string/main_writing_text"
             android:textColor="@color/black"
             android:textSize="15sp" />
 
@@ -212,7 +212,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="7dp"
                 android:fontFamily="@font/pretendard_regular"
-                android:text="30"
+                android:text="@string/writing_comment_number"
                 android:textColor="@color/black"
                 android:textSize="15sp" />
 
@@ -231,7 +231,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="7dp"
                 android:fontFamily="@font/pretendard_regular"
-                android:text="300"
+                android:text="@string/writing_good_number"
                 android:textColor="@color/black"
                 android:textSize="15sp" />
 
@@ -243,7 +243,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:fontFamily="@font/pretendard_bold"
-            android:text="댓글"
+            android:text="@string/writing_comment"
             android:textColor="@color/black"
             android:textSize="20sp" />
 

@@ -29,7 +29,7 @@
             android:layout_marginStart="15dp"
             android:layout_marginTop="25dp"
             android:fontFamily="@font/pretendard_semi_bold"
-            android:text="Nick name"
+            android:text="@string/user_nickname"
             android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintStart_toEndOf="@+id/userprofile_image"
@@ -42,7 +42,7 @@
             android:layout_marginStart="15dp"
             android:layout_marginTop="52dp"
             android:fontFamily="@font/pretendard_medium"
-            android:text="충청북도 충주시 충원대로 268"
+            android:text="@string/user_location"
             android:textColor="@color/black"
             app:layout_constraintStart_toEndOf="@+id/userprofile_image"
             app:layout_constraintTop_toTopOf="parent" />
