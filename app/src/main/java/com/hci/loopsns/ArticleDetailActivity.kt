@@ -3,6 +3,10 @@ package com.hci.loopsns
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -48,6 +52,8 @@ class ArticleDetailActivity : AppCompatActivity() {
             return
         }
 
+        recyclerView = findViewById(R.id.article_recycler_view)
+
         if (comments.isNullOrEmpty()) {
             adapter = ArticleRecyclerViewAdapter(this, article, emptyList())
             recyclerView.adapter = adapter
@@ -58,6 +64,26 @@ class ArticleDetailActivity : AppCompatActivity() {
         adapter = ArticleRecyclerViewAdapter(this, article, comments)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
+
+        val input: EditText = findViewById(R.id.comment_input)
+        input.setOnKeyListener(View.OnKeyListener { _, keyCode, event -> //Enter key Action
+            if ((event.action == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                if(input.text.isNullOrBlank()) {
+                    return@OnKeyListener true
+                }
+
+                //sendAndWait(input.text.toString())
+                input.setText("")
+
+                return@OnKeyListener true
+            }
+            false
+        })
+
+    }
+
+    private fun createComment() {
+
     }
 
 }
