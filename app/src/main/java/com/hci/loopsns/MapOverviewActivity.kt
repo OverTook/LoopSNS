@@ -75,6 +75,7 @@ class MapOverviewActivity : AppCompatActivity() {
     private val executor = Executors.newSingleThreadScheduledExecutor()
 
     private var markers: ArrayList<Label>? = null
+    private var bottomSheetFragment: HotArticleSheetFragment? = null
 
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1
@@ -266,8 +267,8 @@ class MapOverviewActivity : AppCompatActivity() {
                     val intent = Intent(this@MapOverviewActivity, MapOverviewTimelineActivity::class.java)
                     intent.putParcelableArrayListExtra("articles", ArrayList(list))
 
-                    val bottomSheetFragment = HotArticleSheetFragment(::onClickArticle, intent, list[0], label.position.latitude, label.position.longitude)
-                    bottomSheetFragment.show(supportFragmentManager, bottomSheetFragment.tag)
+                    bottomSheetFragment = HotArticleSheetFragment(::onClickArticle, intent, list[0], label.position.latitude, label.position.longitude)
+                    bottomSheetFragment!!.show(supportFragmentManager, bottomSheetFragment!!.tag)
                 }
 
                 override fun onFailure(call: Call<ArticleTimelineResponse>, err: Throwable) {
@@ -431,6 +432,8 @@ class MapOverviewActivity : AppCompatActivity() {
 
     private fun onClickArticle(article: Article) {
         this.showDarkOverlay()
+        bottomSheetFragment?.dismiss()
+
         NetworkManager.apiService.retrieveArticleDetail(article.uid).enqueue(object :
             Callback<ArticleDetailResponse> {
             override fun onResponse(call: Call<ArticleDetailResponse>, response: Response<ArticleDetailResponse>) {

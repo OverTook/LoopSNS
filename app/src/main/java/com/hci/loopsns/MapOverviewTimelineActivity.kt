@@ -60,8 +60,7 @@ class MapOverviewTimelineActivity : AppCompatActivity() {
 
     private fun onClickArticle(article: Article) {
         this.showDarkOverlay()
-        NetworkManager.apiService.retrieveArticleDetail(article.uid).enqueue(object :
-            Callback<ArticleDetailResponse> {
+        NetworkManager.apiService.retrieveArticleDetail(article.uid).enqueue(object : Callback<ArticleDetailResponse> {
             override fun onResponse(call: Call<ArticleDetailResponse>, response: Response<ArticleDetailResponse>) {
                 this@MapOverviewTimelineActivity.hideDarkOverlay()
                 if(!response.isSuccessful){

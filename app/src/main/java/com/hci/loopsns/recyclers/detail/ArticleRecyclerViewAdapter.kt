@@ -29,6 +29,9 @@ class ArticleRecyclerViewAdapter(private val mContext: Context, private var arti
         val profileImage: ImageView = itemView.findViewById(R.id.profile_image)
         val articleImage: ImageView = itemView.findViewById(R.id.article_image)
         val articleContent: TextView = itemView.findViewById(R.id.article_text)
+
+        val commentCount: TextView = itemView.findViewById(R.id.comment_count_detail)
+        val likeCount: TextView = itemView.findViewById(R.id.like_count_detail)
     }
 
     class CommentHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -66,7 +69,6 @@ class ArticleRecyclerViewAdapter(private val mContext: Context, private var arti
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val item = items[position - 1] //게시글 한 개 빼야함
         when(holder) {
             is ArticleHolder -> {
                 Glide.with(mContext)
@@ -93,15 +95,21 @@ class ArticleRecyclerViewAdapter(private val mContext: Context, private var arti
                     }
                 }
 
-                if (!article.images.isNullOrEmpty()) {
+                if (article.images.isNotEmpty()) {
                     Glide.with(mContext)
                         .load(article.images[0])
                         .into(holder.articleImage)
                 }
 
                 holder.articleContent.text = article.contents
+
+                holder.commentCount.text = article.commentCount.toString()
+                holder.likeCount.text = article.likeCount.toString()
             }
             is CommentHolder -> {
+                val item = items[position - 1] //게시글 한 개 빼야함
+
+
                 holder.writer.text = item.writer
                 holder.time.text = item.time
                 holder.articleContent.text = item.contents

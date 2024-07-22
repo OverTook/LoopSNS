@@ -215,6 +215,14 @@
             app:layout_constraintStart_toStartOf="@id/dotted_line"
             app:layout_constraintTop_toBottomOf="@+id/tags">
 
+            <ImageView
+                android:id="@+id/content_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:maxHeight="250dp" />
+
             <TextView
                 android:id="@+id/content_text"
                 android:layout_width="250dp"
@@ -223,12 +231,6 @@
                 android:fontFamily="@font/pretendard_medium"
                 android:text="방학만 되면 먹을 게 없는 듯~~~~~~~~~~~~~~~~~~\n호암동에 맛집 있나요?\n게시글내용테스트 ~~~~~~~~~~~~~~~~"
                 android:textColor="@color/black" />
-
-            <ImageView
-                android:id="@+id/content_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
 
             <LinearLayout
                 android:id="@+id/article_comment_like"
