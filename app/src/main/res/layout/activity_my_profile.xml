@@ -84,18 +84,89 @@
         app:layout_constraintTop_toBottomOf="@+id/profile_user_name"
         tools:ignore="MissingConstraints" />
 
-    <TextView
-        android:id="@+id/profile_user_menu1"
+    <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="50dp"
-        android:fontFamily="@font/pretendard_semi_bold"
-        android:text="게시물 목록"
-        android:textColor="@color/black"
-        android:textSize="20sp"
+        android:layout_marginTop="80dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_user_location"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints">
+
+        <TextView
+            android:id="@+id/profile_user_menu1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginEnd="100dp"
+            android:fontFamily="@font/pretendard_semi_bold"
+            android:text="게시물 목록"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profile_user_location"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/profile_user_menu2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:fontFamily="@font/pretendard_semi_bold"
+            android:text="좋아요 목록"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profile_user_location"
+            tools:ignore="MissingConstraints" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout2"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        tools:ignore="MissingConstraints">
+
+        <TextView
+            android:id="@+id/profile_writing1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="25dp"
+            android:fontFamily="@font/pretendard_semi_bold"
+            android:text="게시글1 내용 요약"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/profile_writing2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="25dp"
+            android:fontFamily="@font/pretendard_semi_bold"
+            android:text="게시글2 내용 요약"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/profile_writing3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/pretendard_semi_bold"
+            android:text="게시글3 내용 요약"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            tools:ignore="MissingConstraints" />
+
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
