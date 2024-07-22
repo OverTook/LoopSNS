@@ -42,7 +42,7 @@
             android:layout_marginStart="15dp"
             android:layout_marginTop="25dp"
             android:fontFamily="@font/pretendard_semi_bold"
-            android:text="위치 조회 중"
+            android:text="@string/location_inquiry"
             android:textColor="@color/black"
             android:textSize="22sp"
             app:layout_constraintStart_toEndOf="@+id/top_location_image"
@@ -55,7 +55,7 @@
             android:layout_marginStart="15dp"
             android:layout_marginTop="55dp"
             android:fontFamily="@font/pretendard_medium"
-            android:text="위치 조회 중"
+            android:text="@string/location_inquiry"
             android:textColor="@color/gray"
             app:layout_constraintStart_toEndOf="@+id/top_location_image"
             app:layout_constraintTop_toTopOf="parent" />
@@ -198,7 +198,7 @@
                 android:paddingTop="4dp"
                 android:paddingRight="13dp"
                 android:paddingBottom="4dp"
-                android:text="키워드444"
+                android:text="@string/keyword"
                 android:textColor="@color/tag_blue_text"
                 android:textSize="12sp"
                 android:visibility="gone" />

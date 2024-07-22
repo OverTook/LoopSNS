@@ -29,7 +29,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="25dp"
             android:fontFamily="@font/pretendard_extra_bold"
-            android:text="어제 가장 인기있었던 소식이에요"
+            android:text="@string/notification_title"
             android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintStart_toEndOf="@+id/userprofile_image"
@@ -42,7 +42,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="52dp"
             android:fontFamily="@font/pretendard_medium"
-            android:text="게시글 내용( 내용 다 안들어가면 마지막에 ...)"
+            android:text="@string/notification_article"
             android:textColor="@color/black"
             app:layout_constraintStart_toEndOf="@+id/userprofile_image"
             app:layout_constraintTop_toTopOf="parent" />

@@ -21,7 +21,7 @@
             android:background="@drawable/map_overview_filter_bg"
             android:cursorVisible="false"
             android:fontFamily="@font/pretendard_regular"
-            android:hint="Filter"
+            android:hint="@string/filter_hint"
             android:inputType="text"
             android:paddingStart="50dp"
             android:textColor="@color/gray"
@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
             android:layout_marginTop="20dp"
-            android:text="최근 검색어"
+            android:text="@string/recent_search"
             tools:ignore="MissingConstraints" />
 
         <LinearLayout
@@ -68,21 +68,21 @@
                 style="@style/CategoryTextView"
                 android:background="@drawable/writing_wpicture_keyword"
                 android:textColor="#474747"
-                android:text="검색어1" />
+                android:text="@string/searches" />
 
             <TextView
                 android:id="@+id/search_word_2"
                 style="@style/CategoryTextView"
                 android:background="@drawable/writing_wpicture_keyword"
                 android:textColor="#474747"
-                android:text="검색어2" />
+                android:text="@string/searches"  />
 
             <TextView
                 android:id="@+id/search_word_3"
                 style="@style/CategoryTextView"
                 android:background="@drawable/writing_wpicture_keyword"
                 android:textColor="#474747"
-                android:text="검색어3" />
+                android:text="@string/searches"  />
         </LinearLayout>
 
         <TextView
@@ -91,7 +91,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
             android:layout_marginTop="15dp"
-            android:text="인기 검색어"
+            android:text="@string/best_search"
             tools:ignore="MissingConstraints" />
 
         <TextView
@@ -99,7 +99,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
-            android:text="지금 사람들이 가장 많이 사용한 카테고리예요"
+            android:text="@string/best_search_explain"
             android:textColor="@color/gray"
             tools:ignore="MissingConstraints" />
 
@@ -122,21 +122,21 @@
                     android:id="@+id/category_popular_1"
                     style="@style/CategoryTextView"
                     android:background="@drawable/writing_wpicture_category"
-                    android:text="카테고리1"
+                    android:text="@string/category"
                     android:textColor="#BD2C2C" />
 
                 <TextView
                     android:id="@+id/category_popular_2"
                     style="@style/CategoryTextView"
                     android:background="@drawable/writing_wpicture_category"
-                    android:text="카테고리2"
+                    android:text="@string/category"
                     android:textColor="#BD2C2C" />
 
                 <TextView
                     android:id="@+id/category_popular_3"
                     style="@style/CategoryTextView"
                     android:background="@drawable/writing_wpicture_category"
-                    android:text="카테고리3"
+                    android:text="@string/category"
                     android:textColor="#BD2C2C" />
             </LinearLayout>
 
@@ -151,21 +151,21 @@
                     android:id="@+id/category_popular_4"
                     style="@style/CategoryTextView"
                     android:background="@drawable/writing_wpicture_category_2"
-                    android:text="카테고리4"
+                    android:text="@string/category"
                     android:textColor="#2C7EBD" />
 
                 <TextView
                     android:id="@+id/category_popular_5"
                     style="@style/CategoryTextView"
                     android:background="@drawable/writing_wpicture_category_2"
-                    android:text="카테고리5"
+                    android:text="@string/category"
                     android:textColor="#2C7EBD" />
 
                 <TextView
                     android:id="@+id/category_popular_6"
                     style="@style/CategoryTextView"
                     android:background="@drawable/writing_wpicture_category_2"
-                    android:text="카테고리6"
+                    android:text="@string/category"
                     android:textColor="#2C7EBD" />
             </LinearLayout>
 
@@ -180,23 +180,21 @@
                     android:id="@+id/keyword1"
                     style="@style/CategoryTextView"
                     android:background="@drawable/writing_wpicture_keyword"
-                    android:text="키워드1"
+                    android:text="@string/keyword"
                     android:textColor="#474747" />
 
                 <TextView
                     android:id="@+id/keyword2"
                     style="@style/CategoryTextView"
                     android:background="@drawable/writing_wpicture_keyword"
-                    android:fontFamily="@font/pretendard_light"
-                    android:text="키워드2"
+                    android:text="@string/keyword"
                     android:textColor="#474747" />
 
                 <TextView
                     android:id="@+id/keyword3"
                     style="@style/CategoryTextView"
                     android:background="@drawable/writing_wpicture_keyword"
-                    android:fontFamily="@font/pretendard_light"
-                    android:text="키워드3"
+                    android:text="@string/keyword"
                     android:textColor="#474747" />
             </LinearLayout>
 
@@ -211,21 +209,21 @@
                     android:id="@+id/keyword4"
                     style="@style/CategoryTextView"
                     android:background="@drawable/writing_wpicture_keyword"
-                    android:text="키워드4"
+                    android:text="@string/keyword"
                     android:textColor="#474747" />
 
                 <TextView
                     android:id="@+id/keyword5"
                     style="@style/CategoryTextView"
                     android:background="@drawable/writing_wpicture_keyword"
-                    android:text="키워드5"
+                    android:text="@string/keyword"
                     android:textColor="#474747" />
 
                 <TextView
                     android:id="@+id/keyword6"
                     style="@style/CategoryTextView"
                     android:background="@drawable/writing_wpicture_keyword"
-                    android:text="키워드6"
+                    android:text="@string/keyword"
                     android:textColor="#474747" />
             </LinearLayout>
 

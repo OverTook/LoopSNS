@@ -24,7 +24,7 @@
             android:layout_marginTop="10dp"
             android:layout_gravity="center"
             android:fontFamily="@font/pretendard_semi_bold"
-            android:text="알림"
+            android:text="@string/notification_bar"
             android:textColor="@color/black"
             android:textSize="22sp"
             android:textStyle="bold"

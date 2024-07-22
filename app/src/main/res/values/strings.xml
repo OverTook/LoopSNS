@@ -14,7 +14,7 @@
     <string name="tag">태그1</string>
     <string name="user_nickname">Nickname</string>
     <string name="good_list">좋아요 목록</string>
-    <string name="user_location">충청북도 충주시 충원대로 268</string>
+    <string name="another_user_location">충청북도 충주시 충원대로 268</string>
     <string name="main_writing_text">이곳에 내용이 들어갑니다.</string>
     <string name="loop_subtitle">우리들의 연결고리, 루프</string>
     <string name="writing_location_1">건국대학교 글로컬캠퍼스</string>
@@ -28,4 +28,33 @@
     <string name="all_writing">전체 보기</string>
     <string name="location_loading">위치를 가져오는 중입니다.\n</string>
     <string name="time_loading">시간을 가져오는 중입니다.\n</string>
+    <string name="recent_search">최근 검색어</string>
+    <string name="searches">검색어</string>
+    <string name="best_search"> 인기 검색어</string>
+    <string name="best_search_explain">지금 사람들이 가장 많이 사용한 카테고리예요</string>
+
+    <string name="notification_bar">알림</string>
+    <string name="notification_title">어제 가장 인기있었던 소식이에요</string>
+    <string name="notification_article">게시글 내용( 내용 다 안들어가면 마지막에 ...)</string>
+
+
+
+    <string name="user_name">닉네임</string>
+    <string name="user_location">주소</string>
+    <string name="set_my_profile">내 프로필 관리</string>
+    <string name="logout">로그아웃</string>
+    <string name="set_alert">알림설정</string>
+    <string name="rule">이용약관</string>
+    <string name="personal_info">개인정보 처리 방침</string>
+    <string name="question">문의사항</string>
+    <string name="version_info">버전정보</string>
+    <string name="out_loop">회원 탈퇴</string>
+    
+    <string name="location_inquiry"> 위치 조회 중</string>
+
+    <string name="user_profile_bar">프로필</string>
+    <string name="article_list">게시글 목록</string>
+    <string name="user_good_list">좋아요 목록</string>
+    <string name="article_list_simple">게시글 내용(길어질 시 ...으로 줄이기</string>
+
 </resources>

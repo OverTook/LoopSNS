@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="100dp"
             android:fontFamily="@font/pretendard_medium"
-            android:text="게시글 내용(길어질 시 ...으로 줄이기)"
+            android:text="@string/article_list_simple"
             android:textColor="@color/black"
             android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="parent"
