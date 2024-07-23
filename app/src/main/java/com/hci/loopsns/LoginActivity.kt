@@ -92,6 +92,7 @@ class LoginActivity : AppCompatActivity() {
         initGoogle()
         initKakao()
         doubleBackPressHandler.enable()
+
     }
 
     private fun initKakao(){

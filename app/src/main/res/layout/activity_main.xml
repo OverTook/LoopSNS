@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <FrameLayout
@@ -16,7 +17,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        app:menu="@menu/bottom_navigation" />
+        android:background="@drawable/bottom_navigation_background"
+        app:itemBackground="@android:color/transparent"
+        app:itemRippleColor="@android:color/transparent"
+        app:menu="@menu/bottom_navigation"
+        app:labelVisibilityMode="unlabeled"/>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
