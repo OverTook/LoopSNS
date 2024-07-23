@@ -4,6 +4,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
@@ -12,14 +13,14 @@ import retrofit2.http.Query
 interface NetworkInterface {
 
     @Multipart
-    @POST("/get/category")
+    @GET("/get_category")
     fun retrieveCategory(
         @Part images: List<MultipartBody.Part>,
         @Part("contents") contents: RequestBody,
     ): Call<CategoryResponse>
 
     @Multipart
-    @POST("/create/article")
+    @POST("/add_article")
     fun createArticle(
         @Part images: List<MultipartBody.Part>, //이미지
         @Part("title") title: RequestBody, //제목
@@ -33,7 +34,7 @@ interface NetworkInterface {
     ): Call<ArticleCreateResponse>
 
     //마커 가져오기
-    @POST("/get/article/marker")
+    @GET("/get_marker_clusterer")
     fun retrieveArticleMarker(
         @Query("lat_from") latFrom: Double,
         @Query("lng_from") lngFrom: Double,
@@ -41,43 +42,31 @@ interface NetworkInterface {
         @Query("lng_to") lngTo: Double
     ): Call<ArticleMarkersResponse>
 
-    @POST("/get/article/timeline")
-    fun retrieveArticleTimeline(
-        @Body articles: List<String>
-    ): Call<ArticleTimelineResponse>
+    @GET("/get_marker_timeline")
+    fun retrieveArticleTimeline(@Query("articles") articles: List<String>): Call<ArticleTimelineResponse>
 
-    @POST("/get/article/detail")
-    fun retrieveArticleDetail(
-        @Query("uid") articleId: String
-    ): Call<ArticleDetailResponse>
+    @GET("/get_article_detail")
+    fun retrieveArticleDetail(@Query("uid") articleId: String): Call<ArticleDetailResponse>
 
-    @POST("/create/comment")
-    fun createComment(
-        @Query("uid") articleId: String,
-        @Query("contents") contents: String
-    ): Call<CommentCreateResponse>
+    @POST("/add_comment")
+    fun createComment(@Body requestBody: CreateCommentRequest): Call<CommentCreateResponse>
 
-    @POST("/create/users/nickname")
-    fun createNickname(
-        @Query("nickname") nickname: String
-    ): Call<NicknameResponse>
+//    @POST("/create/users/nickname")
+//    fun createNickname(@Body nickname: String): Call<NicknameResponse>
 
-    @POST("/get/users/nickname")
-    fun retrieveNickname(): Call<NicknameResponse>
+//    @GET("/get/users/nickname")
+//    fun retrieveNickname(): Call<NicknameResponse>
 
-    @POST("/create/account")
+    @GET("/login")
     fun createAccount(
         @Query("platform") platform: String,
         @Query("token") token: String
     ): Call<AccountCreateResponse>
 
-    @POST("/create/article/like")
-    fun likeArticle(
-        @Query("uid") articleId: String,
-        @Query("like") like: Boolean
-    ): Call<LikeResponse>
+    @POST("/add_article_like")
+    fun likeArticle(@Body requestBody: LikeArticleRequest): Call<LikeResponse>
 
-    @POST("/get/users/liked_article")
+    @GET("/user_liked_article_list")
     fun retrieveLikedArticles(): Call<LikedArticlesResponse>
 
 

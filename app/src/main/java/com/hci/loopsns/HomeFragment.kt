@@ -62,8 +62,6 @@ import java.util.concurrent.Executors
 
 class HomeFragment : Fragment() {
 
-    private lateinit var doubleBackPressHandler: DoubleBackPressHandler
-
     private lateinit var mapView: MapView
     private lateinit var kakaoMap: KakaoMap
 
@@ -78,9 +76,8 @@ class HomeFragment : Fragment() {
     private var bottomSheetFragment: HotArticleSheetFragment? = null
 
     private lateinit var viewOfLayout: View
-    companion object {
-        private const val LOCATION_PERMISSION_REQUEST_CODE = 1
-    }
+
+    private var articleMarkerRequest: Call<ArticleMarkersResponse>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -112,10 +109,8 @@ class HomeFragment : Fragment() {
                 this@HomeFragment.kakaoMap = kakaoMap
 
                 initGPS()
-                initMap()
-                getCurrentLocation()
 
-                kakaoMap.logo!!.setPosition(0, 15f, mapView.height.toFloat() - 50)
+                kakaoMap.logo!!.setPosition(0, 15f, mapView.height.toFloat() - 55)
             }
         })
 
@@ -130,14 +125,11 @@ class HomeFragment : Fragment() {
             kakaoMap.moveCamera(cameraUpdate, CameraAnimation.from(200, false, false));
         }
 
-        doubleBackPressHandler = DoubleBackPressHandler(requireActivity())
-        doubleBackPressHandler.enable()
-
         return viewOfLayout
     }
 
-    private fun initGPS(){
-        if(this::locationRequest.isInitialized) {
+    fun initGPS(){
+        if(this::locationRequest.isInitialized || !this::kakaoMap.isInitialized) {
             return
         }
 
@@ -165,13 +157,13 @@ class HomeFragment : Fragment() {
                 initMap()
             }
         }
+
+        initMap()
+        getCurrentLocation()
     }
 
     fun getCurrentLocation() {
         try {
-            if(!this::locationRequest.isInitialized) {
-                initGPS()
-            }
             fusedLocationClient.requestLocationUpdates(locationRequest, executor, locationCallback)
 
             fusedLocationClient.lastLocation.addOnSuccessListener { location : Location? ->
@@ -205,7 +197,7 @@ class HomeFragment : Fragment() {
     }
 
     @Suppress("UNCHECKED_CAST") //타입 일치 검사 완료
-    private fun initMap(){
+    fun initMap() {
         kakaoMap.setOnCameraMoveEndListener { _, _, _ ->
             requestMaker()
         }
@@ -258,10 +250,22 @@ class HomeFragment : Fragment() {
         val rightTop = kakaoMap.fromScreenPoint(mapView.width, 0)!!    //제일 높음
         val leftBottom = kakaoMap.fromScreenPoint(0, mapView.height)!! //제일 낮음
 
-        NetworkManager.apiService.retrieveArticleMarker(leftBottom.latitude, leftBottom.longitude, rightTop.latitude, rightTop.longitude).enqueue(object :
+        articleMarkerRequest?.cancel()
+        articleMarkerRequest = NetworkManager.apiService.retrieveArticleMarker(
+            leftBottom.latitude,
+            leftBottom.longitude,
+            rightTop.latitude,
+            rightTop.longitude
+        )
+        articleMarkerRequest?.enqueue(object :
             Callback<ArticleMarkersResponse> {
             override fun onResponse(call: Call<ArticleMarkersResponse>, response: Response<ArticleMarkersResponse>) {
+                if(call.isCanceled) {
+                    return
+                }
+
                 if(!response.isSuccessful) {
+                    Log.e("Marker Request Error", "HTTP CODE" + response.code().toString())
                     Snackbar.make(viewOfLayout.findViewById(R.id.main), "마커 요청에 실패했습니다.", Snackbar.LENGTH_LONG).show();
                     return
                 }
@@ -398,7 +402,7 @@ class HomeFragment : Fragment() {
 
             override fun onFailure(call: Call<ArticleMarkersResponse>, err: Throwable) {
                 Log.e("Marker Request Error", err.toString())
-                Snackbar.make(viewOfLayout.findViewById(R.id.main), "마커 요청에 실패했습니다.", Snackbar.LENGTH_LONG).show();
+                //Snackbar.make(viewOfLayout.findViewById(R.id.main), "마커 요청에 실패했습니다.", Snackbar.LENGTH_LONG).show();
             }
         })
     }
@@ -454,10 +458,5 @@ class HomeFragment : Fragment() {
         if(this::mapView.isInitialized) {
             mapView.pause() // MapView 의 pause 호출
         }
-    }
-
-    public override fun onDestroy() {
-        super.onDestroy()
-        doubleBackPressHandler.disable()
     }
 }

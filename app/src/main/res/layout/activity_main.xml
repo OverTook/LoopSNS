@@ -2,13 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <FrameLayout
+        android:id="@+id/containers"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:id="@+id/containers">
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottomNavigationView"
+        android:layout_marginBottom="0dp">
 
     </FrameLayout>
 
@@ -20,13 +21,16 @@
         android:background="@drawable/bottom_navigation_background"
         app:itemBackground="@android:color/transparent"
         app:itemRippleColor="@android:color/transparent"
+        app:itemIconTint="#D7D7D7"
+        
         app:menu="@menu/bottom_navigation"
         app:labelVisibilityMode="unlabeled"/>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_alignBottom="@+id/containers" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"

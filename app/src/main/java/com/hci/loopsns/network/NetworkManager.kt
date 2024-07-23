@@ -12,6 +12,7 @@ object NetworkManager {
                                         .addConverterFactory(GsonConverterFactory.create())
                                         .build()
     var apiService: NetworkInterface = retrofit.create(NetworkInterface::class.java)
+    var isInitialized = false
 
     public fun initNetworkManager(firebaseToken: String, uuid: String) {
         retrofit = Retrofit.Builder()
@@ -25,5 +26,6 @@ object NetworkManager {
             .build()
 
         apiService = retrofit.create(NetworkInterface::class.java)
+        isInitialized = true
     }
 }

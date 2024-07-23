@@ -25,8 +25,8 @@
     <string name="writing_text">작성 내용 *</string>
     <string name="writing_text_hint">작성 내용을 입력해 주세요. (허위 정보, 불건전한 내용 게재 등 정책에 어긋나는 게시물은 제한될 수 있습니다.)</string>
     <string name="all_writing">전체 보기</string>
-    <string name="location_loading">"위치를 가져오는 중입니다. "</string>
-    <string name="time_loading">시간을 가져오는 중입니다.\n</string>
+    <string name="location_loading">"위치를 가져오는 중입니다."</string>
+    <string name="time_loading">시간을 가져오는 중입니다.</string>
     <string name="recent_search">최근 검색어</string>
     <string name="searches">검색어</string>
     <string name="best_search">인기 검색어</string>

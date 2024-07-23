@@ -183,7 +183,7 @@ class LoginActivity : AppCompatActivity() {
         val googleIdOption: GetGoogleIdOption = GetGoogleIdOption.Builder()
             .setFilterByAuthorizedAccounts(false)
             .setServerClientId(getString(R.string.google_sdk_id))
-            //.setAutoSelectEnabled(true)
+            .setAutoSelectEnabled(false)
             .build()
 
         val request: GetCredentialRequest = GetCredentialRequest.Builder()

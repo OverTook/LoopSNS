@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:background="#FFFFFF"
     android:layout_width="match_parent"
@@ -58,9 +57,10 @@
     <TextView
         android:id="@+id/overview_text"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="73dp"
         android:bufferType="spannable"
         android:fontFamily="@font/pretendard_extra_bold"
+        android:gravity="center_vertical"
         android:paddingLeft="20dp"
         android:paddingTop="15dp"
         android:paddingRight="20dp"
