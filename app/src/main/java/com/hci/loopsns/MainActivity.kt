@@ -35,16 +35,33 @@ class MainActivity : AppCompatActivity() {
 
         // ViewPager2 어댑터 설정
         adapter = ViewPageAdapter2(this)
-        adapter.addFragment(HomeFragment())
-        adapter.addFragment(SettingMenuFragment())
-        adapter.addFragment(NotificationsFragment())
+        adapter.addFragment(settingMenuFragment)
+        adapter.addFragment(homeFragment)
+        adapter.addFragment(notificationsFragment)
         binding.viewPager.adapter = adapter
+
+        // 슬라이드 동작 제어를 위한 페이지 전환 콜백 설정
+        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageScrollStateChanged(state: Int) {
+                super.onPageScrollStateChanged(state)
+                // 현재 페이지가 설정 메뉴일 때 왼쪽 슬라이드 막기
+                if (binding.viewPager.currentItem == 0 && state == ViewPager2.SCROLL_STATE_DRAGGING) {
+                    binding.viewPager.isUserInputEnabled = false
+                }
+                // 현재 페이지가 알림창일 때 오른쪽 슬라이드 막기
+                else if (binding.viewPager.currentItem == 2 && state == ViewPager2.SCROLL_STATE_DRAGGING) {
+                    binding.viewPager.isUserInputEnabled = false
+                } else {
+                    binding.viewPager.isUserInputEnabled = true
+                }
+            }
+        })
 
         // TabLayout과 ViewPager2를 연결
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             when (position) {
-                0 -> tab.text = "Home"
-                1 -> tab.text = "Settings"
+                0 -> tab.text = "Settings"
+                1 -> tab.text = "Home"
                 2 -> tab.text = "Notifications"
             }
         }.attach()
@@ -52,19 +69,16 @@ class MainActivity : AppCompatActivity() {
         // BottomNavigationView의 아이템 선택 리스너 설정
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.home -> {
+                R.id.setting_menu -> {
                     binding.viewPager.currentItem = 0
-                    supportFragmentManager.beginTransaction().replace(R.id.containers, homeFragment).commit()
                     true
                 }
-                R.id.setting_menu -> {
+                R.id.home -> {
                     binding.viewPager.currentItem = 1
-                    supportFragmentManager.beginTransaction().replace(R.id.containers, settingMenuFragment).commit()
                     true
                 }
                 R.id.notification -> {
                     binding.viewPager.currentItem = 2
-                    supportFragmentManager.beginTransaction().replace(R.id.containers, notificationsFragment).commit()
                     true
                 }
                 else -> false
@@ -76,12 +90,16 @@ class MainActivity : AppCompatActivity() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 when (position) {
-                    0 -> binding.bottomNavigationView.selectedItemId = R.id.home
-                    1 -> binding.bottomNavigationView.selectedItemId = R.id.setting_menu
+                    0 -> binding.bottomNavigationView.selectedItemId = R.id.setting_menu
+                    1 -> binding.bottomNavigationView.selectedItemId = R.id.home
                     2 -> binding.bottomNavigationView.selectedItemId = R.id.notification
                 }
             }
         })
+
+        // 기본 선택 항목 설정
+        binding.bottomNavigationView.selectedItemId = R.id.home
+        binding.viewPager.currentItem = 1 // 첫 화면을 홈으로 설정
 
         locationPermissionLauncher = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()) {

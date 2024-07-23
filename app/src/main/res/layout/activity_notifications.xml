@@ -33,15 +33,6 @@
             android:includeFontPadding="false"
             tools:ignore="MissingConstraints" />
 
-        <ImageButton
-            android:id="@+id/back_navigation"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="23dp"
-            android:background="@color/white"
-            app:srcCompat="@drawable/baseline_arrow_back_24"
-            tools:ignore="SpeakableTextPresentCheck"/>
-
     </androidx.appcompat.widget.Toolbar>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/notifications_recycler"
