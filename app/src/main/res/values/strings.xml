@@ -55,7 +55,6 @@
     <string name="user_good_list">좋아요 목록</string>
     <string name="article_list_simple">게시글 내용(길어질 시 ...으로 줄이기</string>
     <string name="notification_title">어제 가장 인기있었던 소식이에요</string>
-    <string name="notification_title">어</string>
     <string name="another_user_location">충청북도 충주시 충원대로 268</string>
 
 </resources>

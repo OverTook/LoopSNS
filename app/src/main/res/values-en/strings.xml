@@ -27,11 +27,9 @@
     <string name="best_search">Popular Searches</string>
     <string name="best_search_explain">The most used category Right now</string>
     <string name="notification_bar">Notifications</string>
-    <string name="notification_bar">NO</string>
     <string name="notification_title">Yesterday\'s Most Popular News</string>
     <string name="notification_article">Post Contents</string>
     <string name="user_name">Username</string>
-    <string name="user_name">N</string>
     <string name="user_location">Your address</string>
     <string name="set_my_profile">Manage My Profile</string>
     <string name="logout">Logout</string>

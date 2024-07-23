@@ -30,6 +30,11 @@
         </activity>
 
         <activity
+            android:name="com.hci.loopsns.MainActivity"
+            android:exported="true">
+        </activity>
+
+        <activity
             android:name="com.hci.loopsns.MapOverviewActivity"
             android:exported="true">
         </activity>

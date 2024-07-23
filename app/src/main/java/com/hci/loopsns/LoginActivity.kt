@@ -70,6 +70,7 @@ class LoginActivity : AppCompatActivity() {
         KakaoMapSdk.init(this@LoginActivity, "df17ea99e1579611972ffbb1ff069e51");
         KakaoSdk.init(this@LoginActivity, "df17ea99e1579611972ffbb1ff069e51");
 
+        Log.e("Kakao Hash", Utility.getKeyHash(this))
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_login)
@@ -282,7 +283,7 @@ class LoginActivity : AppCompatActivity() {
 
                     val intent = Intent(
                         this@LoginActivity,
-                        MapOverviewActivity::class.java
+                        MainActivity::class.java
                     )
                     startActivity(intent)
                 } else {
@@ -342,7 +343,7 @@ class LoginActivity : AppCompatActivity() {
 
                                     val intent = Intent(
                                         this@LoginActivity,
-                                        MapOverviewActivity::class.java
+                                        MainActivity::class.java
                                     )
                                     startActivity(intent)
                                 } else {
