@@ -87,7 +87,6 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         viewOfLayout = inflater.inflate(R.layout.activity_map_overview, container, false)
-        requireActivity().showDarkOverlay()
 
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
@@ -116,8 +115,7 @@ class HomeFragment : Fragment() {
                 initMap()
                 getCurrentLocation()
 
-                kakaoMap.logo!!.setPosition(0, 15f, mapView.height.toFloat() - 50);
-                requireActivity().hideDarkOverlay() //지도 준비 완료 후 다크 오버레이 제거
+                kakaoMap.logo!!.setPosition(0, 15f, mapView.height.toFloat() - 50)
             }
         })
 
