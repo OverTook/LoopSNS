@@ -125,6 +125,15 @@ class HomeFragment : Fragment() {
             kakaoMap.moveCamera(cameraUpdate, CameraAnimation.from(200, false, false));
         }
 
+        viewOfLayout.findViewById<ImageButton>(R.id.article_write_btn).setOnClickListener {
+            val intent = Intent(
+                requireActivity(),
+                ArticleCreateActivity::class.java
+            )
+            intent.putExtra("x", kakaoMap.cameraPosition!!.position.longitude)
+            intent.putExtra("y", kakaoMap.cameraPosition!!.position.latitude)
+            startActivity(intent)
+        }
         return viewOfLayout
     }
 

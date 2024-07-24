@@ -20,17 +20,18 @@ import com.hci.loopsns.utils.DoubleBackPressHandler
 class MainActivity : AppCompatActivity() {
 
     private lateinit var doubleBackPressHandler: DoubleBackPressHandler
-
-    private var mAuth: FirebaseAuth? = null
-
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: ViewPageAdapter2
-
-    private lateinit var locationPermissionLauncher: ActivityResultLauncher<Array<String>>
 
     private lateinit var homeFragment: HomeFragment
     private lateinit var settingMenuFragment: SettingMenuFragment
     private lateinit var notificationsFragment: NotificationsFragment
+
+    private lateinit var locationPermissionLauncher: ActivityResultLauncher<Array<String>>
+
+    lateinit var permissionLauncher: ActivityResultLauncher<Array<String>> //이미지 요청 목적
+    private var permissionCallback: ((Map<String, Boolean>) -> Unit)? = null
+    private var mAuth: FirebaseAuth? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,24 +53,6 @@ class MainActivity : AppCompatActivity() {
         binding.viewPager.adapter = adapter
         binding.viewPager.reduceDragSensitivity()
 
-        // 슬라이드 동작 제어를 위한 페이지 전환 콜백 설정
-//        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-//            override fun onPageScrollStateChanged(state: Int) {
-//                super.onPageScrollStateChanged(state)
-//                // 현재 페이지가 설정 메뉴일 때 왼쪽 슬라이드 막기
-//                if (binding.viewPager.currentItem == 0 && state == ViewPager2.SCROLL_STATE_DRAGGING) {
-//                    binding.viewPager.isUserInputEnabled = false
-//                }
-//                // 현재 페이지가 알림창일 때 오른쪽 슬라이드 막기
-//                else if (binding.viewPager.currentItem == 2 && state == ViewPager2.SCROLL_STATE_DRAGGING) {
-//                    binding.viewPager.isUserInputEnabled = false
-//                } else {
-//                    binding.viewPager.isUserInputEnabled = true
-//                }
-//            }
-//        })
-        //위 코드는 불필요함
-        
         // TabLayout과 ViewPager2를 연결
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             when (position) {
@@ -129,6 +112,13 @@ class MainActivity : AppCompatActivity() {
         doubleBackPressHandler = DoubleBackPressHandler(this)
         doubleBackPressHandler.enable()
 
+        permissionLauncher = registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()) {
+
+            permissionCallback?.invoke(it)
+            permissionCallback = null
+        }
+
         locationPermissionLauncher = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()) {
             if(it[android.Manifest.permission.ACCESS_COARSE_LOCATION]!! && !it[android.Manifest.permission.ACCESS_FINE_LOCATION]!!) {
@@ -170,6 +160,7 @@ class MainActivity : AppCompatActivity() {
             finish()
         }
     }
+
     fun permissionCheckEnd() {
         homeFragment.initGPS()
     }
