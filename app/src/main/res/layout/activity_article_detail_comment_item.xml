@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="#FFFFFF">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/comment_profile_image"
@@ -24,7 +25,7 @@
         android:fontFamily="@font/pretendard_bold"
         android:text="작성자 이름"
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/comment_profile_image"
         app:layout_constraintTop_toTopOf="parent" />
 

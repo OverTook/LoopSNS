@@ -37,7 +37,7 @@
                 android:fontFamily="@font/pretendard_bold"
                 android:text="@string/writing_user_name"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="17sp"
                 app:layout_constraintStart_toEndOf="@+id/profile_image"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -62,7 +62,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="56dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="2dp"
         android:orientation="horizontal"
         app:flexWrap="wrap"
         app:layout_constraintStart_toStartOf="parent"
@@ -80,7 +80,7 @@
             android:paddingRight="13dp"
             android:paddingBottom="4dp"
             android:text="@string/tag"
-            android:textColor="@color/tag_red_text"
+            android:textColor="@color/tag_red"
             android:textSize="12sp"
             android:visibility="visible" />
 
@@ -245,7 +245,7 @@
             android:fontFamily="@font/pretendard_bold"
             android:text="@string/writing_comment"
             android:textColor="@color/black"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
