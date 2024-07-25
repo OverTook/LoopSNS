@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bottom_sheet_round_corner"
+    android:paddingBottom="10dp">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="카테고리 및 키워드"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="카테고리는 수정할 수 없으나, 키워드는 수정하실 수 있습니다."
+        android:textColor="@color/black"
+        android:textSize="11sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="150dp"
+        android:layout_height="5dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/bottom_sheet_top_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tag_1_article"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="80dp"
+        android:background="@drawable/map_overview_article_tag_item_bg_red"
+        android:paddingLeft="13dp"
+        android:paddingTop="4dp"
+        android:paddingRight="13dp"
+        android:paddingBottom="4dp"
+        android:text="@string/tag"
+        android:textColor="@color/tag_red"
+        android:textSize="18sp"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tag_2_article"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="80dp"
+        android:background="@drawable/map_overview_article_tag_item_bg_blue"
+        android:paddingLeft="13dp"
+        android:paddingTop="4dp"
+        android:paddingRight="13dp"
+        android:paddingBottom="4dp"
+        android:text="@string/tag"
+        android:textColor="@color/tag_blue_text"
+        android:textSize="18sp"
+        android:visibility="visible"
+        app:layout_constraintStart_toEndOf="@+id/tag_1_article"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:id="@+id/tags"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="25dp"
+        android:orientation="horizontal"
+        app:flexWrap="wrap"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tag_1_article">
+
+        <EditText
+            android:id="@+id/keyword_1_article"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/map_overview_article_tag_item_bg_black"
+            android:hint="키워드"
+            android:inputType="text"
+            android:paddingLeft="13dp"
+            android:paddingTop="4dp"
+            android:paddingRight="13dp"
+            android:paddingBottom="4dp"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tag_1_article" />
+
+        <EditText
+            android:id="@+id/keyword_2_article"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/map_overview_article_tag_item_bg_black"
+            android:hint="키워드"
+            android:inputType="text"
+            android:paddingLeft="13dp"
+            android:paddingTop="4dp"
+            android:paddingRight="13dp"
+            android:paddingBottom="4dp"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray"
+            android:textSize="18sp"
+            app:layout_constraintStart_toEndOf="@+id/keyword_1_article"
+            app:layout_constraintTop_toBottomOf="@+id/tag_2_article" />
+
+        <EditText
+            android:id="@+id/keyword_3_article"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/map_overview_article_tag_item_bg_black"
+            android:hint="키워드"
+            android:inputType="text"
+            android:paddingLeft="13dp"
+            android:paddingTop="4dp"
+            android:paddingRight="13dp"
+            android:paddingBottom="4dp"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray"
+            android:textSize="18sp"
+            app:layout_constraintStart_toEndOf="@+id/keyword_2_article"
+            app:layout_constraintTop_toBottomOf="@+id/tag_2_article" />
+
+        <EditText
+            android:id="@+id/keyword_4_article"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/map_overview_article_tag_item_bg_black"
+            android:hint="키워드"
+            android:inputType="text"
+            android:paddingLeft="13dp"
+            android:paddingTop="4dp"
+            android:paddingRight="13dp"
+            android:paddingBottom="4dp"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray"
+            android:textSize="18sp"
+            app:layout_constraintStart_toEndOf="@+id/keyword_3_article"
+            app:layout_constraintTop_toBottomOf="@+id/tag_2_article" />
+
+    </com.google.android.flexbox.FlexboxLayout>
+
+    <android.widget.Button
+        android:id="@+id/submit"
+        android:layout_width="80dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="6dp"
+        android:background="@drawable/black_r_button"
+        android:gravity="center"
+        android:text="작성"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tags"
+        tools:ignore="MissingConstraints" />
+
+    <android.widget.Button
+        android:id="@+id/cancel"
+        android:layout_width="80dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="6dp"
+        android:background="@drawable/black_r_button"
+        android:gravity="center"
+        android:text="취소"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tags"
+        tools:ignore="MissingConstraints" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -85,14 +85,7 @@ class HomeFragment : Fragment() {
     ): View {
         viewOfLayout = inflater.inflate(R.layout.activity_map_overview, container, false)
 
-
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
-
-        ViewCompat.setOnApplyWindowInsetsListener(viewOfLayout.findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
 
 
         mapView = viewOfLayout.findViewById<MapView>(R.id.kakaoMap)
@@ -130,8 +123,8 @@ class HomeFragment : Fragment() {
                 requireActivity(),
                 ArticleCreateActivity::class.java
             )
-            intent.putExtra("x", kakaoMap.cameraPosition!!.position.longitude)
-            intent.putExtra("y", kakaoMap.cameraPosition!!.position.latitude)
+            intent.putExtra("x", currentLocationMarker.position.longitude)
+            intent.putExtra("y", currentLocationMarker.position.latitude)
             startActivity(intent)
         }
         return viewOfLayout
@@ -139,6 +132,10 @@ class HomeFragment : Fragment() {
 
     fun initGPS(){
         if(this::locationRequest.isInitialized || !this::kakaoMap.isInitialized) {
+            return
+        }
+        if(ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION)
+            != PackageManager.PERMISSION_GRANTED) {
             return
         }
 

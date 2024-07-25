@@ -93,12 +93,11 @@ class LoginActivity : AppCompatActivity() {
         initKakao()
         doubleBackPressHandler.enable()
 
-        val intent = Intent(
-            this@LoginActivity,
-            MainActivity::class.java
-        )
-        startActivity(intent)
-
+//        val intent = Intent(
+//            this@LoginActivity,
+//            MainActivity::class.java
+//        )
+//        startActivity(intent)
     }
 
     private fun initKakao(){

@@ -30,7 +30,6 @@ class MapOverviewTimelineActivity : AppCompatActivity() {
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_map_overview_timeline_long)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.longFragment)) { v, insets ->

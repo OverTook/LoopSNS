@@ -3,6 +3,7 @@ package com.hci.loopsns
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -29,21 +30,19 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var locationPermissionLauncher: ActivityResultLauncher<Array<String>>
 
-    lateinit var permissionLauncher: ActivityResultLauncher<Array<String>> //이미지 요청 목적
-    private var permissionCallback: ((Map<String, Boolean>) -> Unit)? = null
     private var mAuth: FirebaseAuth? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
 
         homeFragment = HomeFragment()
         settingMenuFragment = SettingMenuFragment()
         notificationsFragment = NotificationsFragment()
 
         mAuth = FirebaseAuth.getInstance()
-
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
         // ViewPager2 어댑터 설정
         adapter = ViewPageAdapter2(this)
@@ -112,13 +111,6 @@ class MainActivity : AppCompatActivity() {
         doubleBackPressHandler = DoubleBackPressHandler(this)
         doubleBackPressHandler.enable()
 
-        permissionLauncher = registerForActivityResult(
-            ActivityResultContracts.RequestMultiplePermissions()) {
-
-            permissionCallback?.invoke(it)
-            permissionCallback = null
-        }
-
         locationPermissionLauncher = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()) {
             if(it[android.Manifest.permission.ACCESS_COARSE_LOCATION]!! && !it[android.Manifest.permission.ACCESS_FINE_LOCATION]!!) {
@@ -130,7 +122,6 @@ class MainActivity : AppCompatActivity() {
                 return@registerForActivityResult
             }
             permissionCheckEnd()
-
         }
 
         if (ContextCompat.checkSelfPermission(this@MainActivity, android.Manifest.permission.ACCESS_COARSE_LOCATION)

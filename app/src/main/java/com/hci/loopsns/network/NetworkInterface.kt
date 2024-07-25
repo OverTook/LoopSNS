@@ -13,13 +13,12 @@ import retrofit2.http.Query
 interface NetworkInterface {
 
     @Multipart
-    @GET("/get_category")
+    @POST("/get_category")
     fun retrieveCategory(
-        @Part images: List<MultipartBody.Part>,
+        @Part images: List<MultipartBody.Part?>,
         @Part("contents") contents: RequestBody,
     ): Call<CategoryResponse>
 
-    @Multipart
     @POST("/add_article")
     fun createArticle(
         @Part images: List<MultipartBody.Part>, //이미지
