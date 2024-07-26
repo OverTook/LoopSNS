@@ -4,11 +4,9 @@
 
 ## **Team & Project Details:**
 - **Team Name:** HCI
-- **Team Members:**
+- **Team Members:** *(This is not BackEnd Team)*
     - 🧑‍⚖️ 고건호 **(팀장)**
     - 🧑‍💻 김도환
-    - 🧑‍💻 송주훈 *(Only BackEnd)*
-    - 👩‍💻 김채리 *(Only BackEnd)*
     - 👩‍💻 한신영
     - 👩‍💻 오은결
 - **Project Duration:** 2024.06.22 ~ 2024.08.12
