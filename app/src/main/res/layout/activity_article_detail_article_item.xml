@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -23,8 +24,9 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile_image"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_marginTop="5dp"
                 android:src="@drawable/loop_logo"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -46,12 +48,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:fontFamily="@font/pretendard_bold"
+                android:fontFamily="@font/pretendard_medium"
                 android:text="@string/date"
                 android:textColor="@color/gray"
-                android:textSize="13sp"
+                android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@+id/profile_image"
                 app:layout_constraintTop_toBottomOf="@+id/writer_name" />
+
+            <Button
+                android:id="@+id/testDeleteBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Button"
+                app:layout_constraintEnd_toEndOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -59,15 +68,16 @@
 
     <com.google.android.flexbox.FlexboxLayout
         android:id="@+id/tags"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="56dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginTop="2dp"
         android:orientation="horizontal"
         app:flexWrap="wrap"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/article_header"
-        app:layout_constraintWidth_max="150dp">
+        app:layout_constraintTop_toBottomOf="@+id/article_header">
 
         <TextView
             android:id="@+id/tag_1_article"
@@ -166,9 +176,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
-        android:paddingLeft="25dp"
+        android:paddingLeft="10dp"
         android:paddingTop="15dp"
-        android:paddingRight="25dp"
+        android:paddingRight="10dp"
         app:layout_constraintTop_toBottomOf="@+id/tags">
 
 
@@ -177,7 +187,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
-            android:maxHeight="250dp"
+            android:maxHeight="400dp"
             app:srcCompat="@drawable/loop_logo" />
 
         <TextView

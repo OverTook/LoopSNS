@@ -2,18 +2,31 @@ package com.hci.loopsns.recyclers.detail
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.Target
+import com.hci.loopsns.ArticleDetailActivity
 import com.hci.loopsns.R
 import com.hci.loopsns.network.ArticleDetail
 import com.hci.loopsns.network.Comment
+import com.hci.loopsns.utils.formatTo
+import com.hci.loopsns.utils.toDate
 
-class ArticleRecyclerViewAdapter(private val mContext: Context, private var article: ArticleDetail, private var items: List<Comment>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity, private var article: ArticleDetail, private var items: ArrayList<Comment>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    private var commentCountView: TextView? = null
 
     class ArticleHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val writer: TextView = itemView.findViewById(R.id.writer_name)
@@ -32,6 +45,9 @@ class ArticleRecyclerViewAdapter(private val mContext: Context, private var arti
 
         val commentCount: TextView = itemView.findViewById(R.id.comment_count_detail)
         val likeCount: TextView = itemView.findViewById(R.id.like_count_detail)
+        
+        //TODO 삭제 버튼
+        val testDeleteBtn: Button = itemView.findViewById(R.id.testDeleteBtn)
     }
 
     class CommentHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -68,15 +84,27 @@ class ArticleRecyclerViewAdapter(private val mContext: Context, private var arti
         }
     }
 
+    override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
+        super.onViewRecycled(holder)
+
+        if(holder !is ArticleHolder) {
+            return
+        }
+
+        commentCountView = null
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when(holder) {
             is ArticleHolder -> {
-                Glide.with(mContext)
+                Glide.with(activity)
                     .load(article.userImg)
                     .into(holder.profileImage)
 
+
                 holder.writer.text = article.writer
-                holder.time.text = article.time
+                holder.time.text = article.time.toDate().formatTo("yyyy-MM-dd HH:mm")
 
                 holder.category1.text = article.cat1
                 holder.category2.text= article.cat2
@@ -90,20 +118,30 @@ class ArticleRecyclerViewAdapter(private val mContext: Context, private var arti
 
                 for (i in 0 until article.keywords.size) {
                     if (i < article.keywords.size) {
-                        keywords[i].visibility = View.VISIBLE
-                        keywords[i].text = article.keywords[i]
+                        if(article.keywords[i].isNotBlank()) {
+                            keywords[i].visibility = View.VISIBLE
+                            keywords[i].text = article.keywords[i]
+                        }
                     }
                 }
 
                 if (article.images.isNotEmpty()) {
-                    Glide.with(mContext)
+                    Glide.with(activity)
                         .load(article.images[0])
+                        .thumbnail(Glide.with(activity).load(R.drawable.picture_placeholder))
                         .into(holder.articleImage)
+
+                }
+
+                holder.testDeleteBtn.setOnClickListener {
+                    activity.deleteArticle()
                 }
 
                 holder.articleContent.text = article.contents
 
-                holder.commentCount.text = article.commentCount.toString()
+                commentCountView = holder.commentCount
+                commentCountView?.text = article.commentCount.toString()
+
                 holder.likeCount.text = article.likeCount.toString()
             }
             is CommentHolder -> {
@@ -114,7 +152,7 @@ class ArticleRecyclerViewAdapter(private val mContext: Context, private var arti
                 holder.time.text = item.time
                 holder.articleContent.text = item.contents
 
-                Glide.with(mContext)
+                Glide.with(activity)
                     .load(item.userImg)
                     .into(holder.profileImage)
             }
@@ -134,15 +172,10 @@ class ArticleRecyclerViewAdapter(private val mContext: Context, private var arti
         return ViewType.COMMENT
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun clearItems() {
-        items = emptyList()
-        notifyDataSetChanged()
+    fun addComment(comment: Comment) {
+        this.items.add(0, comment)
+        commentCountView?.text = (++article.commentCount).toString()
+        this.notifyItemInserted(1)
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun setItems(items: List<Comment>) {
-        this.items = items
-        notifyDataSetChanged()
-    }
 }

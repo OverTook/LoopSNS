@@ -3,6 +3,7 @@ package com.hci.loopsns.network
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 object NetworkManager {
     private const val BASE_URL = "http://csgpu.kku.ac.kr:5126/"
@@ -14,11 +15,14 @@ object NetworkManager {
     var apiService: NetworkInterface = retrofit.create(NetworkInterface::class.java)
     var isInitialized = false
 
-    public fun initNetworkManager(firebaseToken: String, uuid: String) {
+    fun initNetworkManager(firebaseToken: String, uuid: String) {
         retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(
                 OkHttpClient.Builder()
+                    .connectTimeout(30, TimeUnit.SECONDS)
+                    .readTimeout(30, TimeUnit.SECONDS)
+                    .writeTimeout(30, TimeUnit.SECONDS)
                     .addInterceptor(TokenInterceptor(firebaseToken, uuid))
                     .build()
             )

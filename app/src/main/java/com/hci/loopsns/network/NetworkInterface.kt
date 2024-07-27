@@ -4,10 +4,12 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface NetworkInterface {
@@ -19,18 +21,21 @@ interface NetworkInterface {
         @Part("contents") contents: RequestBody,
     ): Call<CategoryResponse>
 
+    @Multipart
+    @JvmSuppressWildcards
     @POST("/add_article")
     fun createArticle(
-        @Part images: List<MultipartBody.Part>, //이미지
-        @Part("title") title: RequestBody, //제목
-        @Part("cat1") cat1: RequestBody, //1차 카테고리 (문자열)
-        @Part("cat2") cat2: RequestBody, //2차 카테고리 (문자열)
+        @Part images: List<MultipartBody.Part?>, //이미지
+        @Part("categories") categories: List<RequestBody>, //카테고리 목록
         @Part("keywords") keywords: List<RequestBody>, //키워드 목록
         @Part("contents") contents: RequestBody, //내용
         //이하 위경도
         @Part("lat") lat: RequestBody,
         @Part("lng") lng: RequestBody
     ): Call<ArticleCreateResponse>
+
+    @DELETE("/delete_article/{article_id}")
+    fun deleteArticle(@Path("article_id") postId: String): Call<ArticleDeleteResponse>
 
     //마커 가져오기
     @GET("/get_marker_clusterer")
@@ -49,6 +54,9 @@ interface NetworkInterface {
 
     @POST("/add_comment")
     fun createComment(@Body requestBody: CreateCommentRequest): Call<CommentCreateResponse>
+
+    @DELETE("/delete_comment/{article_id}/{comment_id}")
+    fun deleteComment(@Path("article_id") postId: String, @Path("comment_id") commentId: String): Call<ArticleDeleteResponse>
 
 //    @POST("/create/users/nickname")
 //    fun createNickname(@Body nickname: String): Call<NicknameResponse>

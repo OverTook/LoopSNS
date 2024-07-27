@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     id("com.google.gms.google-services")
     id("kotlin-parcelize")
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -35,9 +37,6 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    buildFeatures {
-        dataBinding = true
-    }
 
     buildFeatures {
         viewBinding = true
@@ -51,34 +50,57 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
 
-    implementation("com.google.android.flexbox:flexbox:3.0.0")
-    implementation(libs.kakaomap)
-    implementation("com.kakao.sdk:v2-all:2.20.3")
+    implementation(libs.flexbox)
+
+    implementation(libs.play.services.maps) //지도 라이브러리
+
+    implementation(libs.v2.all)
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
 
-    implementation(platform("com.google.firebase:firebase-bom:32.3.1")) //파이어베이스 인증 라이브러리
-    implementation("com.google.firebase:firebase-auth-ktx")
-    implementation("com.google.android.gms:play-services-auth:20.7.0")
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.firestore.ktx)
+    implementation(platform(libs.firebase.bom)) //파이어베이스 인증 라이브러리
+    implementation(libs.firebase.auth.ktx)
+
+    implementation(libs.play.services.auth)
     implementation(libs.firebase.firestore)
     implementation(libs.play.services.location)
     implementation(libs.googleid)
 
-    implementation("de.hdodenhof:circleimageview:3.1.0") //원형 이미지 라이브러리
-    implementation("com.github.bumptech.glide:glide:4.16.0") //이미지 로딩 라이브러리
+    implementation(libs.circleimageview) //원형 이미지 라이브러리
+    implementation(libs.glide) //이미지 로딩 라이브러리
 
-    implementation("androidx.credentials:credentials:<latest version>") //구글 인증 라이브러리
-    implementation("androidx.credentials:credentials-play-services-auth:<latest version>")
-    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
+    implementation(libs.androidx.credentials) //구글 인증 라이브러리
+    implementation(libs.androidx.credentials.play.services.auth)
+    implementation(libs.googleid)
 
-    implementation ("com.google.android.material:material:1.2.1")
-    implementation ("androidx.viewpager2:viewpager2:1.0.0")
+    implementation (libs.material.v121)
+    implementation (libs.androidx.viewpager2)
 
-    implementation ("io.github.lucksiege:pictureselector:v3.11.2") //갤러리 라이브러리
+    implementation (libs.pictureselector) //갤러리 라이브러리
 
-    implementation ("com.airbnb.android:lottie:6.4.1") //로티 애니메이션 라이브러리
+    implementation (libs.lottie) //로티 애니메이션 라이브러리
+
+    implementation(libs.androidx.swiperefreshlayout) //새로고침 레이아웃 라이브러리
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+}
+
+secrets {
+    // Optionally specify a different file name containing your secrets.
+    // The plugin defaults to "local.properties"
+    propertiesFileName = "secrets.properties"
+
+    // A properties file containing default secret values. This file can be
+    // checked in version control.
+    defaultPropertiesFileName = "local.defaults.properties"
+
+    // Configure which keys should be ignored by the plugin by providing regular expressions.
+    // "sdk.dir" is ignored by default.
+    ignoreList.add("keyToIgnore") // Ignore the key "keyToIgnore"
+    ignoreList.add("sdk.*")       // Ignore all keys matching the regexp "sdk.*"
 }

@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.IntentCompat
 import androidx.core.view.ViewCompat
@@ -23,7 +22,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class MapOverviewTimelineActivity : AppCompatActivity() {
+class TimelineActivity : AppCompatActivity() {
 
     private lateinit var adapter: ArticleRecyclerViewAdapter
     private lateinit var recyclerView: RecyclerView
@@ -61,7 +60,7 @@ class MapOverviewTimelineActivity : AppCompatActivity() {
         this.showDarkOverlay()
         NetworkManager.apiService.retrieveArticleDetail(article.uid).enqueue(object : Callback<ArticleDetailResponse> {
             override fun onResponse(call: Call<ArticleDetailResponse>, response: Response<ArticleDetailResponse>) {
-                this@MapOverviewTimelineActivity.hideDarkOverlay()
+                this@TimelineActivity.hideDarkOverlay()
                 if(!response.isSuccessful){
                     Snackbar.make(findViewById(R.id.longFragment), "게시글 정보를 불러올 수 없습니다.", Snackbar.LENGTH_SHORT).show()
                     return
@@ -72,7 +71,7 @@ class MapOverviewTimelineActivity : AppCompatActivity() {
 
 
                 val intent = Intent(
-                    this@MapOverviewTimelineActivity,
+                    this@TimelineActivity,
                     ArticleDetailActivity::class.java
                 )
                 intent.putExtra("article", articleDetail)
@@ -81,7 +80,7 @@ class MapOverviewTimelineActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<ArticleDetailResponse>, err: Throwable) {
-                this@MapOverviewTimelineActivity.hideDarkOverlay()
+                this@TimelineActivity.hideDarkOverlay()
                 Log.e("ArticleDetailActivity", "게시글 불러오기 실패$err")
             }
         })
