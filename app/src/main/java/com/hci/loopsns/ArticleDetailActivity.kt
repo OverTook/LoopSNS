@@ -27,11 +27,13 @@ import com.hci.loopsns.network.ArticleDetail
 import com.hci.loopsns.network.ArticleDetailResponse
 import com.hci.loopsns.network.Comment
 import com.hci.loopsns.network.CommentCreateResponse
+import com.hci.loopsns.network.CommentDeleteResponse
 import com.hci.loopsns.network.CreateCommentRequest
 import com.hci.loopsns.network.DeleteArticleRequest
 import com.hci.loopsns.network.NetworkInterface
 import com.hci.loopsns.network.NetworkManager
 import com.hci.loopsns.recyclers.detail.ArticleRecyclerViewAdapter
+import com.hci.loopsns.utils.AuthAppCompatActivity
 import com.hci.loopsns.utils.SharedPreferenceManager
 import com.hci.loopsns.utils.formatTo
 import com.hci.loopsns.utils.hideDarkOverlay
@@ -42,7 +44,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class ArticleDetailActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
+class ArticleDetailActivity : AuthAppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
 
     private lateinit var adapter: ArticleRecyclerViewAdapter
     private lateinit var recyclerView: RecyclerView
@@ -103,7 +105,20 @@ class ArticleDetailActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshL
             override fun onFailure(call: Call<ArticleDeleteResponse>, err: Throwable) {
                 Log.e("ArticleDelete Failed", err.toString())
             }
+        })
+    }
 
+    fun deleteComment(uid: String) {
+        NetworkManager.apiService.deleteComment(article.uid, uid).enqueue(object : Callback<CommentDeleteResponse> {
+            override fun onResponse(call: Call<CommentDeleteResponse>, response: Response<CommentDeleteResponse>) {
+                if(!response.isSuccessful) return
+
+                (recyclerView.adapter as ArticleRecyclerViewAdapter).deleteComment(uid)
+            }
+
+            override fun onFailure(call: Call<CommentDeleteResponse>, err: Throwable) {
+                Log.e("CommentDelete Failed", err.toString())
+            }
         })
     }
 
@@ -122,10 +137,12 @@ class ArticleDetailActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshL
 
                 (recyclerView.adapter as ArticleRecyclerViewAdapter).addComment(
                     Comment(
+                        response.body()!!.uid,
                         profile.getNickname()!!,
                         comment,
                         time,
-                        profile.getImageURL()!!
+                        profile.getImageURL()!!,
+                        true
                     )
                 )
 

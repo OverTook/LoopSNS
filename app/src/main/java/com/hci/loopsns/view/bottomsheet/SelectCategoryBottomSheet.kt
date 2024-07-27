@@ -1,4 +1,4 @@
-package com.hci.loopsns.fragment
+package com.hci.loopsns.view.bottomsheet
 
 import android.os.Bundle
 import android.view.LayoutInflater

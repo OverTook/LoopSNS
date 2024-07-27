@@ -18,7 +18,7 @@
             android:id="@+id/filter"
             android:layout_width="300dp"
             android:layout_height="40dp"
-            android:background="@drawable/map_overview_filter_bg"
+            android:background="@drawable/filter_button_bg"
             android:cursorVisible="false"
             android:fontFamily="@font/pretendard_regular"
             android:hint="@string/filter_hint"

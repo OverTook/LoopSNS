@@ -4,7 +4,6 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
@@ -12,14 +11,15 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 import com.hci.loopsns.databinding.ActivityMainBinding
-import com.hci.loopsns.fragment.HomeFragment
-import com.hci.loopsns.fragment.NotificationsFragment
-import com.hci.loopsns.fragment.SettingMenuFragment
-import com.hci.loopsns.fragment.ViewPageAdapter2
+import com.hci.loopsns.view.fragment.HomeFragment
+import com.hci.loopsns.view.fragment.NotificationsFragment
+import com.hci.loopsns.view.fragment.SettingMenuFragment
+import com.hci.loopsns.view.fragment.ViewPageAdapter2
 import com.hci.loopsns.network.NetworkManager
+import com.hci.loopsns.utils.AuthAppCompatActivity
 import com.hci.loopsns.utils.DoubleBackPressHandler
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AuthAppCompatActivity() {
 
     private lateinit var doubleBackPressHandler: DoubleBackPressHandler
     private lateinit var binding: ActivityMainBinding

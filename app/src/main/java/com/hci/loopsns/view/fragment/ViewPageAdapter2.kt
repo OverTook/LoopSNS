@@ -1,4 +1,4 @@
-package com.hci.loopsns.fragment
+package com.hci.loopsns.view.fragment
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity

@@ -98,7 +98,9 @@ data class ArticleDetail (
 data class CommentCreateResponse (
     val success: Boolean, //응답 성공 여부
     val msg: String, //응답 실패 시 오류 메시지
-    val time: String
+    val time: String,
+    @SerializedName("comment_id")
+    val uid: String
 )
 
 data class CommentDeleteResponse (
@@ -108,11 +110,15 @@ data class CommentDeleteResponse (
 
 @Parcelize
 data class Comment (
+    @SerializedName("comment_id")
+    val uid: String, //댓글 유니크 아이디
     val writer: String, //글쓴이
     val contents: String, //내용
     val time: String, //댓글 작성 시간
     @SerializedName("user_img")
-    val userImg: String
+    val userImg: String,
+    @SerializedName("can_delete")
+    val canDelete: Boolean
 ) : Parcelable
 
 //닉네임 요청&생성 응답 DTO

@@ -1,4 +1,4 @@
-package com.hci.loopsns.fragment
+package com.hci.loopsns.view.bottomsheet
 
 import android.content.Intent
 import android.content.pm.ApplicationInfo
@@ -13,7 +13,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.hci.loopsns.R
@@ -26,7 +25,7 @@ import com.hci.loopsns.utils.formatTo
 import com.hci.loopsns.utils.toDate
 import java.util.Locale
 
-class HotArticleSheetFragment(private val articleClickAction: (Article) -> Unit, private val intent: Intent, private val article: Article, private val lat: Double, private val lng: Double) : BottomSheetDialogFragment() {
+class HotArticleBottomSheet(private val articleClickAction: (Article) -> Unit, private val intent: Intent, private val article: Article, private val lat: Double, private val lng: Double) : BottomSheetDialogFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,

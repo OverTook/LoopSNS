@@ -16,21 +16,20 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.airbnb.lottie.LottieAnimationView
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
-import com.hci.loopsns.fragment.SelectCategoryBottomSheet
+import com.hci.loopsns.view.bottomsheet.SelectCategoryBottomSheet
 import com.hci.loopsns.network.ArticleCreateResponse
-import com.hci.loopsns.network.ArticleDetail
 import com.hci.loopsns.network.CategoryResponse
 import com.hci.loopsns.network.Comment
 import com.hci.loopsns.network.NetworkManager
 import com.hci.loopsns.network.geocode.AddressResponse
 import com.hci.loopsns.network.geocode.AddressResult
 import com.hci.loopsns.network.geocode.ReverseGeocodingManager
+import com.hci.loopsns.utils.AuthAppCompatActivity
 import com.hci.loopsns.utils.GlideEngine
 import com.hci.loopsns.utils.fadeIn
 import com.hci.loopsns.utils.fadeOut
@@ -49,7 +48,7 @@ import java.io.File
 import java.util.Locale
 
 
-class ArticleCreateActivity : AppCompatActivity() {
+class ArticleCreateActivity : AuthAppCompatActivity() {
 
     private lateinit var permissionLauncher: ActivityResultLauncher<Array<String>> //이미지 요청 목적
     private var permissionCallback: ((Map<String, Boolean>) -> Unit)? = null
@@ -111,6 +110,11 @@ class ArticleCreateActivity : AppCompatActivity() {
         val animation = findViewById<LottieAnimationView>(R.id.loadingAnim)
         val inputText = findViewById<EditText>(R.id.contentText)
         findViewById<Button>(R.id.submit).setOnClickListener {
+            if(inputText.text.length <= 15) {
+                Snackbar.make(findViewById(R.id.main), "내용이 충분하지 않습니다.", Snackbar.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             animation.fadeIn(0.85F, 200)
 
             hideKeyboard()

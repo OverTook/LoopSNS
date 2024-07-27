@@ -15,6 +15,7 @@ import com.hci.loopsns.network.Article
 import com.hci.loopsns.network.ArticleDetailResponse
 import com.hci.loopsns.network.NetworkManager
 import com.hci.loopsns.recyclers.timeline.ArticleRecyclerViewAdapter
+import com.hci.loopsns.utils.AuthAppCompatActivity
 import com.hci.loopsns.utils.hideDarkOverlay
 import com.hci.loopsns.utils.showDarkOverlay
 import retrofit2.Call
@@ -22,7 +23,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class TimelineActivity : AppCompatActivity() {
+class TimelineActivity : AuthAppCompatActivity() {
 
     private lateinit var adapter: ArticleRecyclerViewAdapter
     private lateinit var recyclerView: RecyclerView

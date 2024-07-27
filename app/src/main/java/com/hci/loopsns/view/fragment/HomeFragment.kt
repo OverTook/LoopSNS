@@ -1,4 +1,4 @@
-package com.hci.loopsns.fragment
+package com.hci.loopsns.view.fragment
 
 import android.Manifest
 import android.content.Intent
@@ -50,6 +50,7 @@ import com.hci.loopsns.network.geocode.AddressResult
 import com.hci.loopsns.network.geocode.ReverseGeocodingManager
 import com.hci.loopsns.utils.hideDarkOverlay
 import com.hci.loopsns.utils.showDarkOverlay
+import com.hci.loopsns.view.bottomsheet.HotArticleBottomSheet
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -71,7 +72,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
     private val executor = Executors.newSingleThreadScheduledExecutor()
 
     private var markers: ArrayList<Marker>? = null
-    private var bottomSheetFragment: HotArticleSheetFragment? = null
+    private var bottomSheetFragment: HotArticleBottomSheet? = null
 
     private lateinit var viewOfLayout: View
 
@@ -82,7 +83,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewOfLayout = inflater.inflate(R.layout.activity_map_overview, container, false)
+        viewOfLayout = inflater.inflate(R.layout.fragment_map_overview, container, false)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
@@ -452,7 +453,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
                 val intent = Intent(requireActivity(), TimelineActivity::class.java)
                 intent.putParcelableArrayListExtra("articles", ArrayList(list))
 
-                bottomSheetFragment = HotArticleSheetFragment(::onClickArticle, intent, list[0], marker.position.latitude, marker.position.longitude)
+                bottomSheetFragment = HotArticleBottomSheet(::onClickArticle, intent, list[0], marker.position.latitude, marker.position.longitude)
                 bottomSheetFragment!!.show(requireActivity().supportFragmentManager, bottomSheetFragment!!.tag)
             }
 

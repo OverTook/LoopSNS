@@ -56,7 +56,7 @@ interface NetworkInterface {
     fun createComment(@Body requestBody: CreateCommentRequest): Call<CommentCreateResponse>
 
     @DELETE("/delete_comment/{article_id}/{comment_id}")
-    fun deleteComment(@Path("article_id") postId: String, @Path("comment_id") commentId: String): Call<ArticleDeleteResponse>
+    fun deleteComment(@Path("article_id") postId: String, @Path("comment_id") commentId: String): Call<CommentDeleteResponse>
 
 //    @POST("/create/users/nickname")
 //    fun createNickname(@Body nickname: String): Call<NicknameResponse>

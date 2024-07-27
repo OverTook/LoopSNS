@@ -1,4 +1,4 @@
-package com.hci.loopsns.fragment
+package com.hci.loopsns.view.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,6 +12,6 @@ class NotificationsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.activity_notifications, container, false)
+        return inflater.inflate(R.layout.fragment_notifications, container, false)
     }
 }

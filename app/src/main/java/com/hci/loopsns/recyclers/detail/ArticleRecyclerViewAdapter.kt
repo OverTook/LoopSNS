@@ -2,28 +2,20 @@ package com.hci.loopsns.recyclers.detail
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.Target
 import com.hci.loopsns.ArticleDetailActivity
 import com.hci.loopsns.R
-import com.hci.loopsns.fragment.ArticleOptionBottomSheet
+import com.hci.loopsns.view.bottomsheet.ArticleOptionBottomSheet
+import com.hci.loopsns.view.bottomsheet.CommentOptionBottomSheet
 import com.hci.loopsns.network.ArticleDetail
 import com.hci.loopsns.network.Comment
-import com.hci.loopsns.utils.SharedPreferenceManager
 import com.hci.loopsns.utils.formatTo
 import com.hci.loopsns.utils.toDate
 
@@ -57,6 +49,8 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity, pr
         val profileImage: ImageView = itemView.findViewById(R.id.comment_profile_image)
         val time: TextView = itemView.findViewById(R.id.comment_time)
         val articleContent: TextView = itemView.findViewById(R.id.comment_body)
+
+        val optionButton: ImageButton = itemView.findViewById(R.id.optionBtn)
     }
     
     class AdvertisementViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -159,6 +153,14 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity, pr
                 holder.time.text = item.time
                 holder.articleContent.text = item.contents
 
+                holder.optionButton.setOnClickListener {
+                    CommentOptionBottomSheet().setData(
+                        item.canDelete,
+                        item.uid,
+                        activity::deleteComment
+                    ).show(activity.supportFragmentManager, "CommentOptionBottomSheet")
+                }
+
                 Glide.with(activity)
                     .load(item.userImg)
                     .into(holder.profileImage)
@@ -177,6 +179,19 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity, pr
             return ViewType.ARTICLE
         }
         return ViewType.COMMENT
+    }
+
+    fun deleteComment(uid: String) {
+        for (i in 0..<items.size) {
+            if(items[i].uid != uid) {
+                continue
+            }
+
+            this.items.removeAt(i)
+            commentCountView?.text = (--article.commentCount).toString()
+            this.notifyItemRemoved(i)
+            return
+        }
     }
 
     fun addComment(comment: Comment) {

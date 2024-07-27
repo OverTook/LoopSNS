@@ -1,4 +1,4 @@
-package com.hci.loopsns.fragment
+package com.hci.loopsns.view.bottomsheet
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.hci.loopsns.R
-import com.hci.loopsns.network.ArticleDetail
 
 class ArticleOptionBottomSheet : BottomSheetDialogFragment() {
 
