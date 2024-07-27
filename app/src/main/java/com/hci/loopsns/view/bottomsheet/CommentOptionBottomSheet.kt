@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.hci.loopsns.R
@@ -20,6 +21,7 @@ class CommentOptionBottomSheet : BottomSheetDialogFragment() {
     ): View {
         val viewOfLayout = inflater.inflate(R.layout.bottom_sheet_article_option, container, false)
 
+        viewOfLayout.findViewById<TextView>(R.id.deleteText).text = "댓글 삭제하기"
         viewOfLayout.findViewById<ConstraintLayout>(R.id.deleteItem).setOnClickListener {
             deleteAction?.invoke(uid)
         }

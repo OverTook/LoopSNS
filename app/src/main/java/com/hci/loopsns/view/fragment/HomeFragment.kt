@@ -163,7 +163,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
     }
 
     private fun requestMaker(){
-
         val visibleRegion = googleMap.projection.visibleRegion
         val latLngBounds = visibleRegion.latLngBounds
 
@@ -367,6 +366,16 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
                 val articleDetail = response.body()!!.article
                 val comments = response.body()!!.comments
 
+                if(articleDetail.writer == null) {
+                    articleDetail.writer = "알 수 없는 사용자"
+                    articleDetail.userImg = ""
+                }
+                comments.forEach { comment ->
+                    if(comment.writer == null) {
+                        comment.writer = "알 수 없는 사용자"
+                        comment.userImg = ""
+                    }
+                }
 
                 val intent = Intent(
                     requireActivity(),
@@ -390,7 +399,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
             fusedLocationClient.requestLocationUpdates(locationRequest, executor, locationCallback)
         }
 
-        requestMaker()
+        if(this::googleMap.isInitialized) {
+            requestMaker()
+        }
     }
 
     override fun onPause() {

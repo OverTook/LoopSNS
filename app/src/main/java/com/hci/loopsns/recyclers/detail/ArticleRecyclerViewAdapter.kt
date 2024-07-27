@@ -94,9 +94,12 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity, pr
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when(holder) {
             is ArticleHolder -> {
-                Glide.with(activity)
-                    .load(article.userImg)
-                    .into(holder.profileImage)
+                if(article.userImg.isNotBlank()) {
+                    Glide.with(activity)
+                        .load(article.userImg)
+                        .into(holder.profileImage)
+                }
+
 
 
                 holder.writer.text = article.writer
@@ -161,9 +164,11 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity, pr
                     ).show(activity.supportFragmentManager, "CommentOptionBottomSheet")
                 }
 
-                Glide.with(activity)
-                    .load(item.userImg)
-                    .into(holder.profileImage)
+                if(item.userImg.isNotBlank()) {
+                    Glide.with(activity)
+                        .load(item.userImg)
+                        .into(holder.profileImage)
+                }
             }
             is AdvertisementViewHolder -> {
                 //TODO 광고 댓글?

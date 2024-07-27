@@ -70,6 +70,16 @@ class TimelineActivity : AuthAppCompatActivity() {
                 val articleDetail = response.body()!!.article
                 val comments = response.body()!!.comments
 
+                if(articleDetail.writer == null) {
+                    articleDetail.writer = "알 수 없는 사용자"
+                    articleDetail.userImg = ""
+                }
+                comments.forEach { comment ->
+                    if(comment.writer == null) {
+                        comment.writer = "알 수 없는 사용자"
+                        comment.userImg = ""
+                    }
+                }
 
                 val intent = Intent(
                     this@TimelineActivity,

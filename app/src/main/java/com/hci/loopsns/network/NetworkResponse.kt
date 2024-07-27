@@ -76,8 +76,8 @@ data class ArticleDetailResponse (
 @Parcelize
 data class ArticleDetail (
     val uid: String, //게시글 유니크 아이디
-    
-    val writer: String, //글쓴이
+
+    var writer: String?, //글쓴이
     val contents: String, //내용
     val cat1: String, //첫 번째 카테고리
     val cat2: String, //두 번째 카테고리
@@ -90,7 +90,7 @@ data class ArticleDetail (
     @SerializedName("image_urls")
     val images: List<String>,
     @SerializedName("user_img")
-    val userImg: String,
+    var userImg: String,
     @SerializedName("can_delete")
     val canDelete: Boolean
 ) : Parcelable
@@ -112,11 +112,11 @@ data class CommentDeleteResponse (
 data class Comment (
     @SerializedName("comment_id")
     val uid: String, //댓글 유니크 아이디
-    val writer: String, //글쓴이
+    var writer: String?, //글쓴이
     val contents: String, //내용
     val time: String, //댓글 작성 시간
     @SerializedName("user_img")
-    val userImg: String,
+    var userImg: String,
     @SerializedName("can_delete")
     val canDelete: Boolean
 ) : Parcelable
