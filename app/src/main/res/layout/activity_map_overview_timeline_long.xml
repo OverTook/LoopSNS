@@ -58,25 +58,30 @@
 
         <TextView
             android:id="@+id/location_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="28dp"
             android:layout_marginStart="15dp"
             android:layout_marginTop="25dp"
+            android:layout_marginEnd="10dp"
+            android:autoSizeMaxTextSize="100sp"
+            android:autoSizeMinTextSize="10sp"
+            android:autoSizeStepGranularity="2sp"
+            android:autoSizeTextType="uniform"
             android:fontFamily="@font/pretendard_semi_bold"
             android:text="@string/writing_location_1"
             android:textColor="@color/black"
             android:textSize="22sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/top_location_image"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/location_address"
+            android:id="@+id/point_of_interest"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:layout_marginTop="55dp"
             android:fontFamily="@font/pretendard_medium"
-            android:text="@string/writing_location_2"
             android:textColor="@color/gray"
             app:layout_constraintStart_toEndOf="@+id/top_location_image"
             app:layout_constraintTop_toTopOf="parent" />

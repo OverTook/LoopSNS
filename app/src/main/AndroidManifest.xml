@@ -69,7 +69,8 @@
 
         <activity
             android:name="com.hci.loopsns.ArticleCreateActivity"
-            android:exported="true">
+            android:exported="true"
+            android:noHistory="true">
         </activity>
 
         <activity

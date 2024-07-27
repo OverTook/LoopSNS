@@ -53,7 +53,7 @@ class TimelineActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         findViewById<TextView>(R.id.location_name).text = intent.getStringExtra("name")
-        findViewById<TextView>(R.id.location_address).text = intent.getStringExtra("address")
+        findViewById<TextView>(R.id.point_of_interest).text = intent.getStringExtra("point")
     }
 
     private fun onClickArticle(article: Article) {

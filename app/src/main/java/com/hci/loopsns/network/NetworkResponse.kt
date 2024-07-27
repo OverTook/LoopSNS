@@ -90,7 +90,9 @@ data class ArticleDetail (
     @SerializedName("image_urls")
     val images: List<String>,
     @SerializedName("user_img")
-    val userImg: String
+    val userImg: String,
+    @SerializedName("can_delete")
+    val canDelete: Boolean
 ) : Parcelable
 
 data class CommentCreateResponse (

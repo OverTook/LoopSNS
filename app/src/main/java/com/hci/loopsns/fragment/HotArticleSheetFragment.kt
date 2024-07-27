@@ -73,10 +73,13 @@ class HotArticleSheetFragment(private val articleClickAction: (Article) -> Unit,
             articleClickAction(article)
         }
 
-        Glide.with(requireContext())
-            .load(article.images[0]) //TODO 한장만?
-            .thumbnail(Glide.with(requireContext()).load(R.drawable.picture_placeholder))
-            .into(view.findViewById<ImageView>(R.id.content_image))
+        if(article.images.isNotEmpty()) {
+            Glide.with(requireContext())
+                .load(article.images[0]) //TODO 한장만?
+                .thumbnail(Glide.with(requireContext()).load(R.drawable.picture_placeholder))
+                .into(view.findViewById<ImageView>(R.id.content_image))
+        }
+
 
         (dialog as? BottomSheetDialog)?.behavior?.state = BottomSheetBehavior.STATE_EXPANDED
         getLocation()

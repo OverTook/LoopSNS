@@ -210,7 +210,6 @@ class ArticleCreateActivity : AppCompatActivity() {
                 )
                 intent.putExtra("article", result.article)
                 intent.putParcelableArrayListExtra("comments", ArrayList<Comment>())
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 startActivity(intent)
             }
 

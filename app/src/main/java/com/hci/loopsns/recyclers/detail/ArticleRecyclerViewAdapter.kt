@@ -8,6 +8,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -19,8 +20,10 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.hci.loopsns.ArticleDetailActivity
 import com.hci.loopsns.R
+import com.hci.loopsns.fragment.ArticleOptionBottomSheet
 import com.hci.loopsns.network.ArticleDetail
 import com.hci.loopsns.network.Comment
+import com.hci.loopsns.utils.SharedPreferenceManager
 import com.hci.loopsns.utils.formatTo
 import com.hci.loopsns.utils.toDate
 
@@ -45,9 +48,8 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity, pr
 
         val commentCount: TextView = itemView.findViewById(R.id.comment_count_detail)
         val likeCount: TextView = itemView.findViewById(R.id.like_count_detail)
-        
-        //TODO 삭제 버튼
-        val testDeleteBtn: Button = itemView.findViewById(R.id.testDeleteBtn)
+
+        val optionButton: ImageButton = itemView.findViewById(R.id.optionBtn)
     }
 
     class CommentHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -131,10 +133,15 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity, pr
                         .thumbnail(Glide.with(activity).load(R.drawable.picture_placeholder))
                         .into(holder.articleImage)
 
+                } else {
+                    holder.articleImage.visibility = View.GONE
                 }
 
-                holder.testDeleteBtn.setOnClickListener {
-                    activity.deleteArticle()
+                holder.optionButton.setOnClickListener {
+                    ArticleOptionBottomSheet().setData(
+                        article.canDelete,
+                        activity::deleteArticle
+                    ).show(activity.supportFragmentManager, "ArticleOptionBottomSheet")
                 }
 
                 holder.articleContent.text = article.contents

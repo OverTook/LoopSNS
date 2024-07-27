@@ -95,7 +95,9 @@ class ArticleDetailActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshL
     fun deleteArticle() {
         NetworkManager.apiService.deleteArticle(article.uid).enqueue(object : Callback<ArticleDeleteResponse> {
             override fun onResponse(call: Call<ArticleDeleteResponse>, response: Response<ArticleDeleteResponse>) {
-                Log.e("ArticleDelete Success", "GOOD" + response.code())
+                if(!response.isSuccessful) return
+
+                finish()
             }
 
             override fun onFailure(call: Call<ArticleDeleteResponse>, err: Throwable) {

@@ -34,6 +34,8 @@ import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.Firebase
 import com.hci.loopsns.utils.SharedPreferenceManager
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.KakaoSdk
@@ -344,6 +346,8 @@ class LoginActivity : AppCompatActivity() {
                                 if (task2.isSuccessful) {
                                     val idToken = task2.result.token
                                     NetworkManager.initNetworkManager(idToken.toString(), user.uid)
+
+                                    Firebase.crashlytics.setUserId(user.uid) //파이어베이스 보고 아이디 설정
 
                                     val intent = Intent(
                                         this@LoginActivity,
