@@ -35,25 +35,16 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.VisibleRegion
-import com.google.android.gms.tasks.Task
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.QuerySnapshot
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import com.hci.loopsns.ArticleCreateActivity
 import com.hci.loopsns.ArticleDetailActivity
 import com.hci.loopsns.R
 import com.hci.loopsns.TimelineActivity
 import com.hci.loopsns.network.Article
-import com.hci.loopsns.network.ArticleDetail
-import com.hci.loopsns.network.ArticleDetailFromFireStore
 import com.hci.loopsns.network.ArticleDetailResponse
 import com.hci.loopsns.network.ArticleMarkersResponse
 import com.hci.loopsns.network.ArticleTimelineResponse
-import com.hci.loopsns.network.CommentFromFirestore
 import com.hci.loopsns.network.NetworkManager
-import com.hci.loopsns.network.UserFromFirestore
 import com.hci.loopsns.network.geocode.AddressResponse
 import com.hci.loopsns.network.geocode.AddressResult
 import com.hci.loopsns.network.geocode.ReverseGeocodingManager
@@ -359,78 +350,10 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
         }
     }
 
-    fun getCommentsComplete(task: Task<QuerySnapshot>) {
-        if (task.isSuccessful) {
-            val snapshot = task.result
-            if (snapshot != null && !snapshot.isEmpty) {
-                //val commentsData = snapshot.data
-                for(document in snapshot.documents) {
-                    val comment = document.toObject(CommentFromFirestore::class.java)
-                    if (comment != null) {
-                        Log.e("comment", comment.contents)
-                    } else {
-                        Snackbar.make(viewOfLayout.findViewById(R.id.main), "댓글 내용이 올바르지 않습니다..", Snackbar.LENGTH_SHORT).show()
-                    }
-                }
-            }
-        } else {
-            Log.e("Firestore Comments Failed", task.exception.toString())
-            Snackbar.make(viewOfLayout.findViewById(R.id.main), "댓글 조회 중 오류가 발생했습니다.", Snackbar.LENGTH_SHORT).show()
-        }
-    }
-
-    fun getUserDataComplete(task: Task<DocumentSnapshot>) {
-        if (task.isSuccessful) {
-            val snapshot = task.result
-            if (snapshot != null && snapshot.exists()) {
-                val userInfo = snapshot.toObject(UserFromFirestore::class.java)!!
-                
-            } else {
-                //TODO 탈퇴한 사용자 닉네임 표시
-                Snackbar.make(viewOfLayout.findViewById(R.id.main), "탈퇴한 사용자에 대한 게시글입니다.", Snackbar.LENGTH_SHORT).show()
-            }
-        } else {
-            Log.e("Firestore UserData Failed", task.exception.toString())
-            Snackbar.make(viewOfLayout.findViewById(R.id.main), "게시글 작성자 확인 중 오류가 발생했습니다.", Snackbar.LENGTH_SHORT).show()
-        }
-    }
-
     private fun onClickArticle(article: Article) {
         requireActivity().showDarkOverlay()
         bottomSheetFragment?.dismiss()
 
-        val db = Firebase.firestore
-        val articleRef = db.collection("articles").document(article.uid)
-
-        articleRef.get().addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val snapshot = task.result
-                if (snapshot != null && snapshot.exists()) {
-                    val detail = snapshot.toObject(ArticleDetailFromFireStore::class.java)!!
-                    detail.uid = article.uid
-
-                    val writer = detail.userId
-
-                    Log.e("Detail", detail.toString())
-                    //댓글 정보 가져오기
-                    articleRef
-                        .collection("comments")
-                        .get()
-                        .addOnCompleteListener(::getCommentsComplete)
-
-                    //작성자 정보 가져오기
-                    val userRef = db.collection("users").document(writer)
-                    userRef.get().addOnCompleteListener(::getUserDataComplete)
-                } else {
-                    Snackbar.make(viewOfLayout.findViewById(R.id.main), "게시글 정보를 불러올 수 없습니다.", Snackbar.LENGTH_SHORT).show()
-                }
-            } else {
-                Log.e("Firestore Article Failed", task.exception.toString())
-                Snackbar.make(viewOfLayout.findViewById(R.id.main), "게시글 정보 확인 중 오류가 발생했습니다.", Snackbar.LENGTH_SHORT).show()
-            }
-        }
-
-        return
         NetworkManager.apiService.retrieveArticleDetail(article.uid).enqueue(object :
             Callback<ArticleDetailResponse> {
             override fun onResponse(call: Call<ArticleDetailResponse>, response: Response<ArticleDetailResponse>) {
