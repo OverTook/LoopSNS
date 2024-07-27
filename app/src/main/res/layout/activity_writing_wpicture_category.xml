@@ -13,6 +13,7 @@
         android:layout_height="match_parent"
         android:background="#AA000000"
 
+        android:clickable="true"
         android:translationZ="100dp"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"

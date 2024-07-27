@@ -2,6 +2,7 @@ package com.hci.loopsns.network
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.google.firebase.firestore.PropertyName
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 //게시글 카테고리 자동 분석 결과 DTO
@@ -15,6 +16,12 @@ data class CategoryResponse (
 
 //게시글 작성 결과 DTO
 data class ArticleCreateResponse (
+    val success: Boolean, //응답 성공 여부
+    val msg: String, //응답 실패 시 오류 메시지
+    val article: ArticleDetail
+)
+
+data class ArticleDeleteResponse (
     val success: Boolean, //응답 성공 여부
     val msg: String //응답 실패 시 오류 메시지
 )
@@ -68,6 +75,8 @@ data class ArticleDetailResponse (
 
 @Parcelize
 data class ArticleDetail (
+    val uid: String, //게시글 유니크 아이디
+    
     val writer: String, //글쓴이
     val contents: String, //내용
     val cat1: String, //첫 번째 카테고리
@@ -75,7 +84,7 @@ data class ArticleDetail (
     val keywords: List<String>, //키워드
     val time: String, //게시글 작성 시간
     @SerializedName("comment_count")
-    val commentCount: Int, //댓글 수
+    var commentCount: Int, //댓글 수
     @SerializedName("like_count")
     val likeCount: Int, //좋아요 수
     @SerializedName("image_urls")
@@ -87,6 +96,12 @@ data class ArticleDetail (
 data class CommentCreateResponse (
     val success: Boolean, //응답 성공 여부
     val msg: String, //응답 실패 시 오류 메시지
+    val time: String
+)
+
+data class CommentDeleteResponse (
+    val success: Boolean, //응답 성공 여부
+    val msg: String //응답 실패 시 오류 메시지
 )
 
 @Parcelize

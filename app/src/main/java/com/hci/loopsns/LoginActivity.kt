@@ -41,7 +41,6 @@ import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.common.util.Utility
 import com.kakao.sdk.user.UserApiClient
-import com.kakao.vectormap.KakaoMapSdk
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -67,7 +66,6 @@ class LoginActivity : AppCompatActivity() {
 
 
     public override fun onCreate(savedInstanceState: Bundle?) {
-        KakaoMapSdk.init(this@LoginActivity, "df17ea99e1579611972ffbb1ff069e51");
         KakaoSdk.init(this@LoginActivity, "df17ea99e1579611972ffbb1ff069e51");
 
         Log.e("Kakao Hash", Utility.getKeyHash(this))

@@ -1,11 +1,15 @@
 package com.hci.loopsns
 
 import android.content.Context
+import android.content.Intent
+import android.content.pm.ApplicationInfo
+import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
@@ -18,10 +22,15 @@ import androidx.core.view.WindowInsetsCompat
 import com.airbnb.lottie.LottieAnimationView
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
-import com.google.gson.Gson
+import com.hci.loopsns.fragment.SelectCategoryBottomSheet
+import com.hci.loopsns.network.ArticleCreateResponse
+import com.hci.loopsns.network.ArticleDetail
 import com.hci.loopsns.network.CategoryResponse
-import com.hci.loopsns.network.KakaoResponse
+import com.hci.loopsns.network.Comment
 import com.hci.loopsns.network.NetworkManager
+import com.hci.loopsns.network.geocode.AddressResponse
+import com.hci.loopsns.network.geocode.AddressResult
+import com.hci.loopsns.network.geocode.ReverseGeocodingManager
 import com.hci.loopsns.utils.GlideEngine
 import com.hci.loopsns.utils.fadeIn
 import com.hci.loopsns.utils.fadeOut
@@ -29,26 +38,26 @@ import com.luck.picture.lib.basic.PictureSelector
 import com.luck.picture.lib.config.SelectMimeType
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
-import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.OkHttpClient
-import okhttp3.Request
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
-import java.io.IOException
+import java.util.Locale
 
 
 class ArticleCreateActivity : AppCompatActivity() {
 
-    lateinit var permissionLauncher: ActivityResultLauncher<Array<String>> //이미지 요청 목적
+    private lateinit var permissionLauncher: ActivityResultLauncher<Array<String>> //이미지 요청 목적
     private var permissionCallback: ((Map<String, Boolean>) -> Unit)? = null
 
     private var picture: String = "" //지금은 한 장만 처리
+
+    private var x: Double = 0.0
+    private var y: Double = 0.0
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,6 +113,8 @@ class ArticleCreateActivity : AppCompatActivity() {
         findViewById<Button>(R.id.submit).setOnClickListener {
             animation.fadeIn(0.85F, 200)
 
+            hideKeyboard()
+
             var image: MultipartBody.Part? = null
             val description = inputText.text.toString().toRequestBody("text/plain".toMediaTypeOrNull())
 
@@ -142,50 +153,71 @@ class ArticleCreateActivity : AppCompatActivity() {
             })
         }
 
-        val x = intent.getDoubleExtra("x", 0.0)
-        val y = intent.getDoubleExtra("y", 0.0)
-        getLocation(x, y)
+        x = intent.getDoubleExtra("x", 0.0)
+        y = intent.getDoubleExtra("y", 0.0)
+        getLocation()
+    }
+
+    private fun hideKeyboard() {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
     }
 
     fun createArticle(categories: List<String>, keywords: List<String>) {
-        
-    }
+        val animation = findViewById<LottieAnimationView>(R.id.loadingAnim)
+        val inputText = findViewById<EditText>(R.id.contentText)
 
-    fun getLocation(x: Double, y: Double) {
-        val baseUrl = "https://dapi.kakao.com/v2/local/geo/coord2address"
-        val url = baseUrl.toHttpUrlOrNull()?.newBuilder()?.apply {
-            addQueryParameter("x", x.toString())
-            addQueryParameter("y", y.toString())
-        }?.build()
+        animation.fadeIn(0.85F, 200)
 
-        // 요청 생성
-        val request = Request.Builder()
-            .url(url!!)
-            .header("Authorization", "KakaoAK ecac7e74ea9e428b92e9edaa3786e729")
-            .build()
+        var image: MultipartBody.Part? = null
+        val description = inputText.text.toString().toRequestBody("text/plain".toMediaTypeOrNull())
 
-        // 요청 실행
-        val client = OkHttpClient()
+        if(picture.isNotEmpty()) {
+            val file = File(getRealPathFromUri(Uri.parse(picture), this@ArticleCreateActivity)!!)
 
-        client.newCall(request).enqueue(object : okhttp3.Callback {
-            override fun onFailure(call: okhttp3.Call, e: IOException) {
-                Log.e("Kakao Local Error", e.toString())
-            }
+            val requestFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
+            image = MultipartBody.Part.createFormData("images", file.name, requestFile)
+        }
 
-            override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
-                if (response.isSuccessful) {
-                    val responseBody = response.body?.string()?.trimIndent() ?: return
-
-                    val gson = Gson()
-                    val kakaoResponse = gson.fromJson(responseBody, KakaoResponse::class.java)
-
-                    runOnUiThread {
-                        findViewById<TextView>(R.id.locationEditText).text = kakaoResponse.documents[0].address!!.addressName
-                    }
-                } else {
-                    Log.e("Kakao Local Error", "Request failed: ${response.code}")
+        NetworkManager.apiService.createArticle(
+            listOf(image),
+            listOf(
+                categories[0].toRequestBody("text/plain".toMediaTypeOrNull()),
+                categories[1].toRequestBody("text/plain".toMediaTypeOrNull())
+            ),
+            listOf(
+                keywords[0].toRequestBody("text/plain".toMediaTypeOrNull()),
+                keywords[1].toRequestBody("text/plain".toMediaTypeOrNull()),
+                keywords[2].toRequestBody("text/plain".toMediaTypeOrNull()),
+                keywords[3].toRequestBody("text/plain".toMediaTypeOrNull())
+            ),
+            description,
+            x.toString().toRequestBody("text/plain".toMediaTypeOrNull()),
+            y.toString().toRequestBody("text/plain".toMediaTypeOrNull())
+        ).enqueue(object : Callback<ArticleCreateResponse> {
+            override fun onResponse(call: Call<ArticleCreateResponse>, response: Response<ArticleCreateResponse>) {
+                animation.fadeOut(200)
+                if(!response.isSuccessful) {
+                    Snackbar.make(findViewById(R.id.main), "게시글 작성에 실패했습니다. 오류 코드 " + response.code(), Snackbar.LENGTH_SHORT).show()
+                    return
                 }
+
+                val result = response.body()!!
+
+                val intent = Intent(
+                    this@ArticleCreateActivity,
+                    ArticleDetailActivity::class.java
+                )
+                intent.putExtra("article", result.article)
+                intent.putParcelableArrayListExtra("comments", ArrayList<Comment>())
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(intent)
             }
+
+            override fun onFailure(call: Call<ArticleCreateResponse>, err: Throwable) {
+
+            }
+
         })
     }
 
@@ -202,5 +234,76 @@ class ArticleCreateActivity : AppCompatActivity() {
             cursor?.close()
         }
         return null
+    }
+
+    fun getLocation() {
+        val ai: ApplicationInfo = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA)
+
+        ReverseGeocodingManager.apiService.getAddress(
+            "$x,$y",
+            ai.metaData.getString("com.google.android.geo.API_KEY")!!,
+            Locale.getDefault().language).enqueue(object:Callback<AddressResponse> {
+            override fun onResponse(call: Call<AddressResponse>, response: Response<AddressResponse>) {
+                if(!response.isSuccessful) return
+
+                val body = response.body()!!
+
+                if(body.results.isEmpty()) {
+                    return
+                }
+
+                body.results.forEach {
+                    if(it.types.contains("sublocality_level_4")) {
+                        onGeocode(it)
+                        return
+                    }
+                }
+                body.results.forEach {
+                    if(it.types.contains("sublocality_level_3")) {
+                        onGeocode(it)
+                        return
+                    }
+                }
+                body.results.forEach {
+                    if(it.types.contains("sublocality_level_2")) {
+                        onGeocode(it)
+                        return
+                    }
+                }
+                body.results.forEach {
+                    if(it.types.contains("sublocality_level_1")) {
+                        onGeocode(it)
+                        return
+                    }
+                }
+                onGeocode(body.results[0])
+            }
+
+            override fun onFailure(call: Call<AddressResponse>, err: Throwable) {
+                Log.e("ArticleCreate Geocoding Failed", err.toString())
+            }
+
+        })
+    }
+
+    fun onGeocode(address: AddressResult) {
+        var addressText = ""
+
+        var country = ""
+        address.addressComponents.forEach {
+            if (it.types.contains("country")) {
+                country = it.longName
+                return@forEach
+            }
+        }
+        addressText = address.formattedAddress
+
+        if(country.isNotBlank() && addressText.contains(country)) {
+            addressText = addressText.split(country)[1].trim()
+        }
+
+        runOnUiThread {
+            findViewById<TextView>(R.id.locationEditText).text = addressText
+        }
     }
 }

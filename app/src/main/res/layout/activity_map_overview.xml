@@ -42,25 +42,24 @@
             app:srcCompat="@drawable/search" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.kakao.vectormap.MapView
-        android:id="@+id/kakaoMap"
+    <fragment
+        android:id="@+id/googleMap"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="20dp"
         app:layout_constraintBottom_toTopOf="@+id/overview_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/filter_layout">
-
-    </com.kakao.vectormap.MapView>
+        app:layout_constraintTop_toBottomOf="@+id/filter_layout"
+        android:name="com.google.android.gms.maps.SupportMapFragment" />
 
     <TextView
         android:id="@+id/overview_text"
-        android:layout_width="match_parent"
-        android:layout_height="73dp"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
         android:bufferType="spannable"
         android:fontFamily="@font/pretendard_extra_bold"
-        android:gravity="center_vertical"
+        android:gravity="bottom"
         android:paddingLeft="20dp"
         android:paddingTop="15dp"
         android:paddingRight="20dp"
@@ -68,7 +67,9 @@
         android:textColor="@color/black"
         android:textSize="22sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/overview_time" />
+        app:layout_constraintBottom_toTopOf="@id/overview_time"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/overview_time"
@@ -76,7 +77,6 @@
         android:layout_height="wrap_content"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:paddingBottom="20dp"
         android:text="@string/time_loading"
         android:textColor="@color/gray"
         android:textSize="12sp"
@@ -90,8 +90,8 @@
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="75dp"
         android:background="@drawable/map_overview_behave_btn_bg"
-        app:layout_constraintBottom_toBottomOf="@+id/kakaoMap"
-        app:layout_constraintEnd_toEndOf="@+id/kakaoMap"
+        app:layout_constraintBottom_toBottomOf="@+id/googleMap"
+        app:layout_constraintEnd_toEndOf="@+id/googleMap"
         app:srcCompat="@drawable/export" />
 
     <ImageButton
@@ -101,8 +101,8 @@
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="15dp"
         android:background="@drawable/map_overview_behave_btn_bg"
-        app:layout_constraintBottom_toBottomOf="@+id/kakaoMap"
-        app:layout_constraintEnd_toEndOf="@+id/kakaoMap"
+        app:layout_constraintBottom_toBottomOf="@+id/googleMap"
+        app:layout_constraintEnd_toEndOf="@+id/googleMap"
         app:srcCompat="@drawable/mark" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -18,3 +18,8 @@ data class LikeArticleRequest (
     @SerializedName("like")
     val like: Boolean
 )
+
+data class DeleteArticleRequest (
+    @SerializedName("article_id")
+    val articleId: String
+)

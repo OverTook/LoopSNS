@@ -2,19 +2,20 @@ package com.hci.loopsns
 
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.get
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 import com.hci.loopsns.databinding.ActivityMainBinding
+import com.hci.loopsns.fragment.HomeFragment
+import com.hci.loopsns.fragment.NotificationsFragment
+import com.hci.loopsns.fragment.SettingMenuFragment
+import com.hci.loopsns.fragment.ViewPageAdapter2
 import com.hci.loopsns.network.NetworkManager
 import com.hci.loopsns.utils.DoubleBackPressHandler
 
@@ -137,7 +138,6 @@ class MainActivity : AppCompatActivity() {
 
             Snackbar.make(findViewById(R.id.main), "정확한 위치 정보를 받아올 수 없어 정확성이 떨어집니다.", Snackbar.LENGTH_SHORT).show()
         }
-        permissionCheckEnd()
     }
 
     public override fun onDestroy() {
