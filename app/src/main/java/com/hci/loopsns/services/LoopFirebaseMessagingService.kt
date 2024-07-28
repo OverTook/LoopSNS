@@ -17,46 +17,26 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.hci.loopsns.MainActivity
 import com.hci.loopsns.R
+import com.hci.loopsns.network.AddFcmTokenRequest
+import com.hci.loopsns.network.FcmTokenResponse
+import com.hci.loopsns.network.NetworkManager
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class LoopFirebaseMessagingService : FirebaseMessagingService() {
     companion object {
         private const val TAG = "FirebaseMessagingService"
     }
-    private var FCMToken = ""
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
         Log.d(TAG, "new Token ${token}")
-
-        val pref = this.getSharedPreferences("firebaseToken", Context.MODE_PRIVATE)
-        val editor = pref.edit()
-        editor.putString("firebaseToken", token).apply()
-        editor.apply()
-        Log.i(TAG, "토큰 저장 완료")
-        sendRegistrationToServer(token)
-        //여기서 서버에 토큰 저장시키기Todo
     }
 
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
         Log.d(TAG, "From : ${message.from}")
-
-        //받은 remoteMessage의 값 출력해보기. 데이터메세지 / 알림메세지
-        Log.d(TAG, "Message data : ${message.data}")
-        Log.d(TAG, "Message notification : ${message.notification?.body!!}")
-
-        /*if (message.notification?.body!!.isNotEmpty()) {
-            setNotification(message)
-            if (true) {
-
-            }
-        } else {
-            Log.e(TAG, "data가 비어있습니다. 메시지를 수신하지 못했습니다.")
-            //메세지에 전송된 알림 데이터가 포함되어있는지 확인하기위함
-            setNotification(
-                message
-            )
-        }*/
 
         if (message.data.isNotEmpty()) {
             scheduleJob()
@@ -68,11 +48,10 @@ class LoopFirebaseMessagingService : FirebaseMessagingService() {
         if (message.notification!= null) {
             setNotification(message)
         }
-
     }
 
     // 메시지에 데이터 페이로드가 포함 되어 있을 때 실행되는 메서드
-    // 장시간 실행 (10초 이상) 작업의 경우 WorkManager를 사용하여 비동기 작업을 예약한다.
+    // 장시간 실행 (10초 이상) 작업의 경우 WorkManager를 사용하여 비동기 작업 예약
     private fun scheduleJob() {
         val work = OneTimeWorkRequest.Builder(MyWorker::class.java)
             .build()
@@ -85,11 +64,6 @@ class LoopFirebaseMessagingService : FirebaseMessagingService() {
     // 10초 이내로 걸릴 때 메시지를 처리한다.
     private fun handleNow() {
         Log.d(TAG, "Short lived task is done.")
-    }
-
-    // 타사 서버에 토큰을 유지해주는 메서드이다.
-    private fun sendRegistrationToServer(token: String?) {
-        Log.d(TAG, "sendRegistrationTokenToServer($token)")
     }
 
     private fun setNotification(message : RemoteMessage) {
@@ -113,10 +87,7 @@ class LoopFirebaseMessagingService : FirebaseMessagingService() {
 
         // 일회용 PendingIntent : Intent 의 실행 권한을 외부의 어플리케이션에게 위임
         val intent = Intent(this, MainActivity::class.java)
-        /*//각 key, value 추가
-        for(key in message.data.keys){
-            intent.putExtra(key, message.data.getValue(key))
-        }*/
+
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) // Activity Stack 을 경로만 남김(A-B-C-D-B => A-B)
 
         //PendingIntent.FLAG_MUTABLE은 PendingIntent의 내용을 변경할 수 있도록 허용, PendingIntent.FLAG_IMMUTABLE은 PendingIntent의 내용을 변경할 수 없음
@@ -129,7 +100,7 @@ class LoopFirebaseMessagingService : FirebaseMessagingService() {
         val title: String? = message.notification?.title
         val body: String? = message.notification?.body
 
-// 알림에 대한 UI 정보, 작업
+        // 알림에 대한 UI 정보, 작업
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
             .setPriority(NotificationCompat.PRIORITY_HIGH) // 중요도 (HIGH: 상단바 표시 가능)
             .setSmallIcon(R.mipmap.ic_launcher) // 아이콘 설정
@@ -139,16 +110,6 @@ class LoopFirebaseMessagingService : FirebaseMessagingService() {
             .setContentIntent(pendingIntent) // 알림 실행 시 Intent
 
         notificationManager.notify(uniId, notificationBuilder.build())
-    }
-
-    //필요한 곳 토큰 가져오기
-    fun getFirebaseToken() : String {
-        //비동기 방식
-        FirebaseMessaging.getInstance().token.addOnSuccessListener{
-            Log.d(TAG, "token=${it}")
-            FCMToken =it
-        }
-        return FCMToken
     }
 
     internal class MyWorker(appContext: Context, workerParams: WorkerParameters) :
