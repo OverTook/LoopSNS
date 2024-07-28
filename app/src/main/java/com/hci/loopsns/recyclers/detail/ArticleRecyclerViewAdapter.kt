@@ -1,13 +1,19 @@
 package com.hci.loopsns.recyclers.detail
 
+import android.animation.ObjectAnimator
+import android.animation.TimeInterpolator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.OvershootInterpolator
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -25,6 +31,11 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity, pr
 
     private var commentCountView: TextView? = null
 
+    private var widthAnimator: ObjectAnimator? = null
+    private var heightAnimator: ObjectAnimator? = null
+
+    val originalLike: Boolean = article.isLiked
+
     class ArticleHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val writer: TextView = itemView.findViewById(R.id.writer_name)
         val time: TextView = itemView.findViewById(R.id.write_time)
@@ -40,8 +51,10 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity, pr
         val articleImage: ImageView = itemView.findViewById(R.id.article_image)
         val articleContent: TextView = itemView.findViewById(R.id.article_text)
 
-        val commentCount: TextView = itemView.findViewById(R.id.comment_count_detail)
+        val commentCount: TextView = itemView.findViewById(R.id.comment_text)
         val likeCount: TextView = itemView.findViewById(R.id.like_count_detail)
+        val likeLayout: ConstraintLayout = itemView.findViewById(R.id.article_like)
+        val likeIcon: ImageView = itemView.findViewById(R.id.like)
 
         val optionButton: ImageButton = itemView.findViewById(R.id.optionBtn)
     }
@@ -102,8 +115,6 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity, pr
                         .into(holder.profileImage)
                 }
 
-
-
                 holder.writer.text = article.writer
                 holder.time.text = article.time.toDate().formatTo("yyyy-MM-dd HH:mm")
 
@@ -147,16 +158,41 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity, pr
                 holder.articleContent.text = article.contents
 
                 commentCountView = holder.commentCount
-                commentCountView?.text = article.commentCount.toString()
+                commentCountView?.text = buildString {
+                    append("댓글 ")
+                    append(article.commentCount)
+                }
+
+                if(article.isLiked) {
+                    holder.likeIcon.setImageResource(R.drawable.favorite_fill_48px)
+                } else {
+                    holder.likeIcon.setImageResource(R.drawable.favorite_48px)
+                }
 
                 holder.likeCount.text = article.likeCount.toString()
+                holder.likeLayout.setOnClickListener {
+                    when(article.isLiked) {
+                        true -> {
+                            article.isLiked = false
+                            animateLike(holder.likeIcon, false)
+
+                            holder.likeCount.text = (--article.likeCount).toString()
+                        }
+                        false -> {
+                            article.isLiked = true
+                            animateLike(holder.likeIcon, true)
+
+                            holder.likeCount.text = (++article.likeCount).toString()
+                        }
+                    }
+                }
             }
             is CommentHolder -> {
                 val item = items[position - 1] //게시글 한 개 빼야함
 
 
                 holder.writer.text = item.writer
-                holder.time.text = item.time
+                holder.time.text = item.time.toDate().formatTo("yyyy-MM-dd HH:mm")
                 holder.articleContent.text = item.contents
 
                 holder.optionButton.setOnClickListener {
@@ -191,6 +227,26 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity, pr
         return ViewType.COMMENT
     }
 
+    fun animateLike(icon: ImageView, like: Boolean) {
+        icon.clearAnimation()
+
+        if(like) {
+            icon.setImageResource(R.drawable.favorite_fill_48px)
+        } else {
+            icon.setImageResource(R.drawable.favorite_48px)
+        }
+
+        icon.scaleX = 0f
+        icon.scaleY = 0f
+
+        icon.animate()
+            .setInterpolator(OvershootInterpolator())
+            .scaleX(1.0f)
+            .scaleY(1.0f)
+            .setDuration(200)
+            .start()
+    }
+
     fun deleteComment(uid: String) {
         for (i in 0..<items.size) {
             if(items[i].uid != uid) {
@@ -198,7 +254,10 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity, pr
             }
 
             this.items.removeAt(i)
-            commentCountView?.text = (--article.commentCount).toString()
+            commentCountView?.text = buildString {
+                append("댓글 ")
+                append((--article.commentCount).toString())
+            }
             this.notifyItemRemoved(i)
             return
         }
@@ -206,7 +265,10 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity, pr
 
     fun addComment(comment: Comment) {
         this.items.add(0, comment)
-        commentCountView?.text = (++article.commentCount).toString()
+        commentCountView?.text =  buildString {
+            append("댓글 ")
+            (++article.commentCount).toString()
+        }
         this.notifyItemInserted(1)
     }
 

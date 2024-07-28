@@ -1,19 +1,24 @@
 package com.hci.loopsns.recyclers.profile
 
 import android.content.Context
+import android.content.res.Resources
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.marginRight
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.CenterInside
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.flexbox.FlexboxLayout
 import com.hci.loopsns.R
 import com.hci.loopsns.network.ArticleDetail
 import com.hci.loopsns.recyclers.detail.ArticleRecyclerViewAdapter.ArticleHolder
@@ -24,11 +29,17 @@ import com.hci.loopsns.view.fragment.profile.BaseProfileFragment
 class ProfileRecyclerViewAdapter(private val activity: BaseProfileFragment, private var items: ArrayList<ArticleDetail>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var loadMoreButton: ImageView? = null
+    private val Int.dp: Int
+        get() = (this * Resources.getSystem().displayMetrics.density + 0.5f).toInt()
 
     class ArticleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val root: ConstraintLayout = itemView.findViewById(R.id.main)
+
         val contents: TextView = itemView.findViewById(R.id.contents)
         val time: TextView = itemView.findViewById(R.id.time)
         val picture: ImageView = itemView.findViewById(R.id.picture)
+
+        val tags: FlexboxLayout = itemView.findViewById(R.id.tags)
 
         val category1: TextView = itemView.findViewById(R.id.tag_1_article)
         val category2: TextView = itemView.findViewById(R.id.tag_2_article)
@@ -79,6 +90,10 @@ class ProfileRecyclerViewAdapter(private val activity: BaseProfileFragment, priv
             is ArticleViewHolder -> {
                 val item = items[position]
 
+                holder.root.setOnClickListener {
+                    activity.onClickArticle(item.uid)
+                }
+
                 holder.contents.text = item.contents
                 holder.time.text =  item.time.toDate().formatTo("yyyy-MM-dd HH:mm")
 
@@ -103,6 +118,11 @@ class ProfileRecyclerViewAdapter(private val activity: BaseProfileFragment, priv
 
                 if (item.images.isNotEmpty()) {
                     holder.picture.visibility = View.VISIBLE
+
+                    val params = holder.tags.layoutParams as ConstraintLayout.LayoutParams
+                    params.marginEnd = 120.dp
+                    holder.tags.layoutParams = params
+
                     Glide.with(activity)
                         .load(item.images[0])
                         .thumbnail(Glide.with(activity).load(R.drawable.picture_placeholder))
@@ -112,6 +132,10 @@ class ProfileRecyclerViewAdapter(private val activity: BaseProfileFragment, priv
 
                 } else {
                     holder.picture.visibility = View.GONE
+
+                    val params = holder.tags.layoutParams as ConstraintLayout.LayoutParams
+                    params.marginEnd = 10.dp
+                    holder.tags.layoutParams = params
                 }
             }
             is MoreViewHolder -> {
@@ -152,6 +176,7 @@ class ProfileRecyclerViewAdapter(private val activity: BaseProfileFragment, priv
 
             items.removeAt(i)
             this.notifyItemRemoved(i)
+            return
         }
     }
 

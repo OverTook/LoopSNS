@@ -18,6 +18,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import com.airbnb.lottie.LottieAnimationView
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
@@ -31,12 +32,15 @@ import com.hci.loopsns.network.geocode.AddressResult
 import com.hci.loopsns.network.geocode.ReverseGeocodingManager
 import com.hci.loopsns.utils.AuthAppCompatActivity
 import com.hci.loopsns.utils.GlideEngine
+import com.hci.loopsns.utils.MyArticleFactory
 import com.hci.loopsns.utils.fadeIn
 import com.hci.loopsns.utils.fadeOut
 import com.luck.picture.lib.basic.PictureSelector
 import com.luck.picture.lib.config.SelectMimeType
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
+import id.zelory.compressor.Compressor
+import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -79,7 +83,7 @@ class ArticleCreateActivity : AuthAppCompatActivity() {
             finish()
         }
 
-        findViewById<Button>(R.id.add_picture_btn).setOnClickListener {
+        findViewById<Button>(R.id.addPictureButton).setOnClickListener {
             PictureSelector.create(this)
                 .openGallery(SelectMimeType.ofImage())
                 .setImageEngine(GlideEngine.createGlideEngine())
@@ -95,7 +99,6 @@ class ArticleCreateActivity : AuthAppCompatActivity() {
                                 Glide.with(this@ArticleCreateActivity)
                                     .load(it.availablePath)
                                     .into(findViewById(R.id.attachment_picture))
-
 
                                 return
                             }
@@ -179,8 +182,57 @@ class ArticleCreateActivity : AuthAppCompatActivity() {
         if(picture.isNotEmpty()) {
             val file = File(getRealPathFromUri(Uri.parse(picture), this@ArticleCreateActivity)!!)
 
-            val requestFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
-            image = MultipartBody.Part.createFormData("images", file.name, requestFile)
+            lifecycleScope.launch {
+                val compressedFile = Compressor.compress(this@ArticleCreateActivity, file)
+
+                val requestFile = compressedFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
+                image = MultipartBody.Part.createFormData("images", compressedFile.name, requestFile)
+
+
+
+                NetworkManager.apiService.createArticle(
+                    listOf(image),
+                    listOf(
+                        categories[0].toRequestBody("text/plain".toMediaTypeOrNull()),
+                        categories[1].toRequestBody("text/plain".toMediaTypeOrNull())
+                    ),
+                    listOf(
+                        keywords[0].toRequestBody("text/plain".toMediaTypeOrNull()),
+                        keywords[1].toRequestBody("text/plain".toMediaTypeOrNull()),
+                        keywords[2].toRequestBody("text/plain".toMediaTypeOrNull()),
+                        keywords[3].toRequestBody("text/plain".toMediaTypeOrNull())
+                    ),
+                    description,
+                    x.toString().toRequestBody("text/plain".toMediaTypeOrNull()),
+                    y.toString().toRequestBody("text/plain".toMediaTypeOrNull())
+                ).enqueue(object : Callback<ArticleCreateResponse> {
+                    override fun onResponse(call: Call<ArticleCreateResponse>, response: Response<ArticleCreateResponse>) {
+                        animation.fadeOut(200)
+                        if(!response.isSuccessful) {
+                            Snackbar.make(findViewById(R.id.main), "게시글 작성에 실패했습니다. 오류 코드 " + response.code(), Snackbar.LENGTH_SHORT).show()
+                            return
+                        }
+
+                        val result = response.body()!!
+
+                        MyArticleFactory.addCreatedArticle(result.article)
+
+                        val intent = Intent(
+                            this@ArticleCreateActivity,
+                            ArticleDetailActivity::class.java
+                        )
+                        intent.putExtra("article", result.article)
+                        intent.putParcelableArrayListExtra("comments", ArrayList<Comment>())
+                        startActivity(intent)
+                        finish()
+                    }
+
+                    override fun onFailure(call: Call<ArticleCreateResponse>, err: Throwable) {
+
+                    }
+                })
+            }
+            return
         }
 
         NetworkManager.apiService.createArticle(
@@ -208,6 +260,8 @@ class ArticleCreateActivity : AuthAppCompatActivity() {
 
                 val result = response.body()!!
 
+                MyArticleFactory.addCreatedArticle(result.article)
+
                 val intent = Intent(
                     this@ArticleCreateActivity,
                     ArticleDetailActivity::class.java
@@ -215,12 +269,12 @@ class ArticleCreateActivity : AuthAppCompatActivity() {
                 intent.putExtra("article", result.article)
                 intent.putParcelableArrayListExtra("comments", ArrayList<Comment>())
                 startActivity(intent)
+                finish()
             }
 
             override fun onFailure(call: Call<ArticleCreateResponse>, err: Throwable) {
 
             }
-
         })
     }
 

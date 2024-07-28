@@ -82,7 +82,7 @@
             tools:ignore="MissingConstraints" />
 
         <android.widget.Button
-            android:id="@+id/add_picture_btn"
+            android:id="@+id/addPictureButton"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:background="@drawable/black_r_button"

@@ -1,28 +1,20 @@
 package com.hci.loopsns
 
 import android.content.Context
-import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
-import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageButton
-import androidx.activity.enableEdgeToEdge
-import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.IntentCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
-import com.hci.loopsns.network.Article
 import com.hci.loopsns.network.ArticleDeleteResponse
 import com.hci.loopsns.network.ArticleDetail
 import com.hci.loopsns.network.ArticleDetailResponse
@@ -30,11 +22,13 @@ import com.hci.loopsns.network.Comment
 import com.hci.loopsns.network.CommentCreateResponse
 import com.hci.loopsns.network.CommentDeleteResponse
 import com.hci.loopsns.network.CreateCommentRequest
-import com.hci.loopsns.network.DeleteArticleRequest
-import com.hci.loopsns.network.NetworkInterface
+import com.hci.loopsns.network.LikeArticleRequest
+import com.hci.loopsns.network.LikeResponse
 import com.hci.loopsns.network.NetworkManager
 import com.hci.loopsns.recyclers.detail.ArticleRecyclerViewAdapter
 import com.hci.loopsns.utils.AuthAppCompatActivity
+import com.hci.loopsns.utils.LikeArticleFactory
+import com.hci.loopsns.utils.MyArticleFactory
 import com.hci.loopsns.utils.SharedPreferenceManager
 import com.hci.loopsns.utils.formatTo
 import com.hci.loopsns.utils.hideDarkOverlay
@@ -104,6 +98,9 @@ class ArticleDetailActivity : AuthAppCompatActivity(), SwipeRefreshLayout.OnRefr
             override fun onResponse(call: Call<ArticleDeleteResponse>, response: Response<ArticleDeleteResponse>) {
                 if(!response.isSuccessful) return
 
+                MyArticleFactory.addDeletedArticles(article.uid)
+                LikeArticleFactory.addDeletedArticles(article.uid)
+
                 finish()
             }
 
@@ -123,6 +120,54 @@ class ArticleDetailActivity : AuthAppCompatActivity(), SwipeRefreshLayout.OnRefr
 
             override fun onFailure(call: Call<CommentDeleteResponse>, err: Throwable) {
                 Log.e("CommentDelete Failed", err.toString())
+            }
+        })
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        if(article.isLiked.xor(adapter.originalLike)) {
+            if(article.isLiked) {
+                Log.e("Like", "Add Factory")
+                LikeArticleFactory.addLikedArticle(article)
+            } else {
+                Log.e("Like", "Delete Factory")
+                LikeArticleFactory.addDeletedArticles(article.uid)
+            }
+            addArticleLike(article.isLiked) //액티비티가 닫힐 때 요청 보내기
+        }
+    }
+
+    private fun addArticleLike(like: Boolean) {
+        NetworkManager.apiService.likeArticle(
+            LikeArticleRequest(
+                article.uid,
+                like
+            )
+        ).enqueue(object : Callback<LikeResponse> {
+            override fun onResponse(call: Call<LikeResponse>, response: Response<LikeResponse>) {
+                if (response.isSuccessful) return
+
+                if(article.isLiked) {
+                    article.isLiked = false
+                    article.likeCount--
+                } else {
+                    article.isLiked = true
+                    article.likeCount++
+                }
+                Log.e("ArticleLike Failed", "HTTP Code " + response.code())
+            }
+
+            override fun onFailure(call: Call<LikeResponse>, err: Throwable) {
+                Log.e("ArticleLike Failed", err.toString())
+                if(article.isLiked) {
+                    article.isLiked = false
+                    article.likeCount--
+                } else {
+                    article.isLiked = true
+                    article.likeCount++
+                }
             }
         })
     }

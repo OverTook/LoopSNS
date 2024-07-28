@@ -60,10 +60,10 @@ interface NetworkInterface {
     fun deleteComment(@Path("article_id") postId: String, @Path("comment_id") commentId: String): Call<CommentDeleteResponse>
 
     @GET("/get_user_article_list")
-    fun retrieveMyArticle(@Query("last_article_id") lastArticleId: String): Call<MyArticleResponse>
+    fun retrieveMyArticle(@Query("last_article_id") lastArticleId: String = ""): Call<MyArticleResponse>
 
     @GET("/get_like_article_list")
-    fun retrieveLikeArticle(@Query("last_article_id") lastArticleId: String): Call<MyArticleResponse>
+    fun retrieveLikeArticle(@Query("last_article_id") lastArticleId: String = ""): Call<MyArticleResponse>
 
     @GET("/login")
     fun createAccount(

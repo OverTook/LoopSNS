@@ -77,7 +77,7 @@ data class MyArticleResponse (
     val success: Boolean, //응답 성공 여부
     val msg: String, //응답 실패 시 오류 메시지
 
-    val articles: List<ArticleDetail> //게시글 목록
+    val articles: List<ArticleDetail>? //게시글 목록
 )
 
 @Parcelize
@@ -93,13 +93,15 @@ data class ArticleDetail (
     @SerializedName("comment_count")
     var commentCount: Int, //댓글 수
     @SerializedName("like_count")
-    val likeCount: Int, //좋아요 수
+    var likeCount: Int, //좋아요 수
     @SerializedName("image_urls")
     val images: List<String>,
     @SerializedName("user_img")
     var userImg: String,
     @SerializedName("can_delete")
-    val canDelete: Boolean
+    val canDelete: Boolean,
+    @SerializedName("is_liked")
+    var isLiked: Boolean
 ) : Parcelable
 
 data class CommentCreateResponse (

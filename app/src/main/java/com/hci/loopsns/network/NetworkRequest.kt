@@ -13,15 +13,10 @@ data class CreateCommentRequest (
 )
 
 data class LikeArticleRequest (
-    @SerializedName("uid")
+    @SerializedName("article_id")
     val articleId: String,
     @SerializedName("like")
     val like: Boolean
-)
-
-data class DeleteArticleRequest (
-    @SerializedName("article_id")
-    val articleId: String
 )
 
 data class AddFcmTokenRequest (

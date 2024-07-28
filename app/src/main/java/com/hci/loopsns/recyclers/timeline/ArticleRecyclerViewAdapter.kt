@@ -10,6 +10,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.hci.loopsns.R
 import com.hci.loopsns.network.Article
+import com.hci.loopsns.utils.formatTo
+import com.hci.loopsns.utils.toDate
 
 class ArticleRecyclerViewAdapter(private val articleClickAction: (Article) -> Unit, private var items: List<Article>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -92,12 +94,14 @@ class ArticleRecyclerViewAdapter(private val articleClickAction: (Article) -> Un
 
                 for (i in 0 until item.keywords.size) {
                     if (i < item.keywords.size) {
-                        keywords[i].visibility = View.VISIBLE
-                        keywords[i].text = item.keywords[i]
+                        if(item.keywords[i].isNotBlank()) {
+                            keywords[i].visibility = View.VISIBLE
+                            keywords[i].text = item.keywords[i]
+                        }
                     }
                 }
 
-                holder.time.text = item.time
+                holder.time.text = item.time.toDate().formatTo("yyyy-MM-dd HH:mm")
                 holder.likeCount.text = item.likeCount.toString()
                 holder.commentCount.text = item.commentCount.toString()
             }

@@ -88,6 +88,8 @@ dependencies {
     implementation(libs.androidx.swiperefreshlayout)
     implementation(libs.androidx.work.runtime.ktx) //새로고침 레이아웃 라이브러리
 
+    implementation("id.zelory:compressor:3.0.1") //이미지 압축 라이브러리
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

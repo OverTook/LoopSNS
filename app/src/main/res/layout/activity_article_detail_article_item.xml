@@ -201,60 +201,52 @@
             android:textColor="@color/black"
             android:textSize="15sp" />
 
-        <LinearLayout
-            android:id="@+id/article_comment_like"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/article_like"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
+            android:layout_marginTop="10dp"
+            android:clickable="true">
 
-            <ImageView
-                android:id="@+id/comment"
+            <LinearLayout
+                android:id="@+id/likeIconContainer"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="3dp"
-                app:srcCompat="@drawable/comment" />
+                android:gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/comment_count_detail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
-                android:fontFamily="@font/pretendard_regular"
-                android:text="@string/writing_comment_number"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
-
-            <ImageView
-                android:id="@+id/like"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="3dp"
-                app:srcCompat="@drawable/like" />
+                <ImageView
+                    android:id="@+id/like"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    app:srcCompat="@drawable/favorite_48px" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/like_count_detail"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="30dp"
                 android:fontFamily="@font/pretendard_regular"
+                android:gravity="center_vertical"
                 android:text="@string/writing_good_number"
                 android:textColor="@color/black"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/comment_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:fontFamily="@font/pretendard_bold"
-            android:text="@string/writing_comment"
+            android:text="댓글 30"
             android:textColor="@color/black"
             android:textSize="18sp" />
 

@@ -1,11 +1,11 @@
 package com.hci.loopsns.view.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayout
@@ -43,7 +43,6 @@ class ProfileFragment : Fragment() {
                 .load(profileManager.getImageURL())
                 .into(view.findViewById(R.id.profile_image))
         }
-
 
         childFragmentManager.beginTransaction()
             .add(R.id.containers, myArticleFragment)
@@ -86,9 +85,16 @@ class ProfileFragment : Fragment() {
             override fun onTabReselected(tab: TabLayout.Tab) {
             }
         })
+
+        myArticleFragment.onInitializeArticle()
+        myLikeFragment.onInitializeArticle()
     }
 
-    fun onArticleCreated() {
+    override fun onResume() {
+        super.onResume()
 
+        Log.e("OnResume", "ProfileFragment")
+        myLikeFragment.onResumeSelf()
+        myArticleFragment.onResumeSelf()
     }
 }
