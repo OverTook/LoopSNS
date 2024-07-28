@@ -148,3 +148,9 @@ data class LikeResponse (
     val success: Boolean,
     val msg: String
 )
+
+//FCM 토큰
+data class FcmTokenResponse (
+    val success: Boolean, // 응답 성공 여부
+    val msg: String // 응답 실패 시 오류 메시지
+)

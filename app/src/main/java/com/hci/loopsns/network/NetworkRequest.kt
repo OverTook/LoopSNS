@@ -23,3 +23,13 @@ data class DeleteArticleRequest (
     @SerializedName("article_id")
     val articleId: String
 )
+
+data class AddFcmTokenRequest (
+    @SerializedName("fcm_token")
+    val fcmToken: String
+)
+
+data class DeleteFcmTokenRequest (
+    @SerializedName("fcm_token")
+    val fcmToken: String
+)

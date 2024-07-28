@@ -64,6 +64,8 @@ dependencies {
     implementation(platform(libs.firebase.bom)) //파이어베이스 인증 라이브러리
     implementation(libs.firebase.auth.ktx)
 
+    implementation(libs.firebase.messaging) // 파이어베이스 FCM 메세징 라이브러리
+
     implementation(libs.play.services.auth)
     implementation(libs.firebase.firestore)
     implementation(libs.play.services.location)
@@ -83,7 +85,8 @@ dependencies {
 
     implementation (libs.lottie) //로티 애니메이션 라이브러리
 
-    implementation(libs.androidx.swiperefreshlayout) //새로고침 레이아웃 라이브러리
+    implementation(libs.androidx.swiperefreshlayout)
+    implementation(libs.androidx.work.runtime.ktx) //새로고침 레이아웃 라이브러리
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

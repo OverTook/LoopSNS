@@ -74,4 +74,11 @@ interface NetworkInterface {
     @POST("/add_article_like")
     fun likeArticle(@Body requestBody: LikeArticleRequest): Call<LikeResponse>
 
+    // FCM 토큰 추가
+    @POST("/add_fcm_token")
+    fun addFcmToken(@Body requestBody: AddFcmTokenRequest): Call<FcmTokenResponse>
+
+    // FCM 토큰 삭제
+    @POST("/delete_fcm_token")
+    fun deleteFcmToken(@Body requestBody: DeleteFcmTokenRequest): Call<FcmTokenResponse>
 }
