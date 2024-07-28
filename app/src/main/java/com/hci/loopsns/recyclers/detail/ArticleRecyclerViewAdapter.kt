@@ -10,6 +10,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import com.hci.loopsns.ArticleDetailActivity
 import com.hci.loopsns.R
 import com.hci.loopsns.view.bottomsheet.ArticleOptionBottomSheet
@@ -125,11 +127,12 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity, pr
                 }
 
                 if (article.images.isNotEmpty()) {
+                    holder.articleImage.visibility = View.VISIBLE
                     Glide.with(activity)
                         .load(article.images[0])
                         .thumbnail(Glide.with(activity).load(R.drawable.picture_placeholder))
+                        .apply(RequestOptions.bitmapTransform(RoundedCorners(150)))
                         .into(holder.articleImage)
-
                 } else {
                     holder.articleImage.visibility = View.GONE
                 }
@@ -168,6 +171,8 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity, pr
                     Glide.with(activity)
                         .load(item.userImg)
                         .into(holder.profileImage)
+                } else {
+                    holder.profileImage.setImageResource(R.drawable.loop_logo)
                 }
             }
             is AdvertisementViewHolder -> {

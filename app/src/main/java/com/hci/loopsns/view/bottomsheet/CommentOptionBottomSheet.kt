@@ -24,6 +24,7 @@ class CommentOptionBottomSheet : BottomSheetDialogFragment() {
         viewOfLayout.findViewById<TextView>(R.id.deleteText).text = "댓글 삭제하기"
         viewOfLayout.findViewById<ConstraintLayout>(R.id.deleteItem).setOnClickListener {
             deleteAction?.invoke(uid)
+            dismiss()
         }
 
         if(!canDelete) {

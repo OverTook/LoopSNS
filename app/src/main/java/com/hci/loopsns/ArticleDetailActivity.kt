@@ -10,6 +10,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.ImageButton
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -63,6 +64,10 @@ class ArticleDetailActivity : AuthAppCompatActivity(), SwipeRefreshLayout.OnRefr
             insets
         }
 
+        findViewById<ImageButton>(R.id.backButton).setOnClickListener {
+            finish()
+        }
+
         val input: EditText = findViewById(R.id.comment_input)
         input.setOnEditorActionListener { _, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_SEND ||
@@ -113,7 +118,7 @@ class ArticleDetailActivity : AuthAppCompatActivity(), SwipeRefreshLayout.OnRefr
             override fun onResponse(call: Call<CommentDeleteResponse>, response: Response<CommentDeleteResponse>) {
                 if(!response.isSuccessful) return
 
-                (recyclerView.adapter as ArticleRecyclerViewAdapter).deleteComment(uid)
+                adapter.deleteComment(uid)
             }
 
             override fun onFailure(call: Call<CommentDeleteResponse>, err: Throwable) {
@@ -135,7 +140,7 @@ class ArticleDetailActivity : AuthAppCompatActivity(), SwipeRefreshLayout.OnRefr
                 val time = response.body()!!.time.toDate().formatTo("yyyy-MM-dd HH:mm")
                 val profile = SharedPreferenceManager(this@ArticleDetailActivity)
 
-                (recyclerView.adapter as ArticleRecyclerViewAdapter).addComment(
+                adapter.addComment(
                     Comment(
                         response.body()!!.uid,
                         profile.getNickname()!!,
@@ -177,7 +182,16 @@ class ArticleDetailActivity : AuthAppCompatActivity(), SwipeRefreshLayout.OnRefr
 
                 article = response.body()!!.article
                 comments = ArrayList(response.body()!!.comments)
-
+                if(article.writer == null) {
+                    article.writer = "알 수 없는 사용자"
+                    article.userImg = ""
+                }
+                comments.forEach { comment ->
+                    if(comment.writer == null) {
+                        comment.writer = "알 수 없는 사용자"
+                        comment.userImg = ""
+                    }
+                }
 
                 if (comments.isEmpty()) {
                     adapter = ArticleRecyclerViewAdapter(this@ArticleDetailActivity, article, ArrayList<Comment>())

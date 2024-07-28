@@ -12,19 +12,17 @@
         android:id="@+id/filter_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp">
+        android:layout_marginTop="30dp">
 
         <EditText
             android:id="@+id/filter"
             android:layout_width="300dp"
-            android:layout_height="40dp"
+            android:layout_height="43dp"
             android:background="@drawable/filter_button_bg"
-            android:cursorVisible="false"
-            android:fontFamily="@font/pretendard_regular"
-            android:hint="@string/filter_hint"
-            android:inputType="text"
+            android:fontFamily="@font/pretendard_medium"
             android:paddingStart="50dp"
-            android:textColor="@color/gray"
+            android:hint="다양한 검색 조건으로 검색해보세요."
+            android:textColorHint="@color/gray"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

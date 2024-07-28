@@ -73,6 +73,13 @@ data class ArticleDetailResponse (
     val comments: List<Comment>
 )
 
+data class MyArticleResponse (
+    val success: Boolean, //응답 성공 여부
+    val msg: String, //응답 실패 시 오류 메시지
+
+    val articles: List<ArticleDetail> //게시글 목록
+)
+
 @Parcelize
 data class ArticleDetail (
     val uid: String, //게시글 유니크 아이디
@@ -140,17 +147,4 @@ data class AccountCreateResponse (
 data class LikeResponse (
     val success: Boolean,
     val msg: String
-)
-
-data class LikedArticlesResponse (
-    val success: Boolean,
-    val msg: String,
-
-    val articles: List<LikedArticle>
-)
-
-data class LikedArticle (
-    val uid: String, //게시글 유니크 아이디
-
-    val contents: String, //내용
 )

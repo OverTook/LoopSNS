@@ -174,7 +174,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
             leftBottom.latitude,
             leftBottom.longitude,
             rightTop.latitude,
-            rightTop.longitude
+            rightTop.longitude,
+            googleMap.cameraPosition.zoom
         )
         articleMarkerRequest?.enqueue(object :
             Callback<ArticleMarkersResponse> {
@@ -323,7 +324,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
             append(getMapVisibleRadius())
             append("\n")
         }
-        val endString = " 개의 제보가 올라왔어요."
+        val endString = " 개의 게시물이 올라왔어요."
 
         val spannable: Spannable = SpannableString(buildString {
             append(locationString)

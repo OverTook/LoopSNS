@@ -13,8 +13,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.hci.loopsns.databinding.ActivityMainBinding
 import com.hci.loopsns.view.fragment.HomeFragment
 import com.hci.loopsns.view.fragment.NotificationsFragment
-import com.hci.loopsns.view.fragment.SettingMenuFragment
-import com.hci.loopsns.view.fragment.ViewPageAdapter2
+import com.hci.loopsns.view.fragment.ProfileFragment
+import com.hci.loopsns.view.fragment.MainViewPageAdapter
 import com.hci.loopsns.network.NetworkManager
 import com.hci.loopsns.utils.AuthAppCompatActivity
 import com.hci.loopsns.utils.DoubleBackPressHandler
@@ -23,10 +23,10 @@ class MainActivity : AuthAppCompatActivity() {
 
     private lateinit var doubleBackPressHandler: DoubleBackPressHandler
     private lateinit var binding: ActivityMainBinding
-    private lateinit var adapter: ViewPageAdapter2
+    private lateinit var adapter: MainViewPageAdapter
 
     private lateinit var homeFragment: HomeFragment
-    private lateinit var settingMenuFragment: SettingMenuFragment
+    private lateinit var profileFragment: ProfileFragment
     private lateinit var notificationsFragment: NotificationsFragment
 
     private lateinit var locationPermissionLauncher: ActivityResultLauncher<Array<String>>
@@ -40,14 +40,14 @@ class MainActivity : AuthAppCompatActivity() {
 
 
         homeFragment = HomeFragment()
-        settingMenuFragment = SettingMenuFragment()
+        profileFragment = ProfileFragment()
         notificationsFragment = NotificationsFragment()
 
         mAuth = FirebaseAuth.getInstance()
 
         // ViewPager2 어댑터 설정
-        adapter = ViewPageAdapter2(this)
-        adapter.addFragment(settingMenuFragment)
+        adapter = MainViewPageAdapter(this)
+        adapter.addFragment(profileFragment)
         adapter.addFragment(homeFragment)
         adapter.addFragment(notificationsFragment)
         binding.viewPager.adapter = adapter

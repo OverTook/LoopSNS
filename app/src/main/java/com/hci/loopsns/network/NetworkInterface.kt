@@ -43,7 +43,8 @@ interface NetworkInterface {
         @Query("lat_from") latFrom: Double,
         @Query("lng_from") lngFrom: Double,
         @Query("lat_to") latTo: Double,
-        @Query("lng_to") lngTo: Double
+        @Query("lng_to") lngTo: Double,
+        @Query("zoom_level") zoomLevel: Float
     ): Call<ArticleMarkersResponse>
 
     @GET("/get_marker_timeline")
@@ -58,11 +59,11 @@ interface NetworkInterface {
     @DELETE("/delete_comment/{article_id}/{comment_id}")
     fun deleteComment(@Path("article_id") postId: String, @Path("comment_id") commentId: String): Call<CommentDeleteResponse>
 
-//    @POST("/create/users/nickname")
-//    fun createNickname(@Body nickname: String): Call<NicknameResponse>
+    @GET("/get_user_article_list")
+    fun retrieveMyArticle(@Query("last_article_id") lastArticleId: String): Call<MyArticleResponse>
 
-//    @GET("/get/users/nickname")
-//    fun retrieveNickname(): Call<NicknameResponse>
+    @GET("/get_like_article_list")
+    fun retrieveLikeArticle(@Query("last_article_id") lastArticleId: String): Call<MyArticleResponse>
 
     @GET("/login")
     fun createAccount(
@@ -72,9 +73,5 @@ interface NetworkInterface {
 
     @POST("/add_article_like")
     fun likeArticle(@Body requestBody: LikeArticleRequest): Call<LikeResponse>
-
-    @GET("/user_liked_article_list")
-    fun retrieveLikedArticles(): Call<LikedArticlesResponse>
-
 
 }

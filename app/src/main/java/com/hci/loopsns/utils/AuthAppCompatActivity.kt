@@ -8,7 +8,7 @@ import com.hci.loopsns.R
 import com.hci.loopsns.network.NetworkManager
 import java.util.concurrent.TimeUnit
 
-open class AuthAppCompatActivity : AppCompatActivity() {
+abstract class AuthAppCompatActivity : AppCompatActivity() {
 
     object TimeHolder {
         private var lastUpdatedTime: Long = System.currentTimeMillis()

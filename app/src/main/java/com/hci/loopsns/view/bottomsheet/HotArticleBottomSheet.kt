@@ -13,6 +13,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.hci.loopsns.R
@@ -76,6 +78,7 @@ class HotArticleBottomSheet(private val articleClickAction: (Article) -> Unit, p
             Glide.with(requireContext())
                 .load(article.images[0]) //TODO 한장만?
                 .thumbnail(Glide.with(requireContext()).load(R.drawable.picture_placeholder))
+                .apply(RequestOptions.bitmapTransform(RoundedCorners(150)))
                 .into(view.findViewById<ImageView>(R.id.content_image))
         }
 
