@@ -196,7 +196,7 @@
                 android:layout_height="15dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="3dp"
-                app:srcCompat="@drawable/comment"
+                app:srcCompat="@drawable/chat_48px"
                 android:clickable="false"/>
 
             <TextView
@@ -216,7 +216,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="3dp"
-                app:srcCompat="@drawable/like"
+                app:srcCompat="@drawable/favorite_48px"
                 android:clickable="false"/>
 
             <TextView

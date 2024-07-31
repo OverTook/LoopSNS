@@ -76,17 +76,17 @@ class MainActivity : AuthAppCompatActivity() {
         // BottomNavigationView의 아이템 선택 리스너 설정
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.setting_menu -> {
+                R.id.menu_profile -> {
                     binding.viewPager.currentItem = 0
                     binding.viewPager.isUserInputEnabled = true
                     true
                 }
-                R.id.home -> {
+                R.id.menu_home -> {
                     binding.viewPager.currentItem = 1
                     binding.viewPager.isUserInputEnabled = false
                     true
                 }
-                R.id.notification -> {
+                R.id.menu_notification -> {
                     binding.viewPager.currentItem = 2
                     binding.viewPager.isUserInputEnabled = true
                     true
@@ -101,22 +101,22 @@ class MainActivity : AuthAppCompatActivity() {
                 super.onPageSelected(position)
                 when (position) {
                     0 -> {
-                        binding.bottomNavigationView.selectedItemId = R.id.setting_menu
+                        binding.bottomNavigationView.selectedItemId = R.id.menu_profile
                         binding.viewPager.isUserInputEnabled = true
                     }
                     1 -> {
-                        binding.bottomNavigationView.selectedItemId = R.id.home
+                        binding.bottomNavigationView.selectedItemId = R.id.menu_home
                         binding.viewPager.isUserInputEnabled = false
                     }
                     2 -> {
-                        binding.bottomNavigationView.selectedItemId = R.id.notification
+                        binding.bottomNavigationView.selectedItemId = R.id.menu_notification
                         binding.viewPager.isUserInputEnabled = true
                     }
                 }
             }
         })
 
-        binding.bottomNavigationView.setSelectedItemId(R.id.home)
+        binding.bottomNavigationView.setSelectedItemId(R.id.menu_home)
         binding.viewPager.isUserInputEnabled = false
 
         doubleBackPressHandler = DoubleBackPressHandler(this)

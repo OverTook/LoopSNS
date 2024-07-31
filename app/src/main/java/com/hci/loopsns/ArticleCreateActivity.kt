@@ -32,7 +32,7 @@ import com.hci.loopsns.network.geocode.AddressResult
 import com.hci.loopsns.network.geocode.ReverseGeocodingManager
 import com.hci.loopsns.utils.AuthAppCompatActivity
 import com.hci.loopsns.utils.GlideEngine
-import com.hci.loopsns.utils.MyArticleFactory
+import com.hci.loopsns.utils.factory.MyArticleFactory
 import com.hci.loopsns.utils.fadeIn
 import com.hci.loopsns.utils.fadeOut
 import com.luck.picture.lib.basic.PictureSelector

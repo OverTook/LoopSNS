@@ -1,82 +1,26 @@
 {
   "project_info": {
-    "project_number": "589625082406",
-    "firebase_url": "https://kdb-b-569e9-default-rtdb.firebaseio.com",
-    "project_id": "kdb-b-569e9",
-    "storage_bucket": "kdb-b-569e9.appspot.com"
+    "project_number": "1093774391664",
+    "project_id": "hci202401",
+    "storage_bucket": "hci202401.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:589625082406:android:c13e7e4a1f169148929ce7",
-        "android_client_info": {
-          "package_name": "com.contest.kdbstartup"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "589625082406-6p1661v3h950njunppl3ou5tonb8come.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.contest.kdbstartup",
-            "certificate_hash": "0a31628d5dee1e140b0cf6b55b0415e772ce2eaf"
-          }
-        },
-        {
-          "client_id": "589625082406-c8qa2snhj06uquegbalqpi0g24394rei.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.contest.kdbstartup",
-            "certificate_hash": "cf09530025340a2fed06187f64592b97fc6254da"
-          }
-        },
-        {
-          "client_id": "589625082406-ohpiud12q957kp9nuc1veqefm09t5e8j.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDIVbEXHED5tuBea799rkrP_rRBrSlAjeQ"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "589625082406-ohpiud12q957kp9nuc1veqefm09t5e8j.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:589625082406:android:006c75747a042daf929ce7",
+        "mobilesdk_app_id": "1:1093774391664:android:fe1d95eee425fbfcc6f7b5",
         "android_client_info": {
           "package_name": "com.hci.loopsns"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "589625082406-ohpiud12q957kp9nuc1veqefm09t5e8j.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDIVbEXHED5tuBea799rkrP_rRBrSlAjeQ"
+          "current_key": "AIzaSyAdS6sWI8GBXtyuCfx6AcEJ-7LpqwoV5dM"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "589625082406-ohpiud12q957kp9nuc1veqefm09t5e8j.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

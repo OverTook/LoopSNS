@@ -42,7 +42,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAghGa-PtyjN0NeXcBKkI63b2GejuV1prs"/>
+            android:value="AIzaSyAdS6sWI8GBXtyuCfx6AcEJ-7LpqwoV5dM"/>
 
         <activity
             android:name="com.hci.loopsns.LoginActivity"

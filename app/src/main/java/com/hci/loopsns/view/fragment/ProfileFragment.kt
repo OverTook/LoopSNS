@@ -1,24 +1,17 @@
 package com.hci.loopsns.view.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.view.MenuHost
-import androidx.core.view.MenuProvider
+import androidx.appcompat.widget.AppCompatImageButton
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
 import com.bumptech.glide.Glide
-import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.hci.loopsns.R
-import com.hci.loopsns.utils.SharedPreferenceManager
+import com.hci.loopsns.storage.SharedPreferenceManager
 import com.hci.loopsns.view.fragment.profile.ProfileMyArticleFragment
 import com.hci.loopsns.view.fragment.profile.ProfileMyLikeFragment
 
@@ -55,7 +48,7 @@ class ProfileFragment : Fragment() {
             .add(R.id.containers, myArticleFragment)
             .add(R.id.containers, myLikeFragment)
             .hide(myLikeFragment).commit()
-        //childFragmentManager.beginTransaction().add(R.id.containers, myLikeFragment).commit()
+
         view.findViewById<TabLayout>(R.id.tabLayout).addOnTabSelectedListener(object : OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 val position = tab.position
@@ -69,7 +62,6 @@ class ProfileFragment : Fragment() {
                             return
                         }
                         childFragmentManager.beginTransaction().add(R.id.containers, myArticleFragment).commit()
-                        //childFragmentManager.beginTransaction().replace(R.id.containers, myLikeFragment).commit()
                     }
                     else -> {
                         if(childFragmentManager.fragments.contains(myLikeFragment)) {
@@ -80,7 +72,6 @@ class ProfileFragment : Fragment() {
                             return
                         }
                         childFragmentManager.beginTransaction().add(R.id.containers, myLikeFragment).commit()
-                        //childFragmentManager.beginTransaction().replace(R.id.containers, myLikeFragment).commit()
                     }
                 }
 
@@ -95,12 +86,15 @@ class ProfileFragment : Fragment() {
 
         myArticleFragment.onInitializeArticle()
         myLikeFragment.onInitializeArticle()
+
+        view.findViewById<AppCompatImageButton>(R.id.settingBtn).setOnClickListener {
+            //
+        }
     }
 
     override fun onResume() {
         super.onResume()
 
-        Log.e("OnResume", "ProfileFragment")
         myLikeFragment.onResumeSelf()
         myArticleFragment.onResumeSelf()
     }

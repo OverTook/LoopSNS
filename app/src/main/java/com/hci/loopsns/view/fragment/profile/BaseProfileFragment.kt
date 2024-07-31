@@ -2,8 +2,8 @@ package com.hci.loopsns.view.fragment.profile
 
 import androidx.fragment.app.Fragment
 import com.hci.loopsns.network.ArticleDetail
-import com.hci.loopsns.utils.LikeArticleFactory
-import com.hci.loopsns.utils.MyArticleFactory
+import com.hci.loopsns.utils.factory.LikeArticleFactory
+import com.hci.loopsns.utils.factory.MyArticleFactory
 
 abstract class BaseProfileFragment : Fragment() {
 

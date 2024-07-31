@@ -90,6 +90,8 @@ dependencies {
 
     implementation("id.zelory:compressor:3.0.1") //이미지 압축 라이브러리
 
+    implementation("org.litepal.guolindev:core:3.2.3") //SQLite 사용 라이브러리
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

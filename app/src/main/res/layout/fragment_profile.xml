@@ -65,6 +65,7 @@
                 app:layout_collapseMode="pin">
 
                 <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/settingBtn"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:src="@drawable/settings_30px"

@@ -18,6 +18,7 @@ dependencyResolutionManagement {
         mavenCentral()
         maven { url = uri("https://devrepo.kakao.com/nexus/content/groups/public/") }
         maven { url = uri("https://www.jitpack.io") }
+        jcenter() //LitePal 사용을 위해 부득이한 사용
     }
 }
 

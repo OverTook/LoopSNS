@@ -1,14 +1,13 @@
-package com.hci.loopsns.utils
+package com.hci.loopsns.utils.factory
 
 import com.hci.loopsns.network.ArticleDetail
-import java.util.LinkedList
 import java.util.Queue
 import java.util.concurrent.ConcurrentLinkedQueue
 
 object MyArticleFactory {
 
-    private val createdArticles: Queue<ArticleDetail> = LinkedList<ArticleDetail>()
-    private val deletedArticles: Queue<String> = LinkedList<String>()
+    private val createdArticles: Queue<ArticleDetail> = ConcurrentLinkedQueue<ArticleDetail>()
+    private val deletedArticles: Queue<String> = ConcurrentLinkedQueue<String>()
 
     fun addCreatedArticle(articleDetail: ArticleDetail) {
         createdArticles.add(articleDetail)

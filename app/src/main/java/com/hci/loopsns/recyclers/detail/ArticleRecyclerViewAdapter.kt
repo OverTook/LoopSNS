@@ -247,6 +247,11 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity, pr
             .start()
     }
 
+    fun resetData(article: ArticleDetail, items: ArrayList<Comment>) {
+        this.article = article
+        this.items = items
+    }
+
     fun deleteComment(uid: String) {
         for (i in 0..<items.size) {
             if(items[i].uid != uid) {
@@ -258,7 +263,7 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity, pr
                 append("댓글 ")
                 append((--article.commentCount).toString())
             }
-            this.notifyItemRemoved(i)
+            this.notifyItemRemoved(i + 1) //게시글 하나 있음
             return
         }
     }
@@ -269,7 +274,7 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity, pr
             append("댓글 ")
             (++article.commentCount).toString()
         }
-        this.notifyItemInserted(1)
+        this.notifyItemInserted(1) //게시글 하나 있음
     }
 
 }

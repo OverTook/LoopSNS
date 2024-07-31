@@ -15,6 +15,7 @@ import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
 import androidx.credentials.GetCredentialResponse
 import androidx.credentials.PasswordCredential
+import androidx.credentials.exceptions.GetCredentialCancellationException
 import androidx.credentials.exceptions.GetCredentialException
 import androidx.lifecycle.lifecycleScope
 import com.hci.loopsns.network.AccountCreateResponse
@@ -36,7 +37,9 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.ktx.Firebase
-import com.hci.loopsns.utils.SharedPreferenceManager
+import com.hci.loopsns.storage.SharedPreferenceManager
+import com.hci.loopsns.storage.models.NotificationComment
+import com.hci.loopsns.storage.models.NotificationHotArticle
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.KakaoSdk
 import com.kakao.sdk.common.model.ClientError
@@ -46,6 +49,7 @@ import com.kakao.sdk.user.UserApiClient
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.litepal.LitePal
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -66,9 +70,9 @@ class LoginActivity : AppCompatActivity() {
     //신버전 먼저 시도 후 안되면 구버전으로 실행시킬 용도
     private var oldGoogleLoginjob: Job? = null
 
-
     public override fun onCreate(savedInstanceState: Bundle?) {
         KakaoSdk.init(this@LoginActivity, "df17ea99e1579611972ffbb1ff069e51");
+        LitePal.initialize(this)
 
         Log.e("Kakao Hash", Utility.getKeyHash(this))
         super.onCreate(savedInstanceState)
@@ -86,7 +90,6 @@ class LoginActivity : AppCompatActivity() {
         findViewById<SignInButton>(R.id.google_sign_btn).setOnClickListener {
             this.showDarkOverlay()
             signIn() //CredentialManager 사용 로그인
-            this.hideDarkOverlay()
         }
 
         initGoogle()
@@ -206,6 +209,10 @@ class LoginActivity : AppCompatActivity() {
                 )
                 handleSignIn(result)
             } catch (e: GetCredentialException) {
+                if(e is GetCredentialCancellationException) {
+                    this@LoginActivity.hideDarkOverlay()
+                    return@launch
+                }
                 Log.e("Google Credential Error", e.toString())
                 Snackbar.make(findViewById(R.id.main), "인증 절차에 실패했습니다.", Snackbar.LENGTH_LONG).show()
             }
@@ -323,12 +330,14 @@ class LoginActivity : AppCompatActivity() {
             Callback<AccountCreateResponse> {
             override fun onResponse(call: Call<AccountCreateResponse>, response: Response<AccountCreateResponse>) {
                 if(!response.isSuccessful) {
+                    this@LoginActivity.hideDarkOverlay()
                     Snackbar.make(findViewById(R.id.main), "회원 정보 생성에 실패하였습니다.", Snackbar.LENGTH_SHORT).show();
                     return
                 }
 
                 if(!response.body()!!.success) {
                     Log.e("Error", response.body()!!.msg)
+                    this@LoginActivity.hideDarkOverlay()
                     Snackbar.make(findViewById(R.id.main), "회원 정보 생성에 실패하였습니다.", Snackbar.LENGTH_SHORT).show();
                     return
                 }
@@ -343,6 +352,7 @@ class LoginActivity : AppCompatActivity() {
                         //토큰을 통해 NetworkManager 체인 연결
                         user!!.getIdToken(true)
                             .addOnCompleteListener { task2 ->
+                                this@LoginActivity.hideDarkOverlay()
                                 if (task2.isSuccessful) {
                                     val idToken = task2.result.token
                                     NetworkManager.initNetworkManager(idToken.toString(), user.uid)
@@ -363,14 +373,16 @@ class LoginActivity : AppCompatActivity() {
                                 }
                             }
                     } else {
-                        Snackbar.make(findViewById(R.id.main), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
+                        this@LoginActivity.hideDarkOverlay()
+                        Snackbar.make(findViewById(R.id.main), "Authentication Failed.", Snackbar.LENGTH_SHORT).show()
                     }
                 }
             }
 
             override fun onFailure(call: Call<AccountCreateResponse>, err: Throwable) {
+                this@LoginActivity.hideDarkOverlay()
                 Log.e("Network Error", "Authentication Network Failed. $err")
-                Snackbar.make(findViewById(R.id.main), "Authentication Network Failed.", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(R.id.main), "Authentication Network Failed.", Snackbar.LENGTH_SHORT).show()
             }
         })
     }

@@ -2,16 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/setting_menu"
+        android:id="@+id/menu_profile"
         android:icon="@drawable/settingmenu"
         android:title="Menu"/>
     <item
-        android:id="@+id/home"
+        android:id="@+id/menu_home"
         android:icon="@drawable/group_321"
         android:title="Home"/>
 
     <item
-        android:id="@+id/notification"
+        android:id="@+id/menu_notification"
         android:icon="@drawable/group_322"
         android:title="Notifications" />
 </menu>

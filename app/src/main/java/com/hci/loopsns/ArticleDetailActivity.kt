@@ -27,13 +27,11 @@ import com.hci.loopsns.network.LikeResponse
 import com.hci.loopsns.network.NetworkManager
 import com.hci.loopsns.recyclers.detail.ArticleRecyclerViewAdapter
 import com.hci.loopsns.utils.AuthAppCompatActivity
-import com.hci.loopsns.utils.LikeArticleFactory
-import com.hci.loopsns.utils.MyArticleFactory
-import com.hci.loopsns.utils.SharedPreferenceManager
-import com.hci.loopsns.utils.formatTo
+import com.hci.loopsns.utils.factory.LikeArticleFactory
+import com.hci.loopsns.utils.factory.MyArticleFactory
+import com.hci.loopsns.storage.SharedPreferenceManager
 import com.hci.loopsns.utils.hideDarkOverlay
 import com.hci.loopsns.utils.showDarkOverlay
-import com.hci.loopsns.utils.toDate
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -182,7 +180,6 @@ class ArticleDetailActivity : AuthAppCompatActivity(), SwipeRefreshLayout.OnRefr
             override fun onResponse(call: Call<CommentCreateResponse>, response: Response<CommentCreateResponse>) {
                 if (!response.isSuccessful) return
 
-                val time = response.body()!!.time.toDate().formatTo("yyyy-MM-dd HH:mm")
                 val profile = SharedPreferenceManager(this@ArticleDetailActivity)
 
                 adapter.addComment(
@@ -190,7 +187,7 @@ class ArticleDetailActivity : AuthAppCompatActivity(), SwipeRefreshLayout.OnRefr
                         response.body()!!.uid,
                         profile.getNickname()!!,
                         comment,
-                        time,
+                        response.body()!!.time,
                         profile.getImageURL()!!,
                         true
                     )
@@ -238,16 +235,12 @@ class ArticleDetailActivity : AuthAppCompatActivity(), SwipeRefreshLayout.OnRefr
                     }
                 }
 
+
                 if (comments.isEmpty()) {
-                    adapter = ArticleRecyclerViewAdapter(this@ArticleDetailActivity, article, ArrayList<Comment>())
-                    recyclerView.adapter = adapter
-                    recyclerView.layoutManager = LinearLayoutManager(this@ArticleDetailActivity)
+                    adapter.resetData(article, ArrayList())
                     return
                 }
-
-                adapter = ArticleRecyclerViewAdapter(this@ArticleDetailActivity, article, comments)
-                recyclerView.adapter = adapter
-                recyclerView.layoutManager = LinearLayoutManager(this@ArticleDetailActivity)
+                adapter.resetData(article, comments)
             }
 
             override fun onFailure(call: Call<ArticleDetailResponse>, err: Throwable) {

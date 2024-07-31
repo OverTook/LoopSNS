@@ -1,4 +1,4 @@
-package com.hci.loopsns.utils
+package com.hci.loopsns.storage
 
 import android.content.Context
 import android.content.SharedPreferences
