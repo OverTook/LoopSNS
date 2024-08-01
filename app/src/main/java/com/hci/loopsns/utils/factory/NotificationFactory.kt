@@ -9,8 +9,11 @@ object NotificationFactory {
     private val notifications: Queue<NotificationInterface> = ConcurrentLinkedQueue<NotificationInterface>()
     private var listener: NotificationFactoryEventListener? = null
     fun addNotification(notification: NotificationInterface) {
+        if(listener != null) {
+            listener?.onCreatedNotification(notification)
+            return
+        }
         notifications.add(notification)
-        listener?.onCreatedNotification(notification)
     }
 
     fun addEventListener(listener: NotificationFactoryEventListener) {

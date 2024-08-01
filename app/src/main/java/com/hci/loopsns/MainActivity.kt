@@ -1,34 +1,43 @@
 package com.hci.loopsns
 
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.splashscreen.SplashScreen
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.messaging.FirebaseMessaging
 import com.hci.loopsns.databinding.ActivityMainBinding
 import com.hci.loopsns.network.AddFcmTokenRequest
+import com.hci.loopsns.network.ArticleDetailResponse
 import com.hci.loopsns.network.FcmTokenResponse
 import com.hci.loopsns.view.fragment.HomeFragment
 import com.hci.loopsns.view.fragment.NotificationsFragment
 import com.hci.loopsns.view.fragment.ProfileFragment
 import com.hci.loopsns.view.fragment.MainViewPageAdapter
 import com.hci.loopsns.network.NetworkManager
-import com.hci.loopsns.utils.AuthAppCompatActivity
+import com.hci.loopsns.storage.SharedPreferenceManager
 import com.hci.loopsns.utils.DoubleBackPressHandler
+import com.hci.loopsns.utils.hideDarkOverlay
+import com.hci.loopsns.utils.showDarkOverlay
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainActivity : AuthAppCompatActivity() {
+class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListener, SplashScreen.KeepOnScreenCondition {
 
     private lateinit var doubleBackPressHandler: DoubleBackPressHandler
     private lateinit var binding: ActivityMainBinding
@@ -43,10 +52,11 @@ class MainActivity : AuthAppCompatActivity() {
 
     private var mAuth: FirebaseAuth? = null
 
+    private var splashScreenKeep = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
 
         homeFragment = HomeFragment()
@@ -74,26 +84,7 @@ class MainActivity : AuthAppCompatActivity() {
 
 
         // BottomNavigationView의 아이템 선택 리스너 설정
-        binding.bottomNavigationView.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.menu_profile -> {
-                    binding.viewPager.currentItem = 0
-                    binding.viewPager.isUserInputEnabled = true
-                    true
-                }
-                R.id.menu_home -> {
-                    binding.viewPager.currentItem = 1
-                    binding.viewPager.isUserInputEnabled = false
-                    true
-                }
-                R.id.menu_notification -> {
-                    binding.viewPager.currentItem = 2
-                    binding.viewPager.isUserInputEnabled = true
-                    true
-                }
-                else -> false
-            }
-        }
+        binding.bottomNavigationView.setOnItemSelectedListener(this)
 
         // ViewPager2 페이지 변경 콜백 설정
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
@@ -116,13 +107,82 @@ class MainActivity : AuthAppCompatActivity() {
             }
         })
 
-        binding.bottomNavigationView.setSelectedItemId(R.id.menu_home)
+        binding.viewPager.offscreenPageLimit = 3
+        binding.bottomNavigationView.selectedItemId = R.id.menu_home
         binding.viewPager.isUserInputEnabled = false
 
         doubleBackPressHandler = DoubleBackPressHandler(this)
         doubleBackPressHandler.enable()
 
-        // 알림 권한 요청 처리
+        initPermission()
+        checkNotification()
+
+        setContentView(binding.root)
+    }
+
+    fun checkNotification() {
+        when(intent.getStringExtra("type")) {
+            "comment" -> {
+                val splashScreen = installSplashScreen()
+                splashScreen.setKeepOnScreenCondition(this)
+
+                val articleId = intent.getStringExtra("articleId")
+                val commentId = intent.getStringExtra("commentId")
+
+                if(articleId == null || commentId == null) return
+
+                onClickArticle(articleId, commentId)
+            }
+            else -> {
+
+            }
+        }
+    }
+
+    private fun onClickArticle(articleId: String, commentId: String) {
+        NetworkManager.apiService.retrieveArticleDetail(articleId).enqueue(object :
+            Callback<ArticleDetailResponse> {
+            override fun onResponse(call: Call<ArticleDetailResponse>, response: Response<ArticleDetailResponse>) {
+                splashScreenKeep = false
+
+                if(!response.isSuccessful){
+                    Snackbar.make(findViewById(R.id.main), "게시글 정보를 불러올 수 없습니다.", Snackbar.LENGTH_SHORT).show()
+                    return
+                }
+
+                val articleDetail = response.body()!!.article
+                val comments = response.body()!!.comments
+
+                if(articleDetail.writer == null) {
+                    articleDetail.writer = "알 수 없는 사용자"
+                    articleDetail.userImg = ""
+                }
+                comments.forEach { comment ->
+                    if(comment.writer == null) {
+                        comment.writer = "알 수 없는 사용자"
+                        comment.userImg = ""
+                    }
+                }
+
+                val intent = Intent(
+                    this@MainActivity,
+                    ArticleDetailActivity::class.java
+                )
+
+                intent.putExtra("move", commentId)
+                intent.putExtra("article", articleDetail)
+                intent.putParcelableArrayListExtra("comments", ArrayList(comments))
+                startActivity(intent)
+            }
+
+            override fun onFailure(call: Call<ArticleDetailResponse>, err: Throwable) {
+                splashScreenKeep = false
+                Log.e("NotificationsFragment", "게시글 불러오기 실패$err")
+            }
+        })
+    }
+
+    fun initPermission() {
         notificationPermissionLauncher = registerForActivityResult(
             ActivityResultContracts.RequestPermission()) { isGranted ->
             if (!isGranted) {
@@ -189,7 +249,7 @@ class MainActivity : AuthAppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if(mAuth!!.currentUser == null || !NetworkManager.isInitialized) {
+        if(mAuth!!.currentUser == null || NetworkManager.token.token.isEmpty()) {
             finish()
         }
     }
@@ -198,15 +258,15 @@ class MainActivity : AuthAppCompatActivity() {
         homeFragment.initGPS()
 
         // FCM 토큰 받아오기
-        val sharedPreferences = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-        val savedToken = sharedPreferences.getString("fcmToken", null)
+        val sharedPreferences = SharedPreferenceManager(this)
+        val (savedToken, tokenChanged) = sharedPreferences.getFcmToken()
 
         // sharedPreference에 토큰 값이 없다면 FCM 토큰을 받아옴
         if (savedToken.isNullOrEmpty()) {
             FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val fcmToken = task.result
-                    sharedPreferences.edit().putString("fcmToken", fcmToken).apply()
+                    sharedPreferences.saveFcmToken(fcmToken, false)
                     // FCM 토큰을 서버로 전송
                     sendFcmTokenToServer(fcmToken)
                     Log.d("token", "FCM Token: $fcmToken")
@@ -221,8 +281,8 @@ class MainActivity : AuthAppCompatActivity() {
                     notificationPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
                 }
             }
-        } else {
-            Log.d("token", "이미 있음 FCM Token: $savedToken")
+        } else if(tokenChanged) {
+            sendFcmTokenToServer(savedToken)
         }
     }
 
@@ -234,5 +294,30 @@ class MainActivity : AuthAppCompatActivity() {
         touchSlopField.isAccessible = true
         val touchSlop = touchSlopField.get(recyclerView) as Int
         touchSlopField.set(recyclerView, touchSlop*f) //8기본
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_profile -> {
+                binding.viewPager.currentItem = 0
+                binding.viewPager.isUserInputEnabled = true
+                true
+            }
+            R.id.menu_home -> {
+                binding.viewPager.currentItem = 1
+                binding.viewPager.isUserInputEnabled = false
+                true
+            }
+            R.id.menu_notification -> {
+                binding.viewPager.currentItem = 2
+                binding.viewPager.isUserInputEnabled = true
+                true
+            }
+            else -> false
+        }
+    }
+
+    override fun shouldKeepOnScreen(): Boolean {
+        return splashScreenKeep
     }
 }

@@ -240,10 +240,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
     fun updateLocationText() {
         val context = requireContext()
 
-//        Log.e("Send latlng", googleMap.cameraPosition.target.latitude.toString() +
-//                "," +
-//                googleMap.cameraPosition.target.longitude.toString())
-
         val ai: ApplicationInfo = context.packageManager.getApplicationInfo(context.packageName, PackageManager.GET_META_DATA)
 
         ReverseGeocodingManager.apiService.getAddress(
@@ -260,14 +256,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
                 if(body.results.isEmpty()) {
                    return
                 }
-
-//                body.results.forEach { item ->
-//                    Log.e("Item", item.formattedAddress)
-//                    Log.e("Item Tag", item.types.joinToString(", "))
-//                    item.addressComponents.forEach { item2 ->
-//                        Log.e("Component", item2.longName + "  " + item2.types.joinToString(", "))
-//                    }
-//                }
 
                 body.results.forEach {
                     if(it.types.contains("sublocality_level_1")) {

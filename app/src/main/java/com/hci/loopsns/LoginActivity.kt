@@ -3,11 +3,14 @@ package com.hci.loopsns
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.credentials.CredentialManager
@@ -38,8 +41,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.ktx.Firebase
 import com.hci.loopsns.storage.SharedPreferenceManager
-import com.hci.loopsns.storage.models.NotificationComment
-import com.hci.loopsns.storage.models.NotificationHotArticle
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.KakaoSdk
 import com.kakao.sdk.common.model.ClientError
@@ -55,7 +56,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity(), View.OnClickListener, SplashScreen.KeepOnScreenCondition {
 
     //뒤로가기 기능
     private val doubleBackPressHandler = DoubleBackPressHandler(this)
@@ -70,11 +71,19 @@ class LoginActivity : AppCompatActivity() {
     //신버전 먼저 시도 후 안되면 구버전으로 실행시킬 용도
     private var oldGoogleLoginjob: Job? = null
 
+    //Splash Screen
+    private var splashScreenKeep = true
+
     public override fun onCreate(savedInstanceState: Bundle?) {
+        val splashScreen = installSplashScreen()
+        splashScreen.setKeepOnScreenCondition(this)
+
         KakaoSdk.init(this@LoginActivity, "df17ea99e1579611972ffbb1ff069e51");
         LitePal.initialize(this)
+        mAuth = FirebaseAuth.getInstance()
 
         Log.e("Kakao Hash", Utility.getKeyHash(this))
+        
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_login)
@@ -85,67 +94,16 @@ class LoginActivity : AppCompatActivity() {
             insets
         }
 
-        mAuth = FirebaseAuth.getInstance()
+        findViewById<SignInButton>(R.id.google_sign_btn).setOnClickListener(this)
+        findViewById<Button>(R.id.kakao_sign_btn).setOnClickListener(this)
 
-        findViewById<SignInButton>(R.id.google_sign_btn).setOnClickListener {
-            this.showDarkOverlay()
-            signIn() //CredentialManager 사용 로그인
-        }
-
-        initGoogle()
-        initKakao()
+        initOldGoogle()
         doubleBackPressHandler.enable()
-
-//        val intent = Intent(
-//            this@LoginActivity,
-//            MainActivity::class.java
-//        )
-//        startActivity(intent)
     }
 
-    private fun initKakao(){
-        val kakaoSignInButton = findViewById<Button>(R.id.kakao_sign_btn)
-        kakaoSignInButton.setOnClickListener {
-            this.showDarkOverlay()
-
-            val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
-                if (error != null) {
-                    this.hideDarkOverlay()
-                    Snackbar.make(findViewById(R.id.main), "로그인에 실패하였습니다.", Snackbar.LENGTH_LONG).show()
-                } else if (token != null) {
-                    //아래처럼 조작이 가능해진다는 문제점을 해결
-                    //mAuth!!.createUserWithEmailAndPassword("fake@fake.com", "fakepassword")
-
-                    kakaoInfoSave()
-                    retrieveCustomToken("kakao", token.accessToken)
-                }
-            }
-
-            if (UserApiClient.instance.isKakaoTalkLoginAvailable(this@LoginActivity)) {
-                UserApiClient.instance.loginWithKakaoTalk(this@LoginActivity) { token, error ->
-                    if (error != null) {
-                        Log.e("Kakao Login", "카카오톡으로 로그인 실패", error)
-
-                        if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
-                            this.hideDarkOverlay()
-                            Snackbar.make(findViewById(R.id.main), "로그인을 취소하였습니다.", Snackbar.LENGTH_LONG).show()
-                            return@loginWithKakaoTalk
-                        }
-
-                        UserApiClient.instance.loginWithKakaoAccount(this@LoginActivity, callback = callback)
-                    } else if (token != null) {
-                        kakaoInfoSave()
-                        retrieveCustomToken("kakao", token.accessToken)
-                    }
-                }
-            } else {
-                UserApiClient.instance.loginWithKakaoAccount(this@LoginActivity, callback = callback)
-            }
-        }
-    }
     
     @Deprecated("구버전 API 사용 중, 이후 CredentialManager 관련 문제 해결 시 삭제")
-    private fun initGoogle(){
+    private fun initOldGoogle(){
         activityResultLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ) { result ->
@@ -220,6 +178,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun handleSignIn(result: GetCredentialResponse) {
+        oldGoogleLoginjob?.cancel() //신 버전 로그인 결과가 수신되었으므로 취소
         when (val credential = result.credential) {
             //TODO 7월 9일 구글 로그인 인증 방식 다양화 필요
             is PasswordCredential -> {
@@ -266,7 +225,10 @@ class LoginActivity : AppCompatActivity() {
         super.onStart()
         if (isUserNonNull()) {
             updateUI()
+            return
         }
+
+        splashScreenKeep = false
     }
 
     public override fun onPause() {
@@ -290,15 +252,22 @@ class LoginActivity : AppCompatActivity() {
 
         mAuth!!.currentUser!!.getIdToken(true)
             .addOnCompleteListener { task ->
+                splashScreenKeep = false
+
                 if (task.isSuccessful) {
                     val idToken = task.result.token
                     NetworkManager.initNetworkManager(idToken.toString(), mAuth!!.currentUser!!.uid)
 
-                    val intent = Intent(
+                    val newIntent = Intent(
                         this@LoginActivity,
                         MainActivity::class.java
                     )
-                    startActivity(intent)
+
+                    if(intent.extras != null) {
+                        newIntent.putExtras(intent.extras!!)
+                    }
+
+                    startActivity(newIntent)
                 } else {
                     Snackbar.make(
                         findViewById(R.id.main),
@@ -359,11 +328,16 @@ class LoginActivity : AppCompatActivity() {
 
                                     Firebase.crashlytics.setUserId(user.uid) //파이어베이스 보고 아이디 설정
 
-                                    val intent = Intent(
+                                    val newIntent = Intent(
                                         this@LoginActivity,
                                         MainActivity::class.java
                                     )
-                                    startActivity(intent)
+
+                                    if(intent.extras != null) {
+                                        newIntent.putExtras(intent.extras!!)
+                                    }
+
+                                    startActivity(newIntent)
                                 } else {
                                     Snackbar.make(
                                         findViewById(R.id.main),
@@ -385,5 +359,57 @@ class LoginActivity : AppCompatActivity() {
                 Snackbar.make(findViewById(R.id.main), "Authentication Network Failed.", Snackbar.LENGTH_SHORT).show()
             }
         })
+    }
+
+    override fun onClick(view: View?) {
+        if(view == null) return
+
+        when(view.id) {
+            R.id.kakao_sign_btn -> {
+                this.showDarkOverlay()
+
+                val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
+                    if (error != null) {
+                        this.hideDarkOverlay()
+                        Snackbar.make(findViewById(R.id.main), "로그인에 실패하였습니다.", Snackbar.LENGTH_LONG).show()
+                    } else if (token != null) {
+                        //아래처럼 조작이 가능해진다는 문제점을 해결
+                        //mAuth!!.createUserWithEmailAndPassword("fake@fake.com", "fakepassword")
+
+                        kakaoInfoSave()
+                        retrieveCustomToken("kakao", token.accessToken)
+                    }
+                }
+
+                if (UserApiClient.instance.isKakaoTalkLoginAvailable(this@LoginActivity)) {
+                    UserApiClient.instance.loginWithKakaoTalk(this@LoginActivity) { token, error ->
+                        if (error != null) {
+                            Log.e("Kakao Login", "카카오톡으로 로그인 실패", error)
+
+                            if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
+                                this.hideDarkOverlay()
+                                Snackbar.make(findViewById(R.id.main), "로그인을 취소하였습니다.", Snackbar.LENGTH_LONG).show()
+                                return@loginWithKakaoTalk
+                            }
+
+                            UserApiClient.instance.loginWithKakaoAccount(this@LoginActivity, callback = callback)
+                        } else if (token != null) {
+                            kakaoInfoSave()
+                            retrieveCustomToken("kakao", token.accessToken)
+                        }
+                    }
+                } else {
+                    UserApiClient.instance.loginWithKakaoAccount(this@LoginActivity, callback = callback)
+                }
+            }
+            R.id.google_sign_btn -> {
+                this.showDarkOverlay()
+                signIn() //CredentialManager 사용 로그인
+            }
+        }
+    }
+
+    override fun shouldKeepOnScreen(): Boolean {
+        return splashScreenKeep
     }
 }

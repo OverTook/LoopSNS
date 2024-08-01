@@ -4,10 +4,13 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
+import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.IntentCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -26,7 +29,6 @@ import com.hci.loopsns.network.LikeArticleRequest
 import com.hci.loopsns.network.LikeResponse
 import com.hci.loopsns.network.NetworkManager
 import com.hci.loopsns.recyclers.detail.ArticleRecyclerViewAdapter
-import com.hci.loopsns.utils.AuthAppCompatActivity
 import com.hci.loopsns.utils.factory.LikeArticleFactory
 import com.hci.loopsns.utils.factory.MyArticleFactory
 import com.hci.loopsns.storage.SharedPreferenceManager
@@ -37,7 +39,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class ArticleDetailActivity : AuthAppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
+class ArticleDetailActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener, TextView.OnEditorActionListener, View.OnClickListener {
 
     private lateinit var adapter: ArticleRecyclerViewAdapter
     private lateinit var recyclerView: RecyclerView
@@ -56,24 +58,14 @@ class ArticleDetailActivity : AuthAppCompatActivity(), SwipeRefreshLayout.OnRefr
             insets
         }
 
-        findViewById<ImageButton>(R.id.backButton).setOnClickListener {
-            finish()
-        }
-
-        val input: EditText = findViewById(R.id.comment_input)
-        input.setOnEditorActionListener { _, actionId, event ->
-            if (actionId == EditorInfo.IME_ACTION_SEND ||
-                (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)) {
-                hideKeyboard()
-                createComment(input.text.toString())
-                input.text.clear()
-                return@setOnEditorActionListener true
-            }
-            return@setOnEditorActionListener false
-        }
-
+        findViewById<EditText>(R.id.comment_input).setOnEditorActionListener(this)
+        findViewById<ImageButton>(R.id.backButton).setOnClickListener(this)
         findViewById<SwipeRefreshLayout>(R.id.swipeLayout).setOnRefreshListener(this)
 
+        parseIntentData()
+    }
+
+    fun parseIntentData() {
         article = IntentCompat.getParcelableExtra(intent, "article", ArticleDetail::class.java)!!
         comments = IntentCompat.getParcelableArrayListExtra(intent, "comments", Comment::class.java)!!
 
@@ -87,8 +79,27 @@ class ArticleDetailActivity : AuthAppCompatActivity(), SwipeRefreshLayout.OnRefr
         }
 
         adapter = ArticleRecyclerViewAdapter(this, article, comments)
+        val commentId = intent.getStringExtra("move")
+        if(commentId == null) {
+            recyclerView.adapter = adapter
+            recyclerView.layoutManager = LinearLayoutManager(this)
+            return
+        }
+
+        var highlightCommentIndex = -1
+        for(i in 0..<comments.size) {
+            if(comments[i].uid != commentId) {
+                continue
+            }
+
+            adapter.commentHighlight = i
+            highlightCommentIndex = i
+            break
+        }
+
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.smoothScrollToPosition(highlightCommentIndex + 2)
     }
 
     fun deleteArticle() {
@@ -249,5 +260,26 @@ class ArticleDetailActivity : AuthAppCompatActivity(), SwipeRefreshLayout.OnRefr
                 Log.e("ArticleDetailActivity", "게시글 불러오기 실패$err")
             }
         })
+    }
+
+    override fun onEditorAction(inputView: TextView?, actionId: Int, event: KeyEvent?): Boolean {
+        if (actionId == EditorInfo.IME_ACTION_SEND ||
+            (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)) {
+            hideKeyboard()
+            createComment(inputView?.text.toString())
+            (inputView!! as EditText).text.clear()
+            return true
+        }
+        return false
+    }
+
+    override fun onClick(view: View?) {
+        if(view == null) return
+
+        when(view.id) {
+            R.id.backButton -> {
+                finish()
+            }
+        }
     }
 }

@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator
 import android.animation.TimeInterpolator
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,13 +31,11 @@ import com.hci.loopsns.utils.toDate
 class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity, private var article: ArticleDetail, private var items: ArrayList<Comment>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var commentCountView: TextView? = null
-
-    private var widthAnimator: ObjectAnimator? = null
-    private var heightAnimator: ObjectAnimator? = null
+    var commentHighlight = -1
 
     val originalLike: Boolean = article.isLiked
 
-    class ArticleHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ArticleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val writer: TextView = itemView.findViewById(R.id.writer_name)
         val time: TextView = itemView.findViewById(R.id.write_time)
 
@@ -59,7 +58,9 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity, pr
         val optionButton: ImageButton = itemView.findViewById(R.id.optionBtn)
     }
 
-    class CommentHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class CommentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val root: ConstraintLayout = itemView.findViewById(R.id.main)
+
         val writer: TextView = itemView.findViewById(R.id.comment_writer_name)
         val profileImage: ImageView = itemView.findViewById(R.id.comment_profile_image)
         val time: TextView = itemView.findViewById(R.id.comment_time)
@@ -81,11 +82,11 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity, pr
         return when (viewType) {
             ViewType.ARTICLE -> {
                 view = inflater.inflate(R.layout.activity_article_detail_article_item, parent, false)
-                ArticleHolder(view)
+                ArticleViewHolder(view)
             }
             ViewType.COMMENT -> {
                 view = inflater.inflate(R.layout.activity_article_detail_comment_item, parent, false)
-                CommentHolder(view)
+                CommentViewHolder(view)
             }
             else -> {
                 //TODO 광고 게시글 댓글 기능?
@@ -98,7 +99,7 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity, pr
     override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
         super.onViewRecycled(holder)
 
-        if(holder !is ArticleHolder) {
+        if(holder !is ArticleViewHolder) {
             return
         }
 
@@ -108,7 +109,7 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity, pr
     @SuppressLint("ClickableViewAccessibility")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when(holder) {
-            is ArticleHolder -> {
+            is ArticleViewHolder -> {
                 if(article.userImg.isNotBlank()) {
                     Glide.with(activity)
                         .load(article.userImg)
@@ -187,9 +188,14 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity, pr
                     }
                 }
             }
-            is CommentHolder -> {
+            is CommentViewHolder -> {
                 val item = items[position - 1] //게시글 한 개 빼야함
 
+                if(position - 1 == commentHighlight) {
+                    holder.root.setBackgroundColor(Color.rgb(230, 230, 230))
+                } else {
+                    holder.root.setBackgroundColor(Color.rgb(255, 255, 255))
+                }
 
                 holder.writer.text = item.writer
                 holder.time.text = item.time.toDate().formatTo("yyyy-MM-dd HH:mm")
@@ -270,11 +276,10 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity, pr
 
     fun addComment(comment: Comment) {
         this.items.add(0, comment)
-        commentCountView?.text =  buildString {
+        commentCountView?.text = buildString {
             append("댓글 ")
-            (++article.commentCount).toString()
+            append((++article.commentCount).toString())
         }
         this.notifyItemInserted(1) //게시글 하나 있음
     }
-
 }

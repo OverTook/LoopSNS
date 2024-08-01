@@ -21,7 +21,6 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.android.flexbox.FlexboxLayout
 import com.hci.loopsns.R
 import com.hci.loopsns.network.ArticleDetail
-import com.hci.loopsns.recyclers.detail.ArticleRecyclerViewAdapter.ArticleHolder
 import com.hci.loopsns.utils.formatTo
 import com.hci.loopsns.utils.toDate
 import com.hci.loopsns.view.fragment.profile.BaseProfileFragment

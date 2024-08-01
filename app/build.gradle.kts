@@ -92,6 +92,8 @@ dependencies {
 
     implementation("org.litepal.guolindev:core:3.2.3") //SQLite 사용 라이브러리
 
+    implementation("androidx.core:core-splashscreen:1.0.0") //스플래시 스크린
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

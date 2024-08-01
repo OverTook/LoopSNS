@@ -9,13 +9,13 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
@@ -30,7 +30,6 @@ import com.hci.loopsns.network.NetworkManager
 import com.hci.loopsns.network.geocode.AddressResponse
 import com.hci.loopsns.network.geocode.AddressResult
 import com.hci.loopsns.network.geocode.ReverseGeocodingManager
-import com.hci.loopsns.utils.AuthAppCompatActivity
 import com.hci.loopsns.utils.GlideEngine
 import com.hci.loopsns.utils.factory.MyArticleFactory
 import com.hci.loopsns.utils.fadeIn
@@ -52,10 +51,7 @@ import java.io.File
 import java.util.Locale
 
 
-class ArticleCreateActivity : AuthAppCompatActivity() {
-
-    private lateinit var permissionLauncher: ActivityResultLauncher<Array<String>> //이미지 요청 목적
-    private var permissionCallback: ((Map<String, Boolean>) -> Unit)? = null
+class ArticleCreateActivity : AppCompatActivity(), View.OnClickListener {
 
     private var picture: String = "" //지금은 한 장만 처리
 
@@ -72,94 +68,14 @@ class ArticleCreateActivity : AuthAppCompatActivity() {
             insets
         }
 
-        permissionLauncher = registerForActivityResult(
-            ActivityResultContracts.RequestMultiplePermissions()) {
+        findViewById<ImageButton>(R.id.backButton).setOnClickListener(this)
+        findViewById<Button>(R.id.addPictureButton).setOnClickListener(this)
+        findViewById<Button>(R.id.submit).setOnClickListener(this)
 
-            permissionCallback?.invoke(it)
-            permissionCallback = null
-        }
+        parseIntentData()
+    }
 
-        findViewById<ImageButton>(R.id.backButton).setOnClickListener {
-            finish()
-        }
-
-        findViewById<Button>(R.id.addPictureButton).setOnClickListener {
-            PictureSelector.create(this)
-                .openGallery(SelectMimeType.ofImage())
-                .setImageEngine(GlideEngine.createGlideEngine())
-                .forResult(object : OnResultCallbackListener<LocalMedia?> {
-                    override fun onResult(result: ArrayList<LocalMedia?>) {
-                        if(result.size > 1) {
-                            Snackbar.make(findViewById(R.id.main), "사진은 한 장을 넘길 수 없습니다.", Snackbar.LENGTH_SHORT).show()
-                            return
-                        }
-                        result.forEach {
-                            if(it != null) {
-                                picture = it.availablePath
-                                Glide.with(this@ArticleCreateActivity)
-                                    .load(it.availablePath)
-                                    .into(findViewById(R.id.attachment_picture))
-
-                                return
-                            }
-                        }
-                    }
-
-                    override fun onCancel() {
-                    }
-                })
-        }
-
-        val animation = findViewById<LottieAnimationView>(R.id.loadingAnim)
-        val inputText = findViewById<EditText>(R.id.contentText)
-        findViewById<Button>(R.id.submit).setOnClickListener {
-            if(inputText.text.length <= 15) {
-                Snackbar.make(findViewById(R.id.main), "내용이 충분하지 않습니다.", Snackbar.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            animation.fadeIn(0.85F, 200)
-
-            hideKeyboard()
-
-            var image: MultipartBody.Part? = null
-            val description = inputText.text.toString().toRequestBody("text/plain".toMediaTypeOrNull())
-
-            if(picture.isNotEmpty()) {
-                val file = File(getRealPathFromUri(Uri.parse(picture), this@ArticleCreateActivity)!!)
-
-                val requestFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
-                image = MultipartBody.Part.createFormData("images", file.name, requestFile)
-            }
-
-
-            NetworkManager.apiService.retrieveCategory(listOf(image), description).enqueue(object :
-                Callback<CategoryResponse> {
-                override fun onResponse(call: Call<CategoryResponse>, response: Response<CategoryResponse>) {
-                    animation.fadeOut(200)
-
-                    if(call.isCanceled) return
-                    if(!response.isSuccessful) {
-                        Log.e("RetrieveCategory", "Failed With HTTP Code" + response.code())
-                        return
-                    }
-                    val result = response.body()!!
-                    if(result.categories == null || result.categories.size != 2) {
-                        Snackbar.make(findViewById(R.id.main), "서버 내부 오류로 카테고리 분석이 불가능합니다.", Snackbar.LENGTH_SHORT).show()
-                        return
-                    }
-
-                    SelectCategoryBottomSheet()
-                        .setData(result.categories, result.keywords!!, ::createArticle)
-                        .show(supportFragmentManager, "SelectCategoryBottomSheetTag")
-                }
-
-                override fun onFailure(call: Call<CategoryResponse>, err: Throwable) {
-                    Log.e("RetrieveCategory", "Failed $err")
-                }
-            })
-        }
-
+    fun parseIntentData() {
         x = intent.getDoubleExtra("x", 0.0)
         y = intent.getDoubleExtra("y", 0.0)
         getLocation()
@@ -361,6 +277,92 @@ class ArticleCreateActivity : AuthAppCompatActivity() {
 
         runOnUiThread {
             findViewById<TextView>(R.id.locationEditText).text = addressText
+        }
+    }
+
+    override fun onClick(view: View?) {
+        if(view == null) return
+
+        when(view.id) {
+            R.id.backButton -> {
+                finish()
+            }
+            R.id.addPictureButton -> {
+                PictureSelector.create(this)
+                    .openGallery(SelectMimeType.ofImage())
+                    .setImageEngine(GlideEngine.createGlideEngine())
+                    .forResult(object : OnResultCallbackListener<LocalMedia?> {
+                        override fun onResult(result: ArrayList<LocalMedia?>) {
+                            if(result.size > 1) {
+                                Snackbar.make(findViewById(R.id.main), "사진은 한 장을 넘길 수 없습니다.", Snackbar.LENGTH_SHORT).show()
+                                return
+                            }
+                            result.forEach {
+                                if(it != null) {
+                                    picture = it.availablePath
+                                    Glide.with(this@ArticleCreateActivity)
+                                        .load(it.availablePath)
+                                        .into(findViewById(R.id.attachment_picture))
+
+                                    return
+                                }
+                            }
+                        }
+
+                        override fun onCancel() {
+                        }
+                    })
+            }
+            R.id.submit -> {
+                val animation = findViewById<LottieAnimationView>(R.id.loadingAnim)
+                val inputText = findViewById<EditText>(R.id.contentText)
+
+                if(inputText.text.length <= 15) {
+                    Snackbar.make(findViewById(R.id.main), "내용이 충분하지 않습니다.", Snackbar.LENGTH_SHORT).show()
+                    return
+                }
+
+                animation.fadeIn(0.85F, 200)
+
+                hideKeyboard()
+
+                var image: MultipartBody.Part? = null
+                val description = inputText.text.toString().toRequestBody("text/plain".toMediaTypeOrNull())
+
+                if(picture.isNotEmpty()) {
+                    val file = File(getRealPathFromUri(Uri.parse(picture), this@ArticleCreateActivity)!!)
+
+                    val requestFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
+                    image = MultipartBody.Part.createFormData("images", file.name, requestFile)
+                }
+
+
+                NetworkManager.apiService.retrieveCategory(listOf(image), description).enqueue(object :
+                    Callback<CategoryResponse> {
+                    override fun onResponse(call: Call<CategoryResponse>, response: Response<CategoryResponse>) {
+                        animation.fadeOut(200)
+
+                        if(call.isCanceled) return
+                        if(!response.isSuccessful) {
+                            Log.e("RetrieveCategory", "Failed With HTTP Code" + response.code())
+                            return
+                        }
+                        val result = response.body()!!
+                        if(result.categories == null || result.categories.size != 2) {
+                            Snackbar.make(findViewById(R.id.main), "서버 내부 오류로 카테고리 분석이 불가능합니다.", Snackbar.LENGTH_SHORT).show()
+                            return
+                        }
+
+                        SelectCategoryBottomSheet()
+                            .setData(result.categories, result.keywords!!, ::createArticle)
+                            .show(supportFragmentManager, "SelectCategoryBottomSheetTag")
+                    }
+
+                    override fun onFailure(call: Call<CategoryResponse>, err: Throwable) {
+                        Log.e("RetrieveCategory", "Failed $err")
+                    }
+                })
+            }
         }
     }
 }

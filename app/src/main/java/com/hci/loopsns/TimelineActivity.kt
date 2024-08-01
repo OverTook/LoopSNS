@@ -15,7 +15,6 @@ import com.hci.loopsns.network.Article
 import com.hci.loopsns.network.ArticleDetailResponse
 import com.hci.loopsns.network.NetworkManager
 import com.hci.loopsns.recyclers.timeline.ArticleRecyclerViewAdapter
-import com.hci.loopsns.utils.AuthAppCompatActivity
 import com.hci.loopsns.utils.hideDarkOverlay
 import com.hci.loopsns.utils.showDarkOverlay
 import retrofit2.Call
@@ -23,7 +22,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class TimelineActivity : AuthAppCompatActivity() {
+class TimelineActivity : AppCompatActivity() {
 
     private lateinit var adapter: ArticleRecyclerViewAdapter
     private lateinit var recyclerView: RecyclerView
@@ -40,8 +39,11 @@ class TimelineActivity : AuthAppCompatActivity() {
 
         recyclerView = findViewById(R.id.article_recycler)
 
-        val articleList = IntentCompat.getParcelableArrayListExtra(intent, "articles", Article::class.java)
+        parseIntentData()
+    }
 
+    fun parseIntentData() {
+        val articleList = IntentCompat.getParcelableArrayListExtra(intent, "articles", Article::class.java)
 
         if (articleList.isNullOrEmpty()) {
             adapter = ArticleRecyclerViewAdapter(::onClickArticle, emptyList())

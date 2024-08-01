@@ -5,21 +5,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.hci.loopsns.R
 import com.hci.loopsns.storage.models.NotificationComment
 import com.hci.loopsns.storage.models.NotificationHotArticle
 import com.hci.loopsns.storage.models.NotificationInterface
 import com.hci.loopsns.utils.formatTo
+import kotlin.reflect.KFunction2
 
-class NotificationRecyclerViewAdapter(private var items: ArrayList<NotificationInterface>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class NotificationRecyclerViewAdapter(private val articleClickAction: KFunction2<String, String, Unit>, private var items: ArrayList<NotificationInterface>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     class CommentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val root = itemView.findViewById<ConstraintLayout>(R.id.main)
         val body = itemView.findViewById<TextView>(R.id.body)
         val time = itemView.findViewById<TextView>(R.id.time)
     }
 
     class HotArticleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val root = itemView.findViewById<ConstraintLayout>(R.id.main)
         val body = itemView.findViewById<TextView>(R.id.body)
         val time = itemView.findViewById<TextView>(R.id.time)
     }
@@ -28,7 +32,11 @@ class NotificationRecyclerViewAdapter(private var items: ArrayList<NotificationI
         val item = items[position]
         when(item) {
             is NotificationComment -> {
-                (holder as CommentViewHolder).body.text = buildString {
+                (holder as CommentViewHolder).root.setOnClickListener {
+                    articleClickAction(item.articleId, item.commentId)
+                }
+
+                holder.body.text = buildString {
                     append(item.writer)
                     append(": ")
                     append(item.contents)
@@ -80,6 +88,10 @@ class NotificationRecyclerViewAdapter(private var items: ArrayList<NotificationI
                 return ViewType.HOT_ARTICLE
             }
         }
+    }
+
+    fun resetData(items: ArrayList<NotificationInterface>) {
+        this.items = items
     }
 
     fun addNotification(item: NotificationInterface) {

@@ -12,8 +12,9 @@ import com.hci.loopsns.R
 import com.hci.loopsns.network.Article
 import com.hci.loopsns.utils.formatTo
 import com.hci.loopsns.utils.toDate
+import kotlin.reflect.KFunction1
 
-class ArticleRecyclerViewAdapter(private val articleClickAction: (Article) -> Unit, private var items: List<Article>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ArticleRecyclerViewAdapter(private val articleClickAction: KFunction1<Article, Unit>, private var items: List<Article>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     class HotViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val root: ConstraintLayout = itemView.findViewById(R.id.hot_article)
