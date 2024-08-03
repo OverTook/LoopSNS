@@ -8,11 +8,12 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.hci.loopsns.R
+import kotlin.reflect.KFunction0
 
 class CommentOptionBottomSheet : BottomSheetDialogFragment() {
 
     private var canDelete = false
-    private var deleteAction: ((String) -> Unit)? = null
+    private lateinit var deleteAction: () -> Unit
     private lateinit var uid: String
 
     override fun onCreateView(
@@ -23,7 +24,7 @@ class CommentOptionBottomSheet : BottomSheetDialogFragment() {
 
         viewOfLayout.findViewById<TextView>(R.id.deleteText).text = "댓글 삭제하기"
         viewOfLayout.findViewById<ConstraintLayout>(R.id.deleteItem).setOnClickListener {
-            deleteAction?.invoke(uid)
+            deleteAction.invoke()
             dismiss()
         }
 
@@ -35,7 +36,7 @@ class CommentOptionBottomSheet : BottomSheetDialogFragment() {
         return viewOfLayout
     }
 
-    public fun setData(canDelete: Boolean, uid: String, deleteAction: (String) -> Unit): CommentOptionBottomSheet {
+    public fun setData(canDelete: Boolean, uid: String, deleteAction: () -> Unit): CommentOptionBottomSheet {
         this.canDelete = canDelete
         this.deleteAction = deleteAction
         this.uid = uid

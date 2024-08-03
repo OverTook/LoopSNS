@@ -1,6 +1,8 @@
 package com.hci.loopsns.recyclers.notification
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,9 +14,10 @@ import com.hci.loopsns.storage.models.NotificationComment
 import com.hci.loopsns.storage.models.NotificationHotArticle
 import com.hci.loopsns.storage.models.NotificationInterface
 import com.hci.loopsns.utils.formatTo
-import kotlin.reflect.KFunction2
+import java.lang.reflect.Type
+import kotlin.reflect.KFunction1
 
-class NotificationRecyclerViewAdapter(private val articleClickAction: KFunction2<String, String, Unit>, private var items: ArrayList<NotificationInterface>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class NotificationRecyclerViewAdapter(private val notificationClickAction: KFunction1<NotificationInterface, Unit>, private var items: ArrayList<NotificationInterface>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     class CommentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val root = itemView.findViewById<ConstraintLayout>(R.id.main)
@@ -33,7 +36,14 @@ class NotificationRecyclerViewAdapter(private val articleClickAction: KFunction2
         when(item) {
             is NotificationComment -> {
                 (holder as CommentViewHolder).root.setOnClickListener {
-                    articleClickAction(item.articleId, item.commentId)
+                    holder.root.setBackgroundColor(Color.rgb(255, 255, 255))
+                    notificationClickAction(item)
+                }
+
+                if(item.readed) {
+                    holder.root.setBackgroundColor(Color.rgb(255, 255, 255))
+                } else {
+                    holder.root.setBackgroundColor(Color.rgb(255, 233, 233))
                 }
 
                 holder.body.text = buildString {
@@ -90,12 +100,29 @@ class NotificationRecyclerViewAdapter(private val articleClickAction: KFunction2
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun resetData(items: ArrayList<NotificationInterface>) {
         this.items = items
+        this.notifyDataSetChanged()
+    }
+
+    fun addNotifications(items: List<NotificationInterface>) {
+        this.items.addAll(items)
+        this.notifyItemRangeInserted(this.items.size, items.size)
     }
 
     fun addNotification(item: NotificationInterface) {
-        items.add(0, item)
+        this.items.add(0, item)
         this.notifyItemInserted(0)
+    }
+
+    fun <T : NotificationInterface> getLastNotificationID(type: Class<T>): Int {
+        var offset = 0
+        for(i in items.size - 1 downTo 0) {
+            if(items[i].javaClass == type) {
+                offset++
+            }
+        }
+        return offset
     }
 }

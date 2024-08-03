@@ -12,6 +12,15 @@ data class CreateCommentRequest (
     val contents: String
 )
 
+data class CreateSubCommentRequest (
+    @SerializedName("uid")
+    val articleId: String,
+    @SerializedName("comment_id")
+    val commentId: String,
+    @SerializedName("contents")
+    val contents: String
+)
+
 data class LikeArticleRequest (
     @SerializedName("article_id")
     val articleId: String,

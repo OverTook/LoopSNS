@@ -15,7 +15,7 @@ class TokenRefreshInterceptor(private val token: NetworkManager.FirebaseToken) :
         val request = chain.request()
         try {
 
-            if (request.url.encodedPath.contains("/login") || request.method == "GET") {
+            if (request.url.encodedPath.contains("/login")) {
                 return chain.proceed(request)
             }
 

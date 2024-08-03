@@ -93,6 +93,9 @@ dependencies {
     implementation("org.litepal.guolindev:core:3.2.3") //SQLite 사용 라이브러리
 
     implementation("androidx.core:core-splashscreen:1.0.0") //스플래시 스크린
+    implementation("com.github.skydoves:androidveil:1.1.4") //로딩하는 동안 데이터 가리기
+
+    implementation("com.github.st235:expandablebottombar:1.5.3") //하단 메뉴 디자인 라이브러리
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

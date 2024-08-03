@@ -41,8 +41,6 @@
         android:id="@+id/swipeLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <androidx.recyclerview.widget.RecyclerView
@@ -50,8 +48,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/toolbar"
-            tools:listitem="@layout/fragment_notifications_comment_item"/>
+            tools:listitem="@layout/fragment_notifications_comment_item" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/requestProgressBar"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:indeterminate="true"
+        app:indicatorColor="@color/gray"
+        android:layout_marginBottom="-50dp"
+        android:layout_gravity="bottom|center_horizontal"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

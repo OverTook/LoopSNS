@@ -10,8 +10,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
-import com.hci.loopsns.network.Article
+import com.hci.loopsns.network.ArticleDetail
 import com.hci.loopsns.network.ArticleDetailResponse
 import com.hci.loopsns.network.NetworkManager
 import com.hci.loopsns.recyclers.timeline.ArticleRecyclerViewAdapter
@@ -43,7 +42,7 @@ class TimelineActivity : AppCompatActivity() {
     }
 
     fun parseIntentData() {
-        val articleList = IntentCompat.getParcelableArrayListExtra(intent, "articles", Article::class.java)
+        val articleList = IntentCompat.getParcelableArrayListExtra(intent, "articles", ArticleDetail::class.java)
 
         if (articleList.isNullOrEmpty()) {
             adapter = ArticleRecyclerViewAdapter(::onClickArticle, emptyList())
@@ -59,43 +58,12 @@ class TimelineActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.point_of_interest).text = intent.getStringExtra("point")
     }
 
-    private fun onClickArticle(article: Article) {
-        this.showDarkOverlay()
-        NetworkManager.apiService.retrieveArticleDetail(article.uid).enqueue(object : Callback<ArticleDetailResponse> {
-            override fun onResponse(call: Call<ArticleDetailResponse>, response: Response<ArticleDetailResponse>) {
-                this@TimelineActivity.hideDarkOverlay()
-                if(!response.isSuccessful){
-                    Snackbar.make(findViewById(R.id.longFragment), "게시글 정보를 불러올 수 없습니다.", Snackbar.LENGTH_SHORT).show()
-                    return
-                }
-
-                val articleDetail = response.body()!!.article
-                val comments = response.body()!!.comments
-
-                if(articleDetail.writer == null) {
-                    articleDetail.writer = "알 수 없는 사용자"
-                    articleDetail.userImg = ""
-                }
-                comments.forEach { comment ->
-                    if(comment.writer == null) {
-                        comment.writer = "알 수 없는 사용자"
-                        comment.userImg = ""
-                    }
-                }
-
-                val intent = Intent(
-                    this@TimelineActivity,
-                    ArticleDetailActivity::class.java
-                )
-                intent.putExtra("article", articleDetail)
-                intent.putParcelableArrayListExtra("comments", ArrayList(comments))
-                startActivity(intent)
-            }
-
-            override fun onFailure(call: Call<ArticleDetailResponse>, err: Throwable) {
-                this@TimelineActivity.hideDarkOverlay()
-                Log.e("ArticleDetailActivity", "게시글 불러오기 실패$err")
-            }
-        })
+    private fun onClickArticle(article: ArticleDetail) {
+        val intent = Intent(
+            this@TimelineActivity,
+            ArticleDetailActivity::class.java
+        )
+        intent.putExtra("articleId", article.uid)
+        startActivity(intent)
     }
 }

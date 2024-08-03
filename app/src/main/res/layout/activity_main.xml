@@ -1,59 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/main"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <FrameLayout
-        android:id="@+id/containers"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/bottomNavigationView"
-        android:layout_marginBottom="0dp">
-
-    </FrameLayout>
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
+    <github.com.st235.lib_expandablebottombar.ExpandableBottomBar
         android:id="@+id/bottomNavigationView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/bottom_navigation_background"
-        app:itemBackground="@android:color/transparent"
-        app:itemRippleColor="@android:color/transparent"
-        app:itemIconTint="#D7D7D7"
-        
-        app:menu="@menu/bottom_navigation"
-        app:labelVisibilityMode="unlabeled"/>
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        app:exb_item_horizontal_padding="10dp"
+        app:exb_item_horizontal_margin="20dp"
+        app:exb_items="@menu/bottom_navigation"
+        app:exb_backgroundColor="#FFFFFF"
+        app:exb_itemInactiveColor="#656565"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignBottom="@+id/containers" />
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:tabIndicatorHeight="3dp"
-        app:tabIndicatorGravity="bottom"
-        app:tabGravity="fill"
-        app:tabRippleColor="@android:color/transparent">
 
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-    </com.google.android.material.tabs.TabLayout>
-
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

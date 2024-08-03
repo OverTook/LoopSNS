@@ -95,8 +95,7 @@ class LoopFirebaseMessagingService : FirebaseMessagingService() {
                     .fromJson(body, NotificationComment::class.java)
 
                 intent.putExtra("type", "comment")
-                intent.putExtra("articleId", comment.articleId)
-                intent.putExtra("commentId", comment.commentId)
+                intent.putExtra("highlight", comment)
 
                 if(comment.save()) {
                     NotificationFactory.addNotification(comment)

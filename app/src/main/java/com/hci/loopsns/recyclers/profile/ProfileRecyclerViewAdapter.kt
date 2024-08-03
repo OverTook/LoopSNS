@@ -27,7 +27,6 @@ import com.hci.loopsns.view.fragment.profile.BaseProfileFragment
 
 class ProfileRecyclerViewAdapter(private val activity: BaseProfileFragment, private var items: ArrayList<ArticleDetail>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var loadMoreButton: ImageView? = null
     private val Int.dp: Int
         get() = (this * Resources.getSystem().displayMetrics.density + 0.5f).toInt()
 
@@ -48,10 +47,6 @@ class ProfileRecyclerViewAdapter(private val activity: BaseProfileFragment, priv
         val keywords4: TextView = itemView.findViewById(R.id.keyword_4_article)
     }
 
-    class MoreViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val loadMoreButton: ImageButton = itemView.findViewById(R.id.load_more_Button)
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view: View
         val context = parent.context
@@ -62,26 +57,20 @@ class ProfileRecyclerViewAdapter(private val activity: BaseProfileFragment, priv
                 view = inflater.inflate(R.layout.child_fragment_profile_article_item, parent, false)
                 ArticleViewHolder(view)
             }
-            ViewType.ADD_MORE_BUTTON -> {
-                view = inflater.inflate(R.layout.child_fragment_profile_article_more_load, parent, false)
-                MoreViewHolder(view)
-            }
             else -> { //Never Happend
-                view = inflater.inflate(R.layout.child_fragment_profile_article_more_load, parent, false)
-                MoreViewHolder(view)
+                view = inflater.inflate(R.layout.child_fragment_profile_article_item, parent, false)
+                ArticleViewHolder(view)
             }
         }
     }
 
-    override fun getItemCount(): Int {
-        return items.size + 1
-    }
+    override fun getItemCount(): Int = items.size
 
     override fun getItemViewType(position: Int): Int {
         if(position < items.size) {
             return ViewType.ARTICLE
         }
-        return ViewType.ADD_MORE_BUTTON
+        return ViewType.ETC
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -137,25 +126,7 @@ class ProfileRecyclerViewAdapter(private val activity: BaseProfileFragment, priv
                     holder.tags.layoutParams = params
                 }
             }
-            is MoreViewHolder -> {
-                loadMoreButton = holder.loadMoreButton
-                loadMoreButton?.setOnClickListener {
-                    loadMoreButton?.setImageDrawable(null)
-                    loadMoreButton?.isClickable = false
-                    activity.requestMoreArticle()
-                }
-            }
         }
-    }
-
-    override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
-        super.onViewRecycled(holder)
-
-        if(holder !is MoreViewHolder) {
-            return
-        }
-
-        loadMoreButton = null
     }
 
     fun getLastArticle(): String {
@@ -192,13 +163,5 @@ class ProfileRecyclerViewAdapter(private val activity: BaseProfileFragment, priv
 
         items.addAll(articles)
         this.notifyItemRangeInserted(items.size - articles.size, articles.size)
-
-        if(articles.size < 3) {
-            loadMoreButton?.setImageDrawable(null)
-            loadMoreButton?.isClickable = false
-            return
-        }
-        loadMoreButton?.setImageResource(R.drawable.add_circle_48px)
-        loadMoreButton?.isClickable = true
     }
 }

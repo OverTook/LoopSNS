@@ -42,6 +42,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <fragment
+        xmlns:map="http://schemas.android.com/apk/res-auto"
         android:id="@+id/googleMap"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -50,7 +51,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/filter_layout"
-        android:name="com.google.android.gms.maps.SupportMapFragment" />
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        map:mapId="@string/map_id"/>
 
     <TextView
         android:id="@+id/overview_text"
@@ -74,6 +76,7 @@
         android:id="@+id/overview_time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:text="@string/time_loading"
@@ -91,7 +94,7 @@
         android:background="@drawable/map_overview_behave_btn_bg"
         app:layout_constraintBottom_toBottomOf="@+id/googleMap"
         app:layout_constraintEnd_toEndOf="@+id/googleMap"
-        app:srcCompat="@drawable/export" />
+        app:srcCompat="@drawable/edit_square_24px" />
 
     <ImageButton
         android:id="@+id/gps_move_to_current_btn"

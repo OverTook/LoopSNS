@@ -22,14 +22,13 @@ import androidx.lifecycle.lifecycleScope
 import com.airbnb.lottie.LottieAnimationView
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
+import com.hci.loopsns.network.AddressResponse
+import com.hci.loopsns.network.AddressResult
 import com.hci.loopsns.view.bottomsheet.SelectCategoryBottomSheet
 import com.hci.loopsns.network.ArticleCreateResponse
 import com.hci.loopsns.network.CategoryResponse
 import com.hci.loopsns.network.Comment
 import com.hci.loopsns.network.NetworkManager
-import com.hci.loopsns.network.geocode.AddressResponse
-import com.hci.loopsns.network.geocode.AddressResult
-import com.hci.loopsns.network.geocode.ReverseGeocodingManager
 import com.hci.loopsns.utils.GlideEngine
 import com.hci.loopsns.utils.factory.MyArticleFactory
 import com.hci.loopsns.utils.fadeIn
@@ -82,7 +81,7 @@ class ArticleCreateActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun hideKeyboard() {
-        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
     }
 
@@ -183,13 +182,12 @@ class ArticleCreateActivity : AppCompatActivity(), View.OnClickListener {
                     ArticleDetailActivity::class.java
                 )
                 intent.putExtra("article", result.article)
-                intent.putParcelableArrayListExtra("comments", ArrayList<Comment>())
                 startActivity(intent)
                 finish()
             }
 
             override fun onFailure(call: Call<ArticleCreateResponse>, err: Throwable) {
-
+                Snackbar.make(findViewById(R.id.main), "게시글 작성 요청 중 오류가 발생했습니다. $err", Snackbar.LENGTH_SHORT).show()
             }
         })
     }
@@ -210,12 +208,10 @@ class ArticleCreateActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     fun getLocation() {
-        val ai: ApplicationInfo = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA)
-
-        ReverseGeocodingManager.apiService.getAddress(
+        NetworkManager.apiService.getAddress(
             "$x,$y",
-            ai.metaData.getString("com.google.android.geo.API_KEY")!!,
-            Locale.getDefault().language).enqueue(object:Callback<AddressResponse> {
+            Locale.getDefault().language
+        ).enqueue(object:Callback<AddressResponse> {
             override fun onResponse(call: Call<AddressResponse>, response: Response<AddressResponse>) {
                 if(!response.isSuccessful) return
 

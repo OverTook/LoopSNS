@@ -43,33 +43,20 @@ data class ArticleTimelineResponse (
     val success: Boolean, //응답 성공 여부
     val msg: String, //응답 실패 시 오류 메시지
 
-    val articles: List<Article> //게시글 목록
+    val articles: List<ArticleDetail> //게시글 목록
 )
-
-@Parcelize
-data class Article (
-    val uid: String, //게시글 유니크 아이디
-
-    val writer: String, //글쓴이
-    val contents: String, //내용
-    val cat1: String, //첫 번째 카테고리
-    val cat2: String, //두 번째 카테고리
-    val keywords: List<String>, //키워드
-    val time: String, //게시글 작성 시간
-    @SerializedName("comment_count")
-    val commentCount: Int, //댓글 수
-    @SerializedName("like_count")
-    val likeCount: Int, //좋아요 수
-
-    @SerializedName("image_urls")
-    val images: List<String>,
-) : Parcelable
 
 data class ArticleDetailResponse (
     val success: Boolean, //응답 성공 여부
     val msg: String, //응답 실패 시 오류 메시지
 
-    val article: ArticleDetail,
+    val article: ArticleDetail
+)
+
+data class CommentListResponse (
+    val success: Boolean, //응답 성공 여부
+    val msg: String, //응답 실패 시 오류 메시지
+
     val comments: List<Comment>
 )
 
@@ -90,18 +77,18 @@ data class ArticleDetail (
     val cat2: String, //두 번째 카테고리
     val keywords: List<String>, //키워드
     val time: String, //게시글 작성 시간
-    @SerializedName("comment_count")
+    @SerializedName("comment_counts")
     var commentCount: Int, //댓글 수
     @SerializedName("like_count")
     var likeCount: Int, //좋아요 수
     @SerializedName("image_urls")
     val images: List<String>,
     @SerializedName("user_img")
-    var userImg: String,
+    var userImg: String?,
     @SerializedName("can_delete")
-    val canDelete: Boolean,
+    val canDelete: Boolean?,
     @SerializedName("is_liked")
-    var isLiked: Boolean
+    var isLiked: Boolean?
 ) : Parcelable
 
 data class CommentCreateResponse (
@@ -117,6 +104,13 @@ data class CommentDeleteResponse (
     val msg: String //응답 실패 시 오류 메시지
 )
 
+data class CommentResponse (
+    val success: Boolean, //응답 성공 여부
+    val msg: String, //응답 실패 시 오류 메시지
+
+    val comment: Comment
+)
+
 @Parcelize
 data class Comment (
     @SerializedName("comment_id")
@@ -127,7 +121,11 @@ data class Comment (
     @SerializedName("user_img")
     var userImg: String,
     @SerializedName("can_delete")
-    val canDelete: Boolean
+    val canDelete: Boolean,
+    @SerializedName("is_deleted")
+    var isDeleted: Boolean,
+    @SerializedName("sub_comment_counts")
+    var subCommentCount: Int
 ) : Parcelable
 
 //닉네임 요청&생성 응답 DTO
@@ -155,4 +153,30 @@ data class LikeResponse (
 data class FcmTokenResponse (
     val success: Boolean, // 응답 성공 여부
     val msg: String // 응답 실패 시 오류 메시지
+)
+
+
+//=======================================================//
+
+data class AddressResponse(
+    val results: List<AddressResult>,
+    val status: String
+)
+
+data class AddressResult(
+    @SerializedName("address_components")
+    val addressComponents: List<AddressComponent>,
+    @SerializedName("formatted_address")
+    val formattedAddress: String,
+    @SerializedName("place_id")
+    val placeId: String,
+    val types: List<String>
+)
+
+data class AddressComponent(
+    @SerializedName("long_name")
+    val longName: String,
+    @SerializedName("short_name")
+    val shortName: String,
+    val types: List<String>
 )

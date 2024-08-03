@@ -12,6 +12,7 @@
         android:id="@+id/body"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/requestProgressBar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -56,30 +57,55 @@
             android:id="@+id/swipeLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="97dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <androidx.recyclerview.widget.RecyclerView
+            <com.skydoves.androidveil.VeilRecyclerFrameView
+                android:id="@+id/article_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:veilFrame_baseAlpha="0.6"
+                app:veilFrame_baseColor="@android:color/darker_gray"
+                app:veilFrame_highlightAlpha="1.0"
+                app:veilFrame_highlightColor="@color/gray"
+                app:veilFrame_layout="@layout/skeleton_detail_article"
+                app:veilFrame_radius="8dp"
+                app:veilFrame_shimmerEnable="true"
+                app:veilFrame_veiled="true" />
+
+
+            <!--androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/article_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 tools:listitem="@layout/activity_article_detail_article_item">
 
-            </androidx.recyclerview.widget.RecyclerView>
+            </androidx.recyclerview.widget.RecyclerView-->
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/requestProgressBar"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:indeterminate="true"
+        app:indicatorColor="@color/gray"
+        android:layout_marginBottom="-50dp"
+        app:layout_constraintBottom_toTopOf="@+id/comment_input_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/comment_input_layout"
         android:layout_width="match_parent"
-        android:layout_height="92dp"
-        android:padding="20dp"
+        android:layout_height="72dp"
+        android:paddingVertical="10dp"
+        android:paddingHorizontal="20dp"
         android:background="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent">
+
 
         <EditText
             android:id="@+id/comment_input"

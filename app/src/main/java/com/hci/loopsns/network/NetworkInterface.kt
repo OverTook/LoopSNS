@@ -35,7 +35,9 @@ interface NetworkInterface {
     ): Call<ArticleCreateResponse>
 
     @DELETE("/delete_article/{article_id}")
-    fun deleteArticle(@Path("article_id") postId: String): Call<ArticleDeleteResponse>
+    fun deleteArticle(
+        @Path("article_id") postId: String
+    ): Call<ArticleDeleteResponse>
 
     //마커 가져오기
     @GET("/get_marker_clusterer")
@@ -48,22 +50,73 @@ interface NetworkInterface {
     ): Call<ArticleMarkersResponse>
 
     @GET("/get_marker_timeline")
-    fun retrieveArticleTimeline(@Query("articles") articles: List<String>): Call<ArticleTimelineResponse>
+    fun retrieveArticleTimeline(
+        @Query("articles") articles: List<String>
+    ): Call<ArticleTimelineResponse>
 
-    @GET("/get_article_detail")
-    fun retrieveArticleDetail(@Query("uid") articleId: String): Call<ArticleDetailResponse>
+    @GET("/get_article")
+    fun retrieveArticle(
+        @Query("uid") articleId: String
+    ): Call<ArticleDetailResponse>
+
+    @GET("/get_comment")
+    fun retrieveComment(
+        @Query("uid") articleId: String,
+        @Query("comment_id") commentId: String
+    ): Call<CommentResponse>
+
+    @GET("/get_sub_comment")
+    fun retrieveSubComment(
+        @Query("uid") articleId: String,
+        @Query("comment_id") commentId: String,
+        @Query("sub_comment_id") subCommentId: String
+    ): Call<CommentResponse>
+
+    @GET("/get_comment_list")
+    fun retrieveCommentList(
+        @Query("uid") articleId: String,
+        @Query("last_comment_id") lastCommentId: String = ""
+    ): Call<CommentListResponse>
+
+    @GET("/get_sub_comment_list")
+    fun retrieveSubCommentList(
+        @Query("uid") articleId: String,
+        @Query("comment_id") commentId: String,
+        @Query("last_sub_comment_id") lastSubCommentId: String = ""
+    ): Call<CommentListResponse>
 
     @POST("/add_comment")
-    fun createComment(@Body requestBody: CreateCommentRequest): Call<CommentCreateResponse>
+    fun createComment(
+        @Body requestBody: CreateCommentRequest
+    ): Call<CommentCreateResponse>
+
+    @POST("/add_sub_comment")
+    fun createSubComment(
+        @Body requestBody: CreateSubCommentRequest
+    ): Call<CommentCreateResponse>
 
     @DELETE("/delete_comment/{article_id}/{comment_id}")
-    fun deleteComment(@Path("article_id") postId: String, @Path("comment_id") commentId: String): Call<CommentDeleteResponse>
+    fun deleteComment(
+        @Path("article_id") postId: String,
+        @Path("comment_id") commentId: String
+    ): Call<CommentDeleteResponse>
+
+    @DELETE("/delete_sub_comment/{article_id}/{comment_id}/{sub_comment_id}")
+    fun deleteSubComment(
+        @Path("article_id") postId: String,
+        @Path("comment_id") commentId: String,
+        @Path("sub_comment_id") subCommentId: String
+    ): Call<CommentDeleteResponse>
 
     @GET("/get_user_article_list")
-    fun retrieveMyArticle(@Query("last_article_id") lastArticleId: String = ""): Call<MyArticleResponse>
+    fun retrieveMyArticle(
+        @Query("last_article_id") lastArticleId: String = ""
+    ): Call<MyArticleResponse>
 
     @GET("/get_like_article_list")
-    fun retrieveLikeArticle(@Query("last_article_id") lastArticleId: String = ""): Call<MyArticleResponse>
+    fun retrieveLikeArticle(
+        @Query("last_article_id") lastArticleId: String = ""
+    ): Call<MyArticleResponse>
 
     @GET("/login")
     fun createAccount(
@@ -72,13 +125,25 @@ interface NetworkInterface {
     ): Call<AccountCreateResponse>
 
     @POST("/add_article_like")
-    fun likeArticle(@Body requestBody: LikeArticleRequest): Call<LikeResponse>
+    fun likeArticle(
+        @Body requestBody: LikeArticleRequest
+    ): Call<LikeResponse>
 
     // FCM 토큰 추가
     @POST("/add_fcm_token")
-    fun addFcmToken(@Body requestBody: AddFcmTokenRequest): Call<FcmTokenResponse>
+    fun addFcmToken(
+        @Body requestBody: AddFcmTokenRequest
+    ): Call<FcmTokenResponse>
 
     // FCM 토큰 삭제
     @POST("/delete_fcm_token")
-    fun deleteFcmToken(@Body requestBody: DeleteFcmTokenRequest): Call<FcmTokenResponse>
+    fun deleteFcmToken(
+        @Body requestBody: DeleteFcmTokenRequest
+    ): Call<FcmTokenResponse>
+
+    @GET("/get_center_addr")
+    fun getAddress(
+        @Query("latlng") latlng: String,
+        @Query("language") language: String
+    ): Call<AddressResponse>
 }

@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/menu_profile"
-        android:icon="@drawable/settingmenu"
-        android:title="Menu"/>
+        android:icon="@drawable/account_circle_24px"
+        android:title="Profile"
+        app:exb_color="#FF8888"/>
     <item
         android:id="@+id/menu_home"
-        android:icon="@drawable/group_321"
-        android:title="Home"/>
+        android:icon="@drawable/public_24px"
+        android:title="Home"
+        app:exb_color="#7D9CF8"/>
 
     <item
         android:id="@+id/menu_notification"
-        android:icon="@drawable/group_322"
-        android:title="Notifications" />
+        android:icon="@drawable/notifications_24px"
+        android:title="Notifications"
+        app:exb_color="#fa2"/>
 </menu>

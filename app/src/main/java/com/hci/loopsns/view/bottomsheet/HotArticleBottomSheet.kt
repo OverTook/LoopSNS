@@ -18,16 +18,16 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.hci.loopsns.R
-import com.hci.loopsns.network.Article
+import com.hci.loopsns.network.ArticleDetail
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.hci.loopsns.network.geocode.AddressResponse
-import com.hci.loopsns.network.geocode.AddressResult
-import com.hci.loopsns.network.geocode.ReverseGeocodingManager
+import com.hci.loopsns.network.AddressResponse
+import com.hci.loopsns.network.AddressResult
+import com.hci.loopsns.network.NetworkManager
 import com.hci.loopsns.utils.formatTo
 import com.hci.loopsns.utils.toDate
 import java.util.Locale
 
-class HotArticleBottomSheet(private val articleClickAction: (Article) -> Unit, private val intent: Intent, private val article: Article, private val lat: Double, private val lng: Double) : BottomSheetDialogFragment() {
+class HotArticleBottomSheet(private val articleIntent: Intent, private val allViewIntent: Intent, private val article: ArticleDetail, private val lat: Double, private val lng: Double) : BottomSheetDialogFragment(), View.OnClickListener {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,22 +57,13 @@ class HotArticleBottomSheet(private val articleClickAction: (Article) -> Unit, p
             }
         }
 
-        view.findViewById<Button>(R.id.all_view_btn).setOnClickListener {
-            dismiss()
-            intent.putExtra("name", view.findViewById<TextView>(R.id.location_name).text)
-            intent.putExtra("point", view.findViewById<TextView>(R.id.point_of_interest).text)
-            startActivity(intent)
-        }
+        view.findViewById<Button>(R.id.all_view_btn).setOnClickListener(this)
+        view.findViewById<ConstraintLayout>(R.id.hot_article_overview).setOnClickListener(this)
 
         view.findViewById<TextView>(R.id.content_text).text = article.contents
-
         view.findViewById<TextView>(R.id.article_time).text = article.time.toDate().formatTo("yyyy-MM-dd HH:mm")
-
         view.findViewById<TextView>(R.id.like_count).text = article.likeCount.toString()
         view.findViewById<TextView>(R.id.comment_count).text = article.commentCount.toString()
-        view.findViewById<ConstraintLayout>(R.id.hot_article_overview).setOnClickListener {
-            articleClickAction(article)
-        }
 
         if(article.images.isNotEmpty()) {
             Glide.with(requireContext())
@@ -89,11 +80,8 @@ class HotArticleBottomSheet(private val articleClickAction: (Article) -> Unit, p
     }
 
     fun getLocation() {
-        val ai: ApplicationInfo = requireContext().packageManager.getApplicationInfo(requireActivity().packageName, PackageManager.GET_META_DATA)
-
-        ReverseGeocodingManager.apiService.getAddress(
+        NetworkManager.apiService.getAddress(
             "$lat,$lng",
-            ai.metaData.getString("com.google.android.geo.API_KEY")!!,
             Locale.getDefault().language
         ).enqueue(object: retrofit2.Callback<AddressResponse> {
             override fun onResponse(call: retrofit2.Call<AddressResponse>, response: retrofit2.Response<AddressResponse>) {
@@ -180,6 +168,25 @@ class HotArticleBottomSheet(private val articleClickAction: (Article) -> Unit, p
 
         requireActivity().runOnUiThread {
             view?.findViewById<TextView>(R.id.location_name)?.text = addressText
+        }
+    }
+
+    override fun onClick(view: View?) {
+        if (view == null)
+            return
+
+        when(view.id) {
+            R.id.hot_article_overview -> {
+                dismiss()
+                articleIntent.putExtra("articleId", article.uid)
+                startActivity(articleIntent)
+            }
+            R.id.all_view_btn -> {
+                dismiss()
+                allViewIntent.putExtra("name", requireView().findViewById<TextView>(R.id.location_name).text.toString())
+                allViewIntent.putExtra("point", requireView().findViewById<TextView>(R.id.point_of_interest).text.toString())
+                startActivity(allViewIntent)
+            }
         }
     }
 }

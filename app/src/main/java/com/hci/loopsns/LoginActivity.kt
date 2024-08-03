@@ -78,8 +78,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, SplashScreen.Ke
         val splashScreen = installSplashScreen()
         splashScreen.setKeepOnScreenCondition(this)
 
-        KakaoSdk.init(this@LoginActivity, "df17ea99e1579611972ffbb1ff069e51");
-        LitePal.initialize(this)
+        KakaoSdk.init(this@LoginActivity, "df17ea99e1579611972ffbb1ff069e51")
         mAuth = FirebaseAuth.getInstance()
 
         Log.e("Kakao Hash", Utility.getKeyHash(this))

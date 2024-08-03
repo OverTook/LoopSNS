@@ -40,14 +40,11 @@ import com.hci.loopsns.ArticleCreateActivity
 import com.hci.loopsns.ArticleDetailActivity
 import com.hci.loopsns.R
 import com.hci.loopsns.TimelineActivity
-import com.hci.loopsns.network.Article
-import com.hci.loopsns.network.ArticleDetailResponse
+import com.hci.loopsns.network.AddressResponse
+import com.hci.loopsns.network.AddressResult
 import com.hci.loopsns.network.ArticleMarkersResponse
 import com.hci.loopsns.network.ArticleTimelineResponse
 import com.hci.loopsns.network.NetworkManager
-import com.hci.loopsns.network.geocode.AddressResponse
-import com.hci.loopsns.network.geocode.AddressResult
-import com.hci.loopsns.network.geocode.ReverseGeocodingManager
 import com.hci.loopsns.utils.hideDarkOverlay
 import com.hci.loopsns.utils.showDarkOverlay
 import com.hci.loopsns.view.bottomsheet.HotArticleBottomSheet
@@ -132,7 +129,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
             }
         }
 
-
         val mapFragment = (childFragmentManager.findFragmentById(R.id.googleMap) as SupportMapFragment)
         mapFragment.getMapAsync(this)
 
@@ -148,7 +144,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
                     currentLocation = LatLng(it.latitude, it.longitude)
 
                     val cameraUpdate = CameraUpdateFactory.newLatLngZoom(LatLng(it.latitude, it.longitude), 15f)
-                    googleMap.animateCamera(cameraUpdate)
+                    googleMap.moveCamera(cameraUpdate)
                     return@addOnSuccessListener
                 }
 
@@ -240,19 +236,17 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
     fun updateLocationText() {
         val context = requireContext()
 
-        val ai: ApplicationInfo = context.packageManager.getApplicationInfo(context.packageName, PackageManager.GET_META_DATA)
-
-        ReverseGeocodingManager.apiService.getAddress(
-            googleMap.cameraPosition.target.latitude.toString() +
-                    "," +
-                    googleMap.cameraPosition.target.longitude.toString(),
-            ai.metaData.getString("com.google.android.geo.API_KEY")!!,
-            Locale.getDefault().language).enqueue(object:Callback<AddressResponse>{
+        NetworkManager.apiService.getAddress(
+            "${googleMap.cameraPosition.target.latitude},${googleMap.cameraPosition.target.longitude}",
+            Locale.getDefault().language
+        ).enqueue(object:Callback<AddressResponse>{
             override fun onResponse(call: Call<AddressResponse>, response: Response<AddressResponse>) {
-                if(!response.isSuccessful) return
+                if(!response.isSuccessful) {
+                    Log.e("GeoCode Failed", "HTTP Code " + response.code())
+                    return
+                }
 
                 val body = response.body()!!
-
                 if(body.results.isEmpty()) {
                    return
                 }
@@ -339,49 +333,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
         }
     }
 
-    private fun onClickArticle(article: Article) {
-        requireActivity().showDarkOverlay()
-        bottomSheetFragment?.dismiss()
-
-        NetworkManager.apiService.retrieveArticleDetail(article.uid).enqueue(object :
-            Callback<ArticleDetailResponse> {
-            override fun onResponse(call: Call<ArticleDetailResponse>, response: Response<ArticleDetailResponse>) {
-                requireActivity().hideDarkOverlay()
-                if(!response.isSuccessful){
-                    Snackbar.make(viewOfLayout.findViewById(R.id.main), "게시글 정보를 불러올 수 없습니다.", Snackbar.LENGTH_SHORT).show()
-                    return
-                }
-
-                val articleDetail = response.body()!!.article
-                val comments = response.body()!!.comments
-
-                if(articleDetail.writer == null) {
-                    articleDetail.writer = "알 수 없는 사용자"
-                    articleDetail.userImg = ""
-                }
-                comments.forEach { comment ->
-                    if(comment.writer == null) {
-                        comment.writer = "알 수 없는 사용자"
-                        comment.userImg = ""
-                    }
-                }
-
-                val intent = Intent(
-                    requireActivity(),
-                    ArticleDetailActivity::class.java
-                )
-                intent.putExtra("article", articleDetail)
-                intent.putParcelableArrayListExtra("comments", ArrayList(comments))
-                startActivity(intent)
-            }
-
-            override fun onFailure(call: Call<ArticleDetailResponse>, err: Throwable) {
-                requireActivity().hideDarkOverlay()
-                Log.e("ArticleDetailActivity", "게시글 불러오기 실패$err")
-            }
-        })
-    }
-
     override fun onResume() {
         super.onResume()
         if (this::locationRequest.isInitialized && ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -450,10 +401,21 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
 
                 val list = response.body()!!.articles
 
-                val intent = Intent(requireActivity(), TimelineActivity::class.java)
-                intent.putParcelableArrayListExtra("articles", ArrayList(list))
 
-                bottomSheetFragment = HotArticleBottomSheet(::onClickArticle, intent, list[0], marker.position.latitude, marker.position.longitude)
+
+                bottomSheetFragment = HotArticleBottomSheet(
+                    Intent(
+                        requireActivity(),
+                        ArticleDetailActivity::class.java
+                    ),
+                    Intent(
+                        requireActivity(),
+                        TimelineActivity::class.java
+                    ).putParcelableArrayListExtra("articles", ArrayList(list)),
+                    list[0],
+                    marker.position.latitude,
+                    marker.position.longitude
+                )
                 bottomSheetFragment!!.show(requireActivity().supportFragmentManager, bottomSheetFragment!!.tag)
             }
 

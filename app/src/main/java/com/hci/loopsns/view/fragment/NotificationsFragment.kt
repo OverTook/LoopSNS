@@ -16,6 +16,7 @@ import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.hci.loopsns.ArticleDetailActivity
+import com.hci.loopsns.AutoRefresherInterface
 import com.hci.loopsns.R
 import com.hci.loopsns.network.ArticleDetailResponse
 import com.hci.loopsns.network.NetworkManager
@@ -23,22 +24,56 @@ import com.hci.loopsns.recyclers.notification.NotificationRecyclerViewAdapter
 import com.hci.loopsns.storage.models.NotificationComment
 import com.hci.loopsns.storage.models.NotificationHotArticle
 import com.hci.loopsns.storage.models.NotificationInterface
+import com.hci.loopsns.utils.dp
 import com.hci.loopsns.utils.factory.NotificationFactory
 import com.hci.loopsns.utils.factory.NotificationFactoryEventListener
 import com.hci.loopsns.utils.hideDarkOverlay
+import com.hci.loopsns.utils.registerAutoRefresh
+import com.hci.loopsns.utils.requestEnd
 import com.hci.loopsns.utils.showDarkOverlay
+import github.com.st235.lib_expandablebottombar.ExpandableBottomBar
+import github.com.st235.lib_expandablebottombar.Notification
 import kotlinx.coroutines.launch
 import org.litepal.LitePal
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class NotificationsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, NotificationFactoryEventListener {
+class NotificationsFragment() : Fragment(), SwipeRefreshLayout.OnRefreshListener, NotificationFactoryEventListener, AutoRefresherInterface {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: NotificationRecyclerViewAdapter
-    private lateinit var badge: BadgeDrawable
+    private lateinit var badge: Notification
     private var badgeCount = 0
+    private var currentPage = 0
+
+    override var requested: Boolean = false
+    override var noMoreData: Boolean = false
+    override lateinit var requestAnimationView: View
+
+    override fun getRequestAnimation(): View = requestAnimationView
+
+    override fun requestMoreData() {
+        currentPage++
+
+        val lastCommentID = adapter.getLastNotificationID(NotificationComment::class.java)
+        val lastHotArticleID = adapter.getLastNotificationID(NotificationHotArticle::class.java)
+
+        Log.e("LastCommentID", lastCommentID.toString())
+
+        val comments = LitePal.order("time desc").offset(lastCommentID).limit(20).find(NotificationComment::class.java)
+        val hotArticles = LitePal.order("time desc").offset(lastHotArticleID).limit(20).find(NotificationHotArticle::class.java)
+
+        val totalList = ArrayList<NotificationInterface>()
+        totalList.addAll(comments)
+        totalList.addAll(hotArticles)
+        totalList.sortByDescending { it.time }
+        totalList.take(20)
+
+        adapter.addNotifications(totalList)
+
+        this.requestEnd(totalList.size < 20)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,8 +83,9 @@ class NotificationsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, 
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        badge = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView).getOrCreateBadge(R.id.menu_notification)
+        badge = requireActivity().findViewById<ExpandableBottomBar>(R.id.bottomNavigationView).menu.findItemById(R.id.menu_notification).notification()
         view.findViewById<SwipeRefreshLayout>(R.id.swipeLayout).setOnRefreshListener(this)
+        requestAnimationView = view.findViewById(R.id.requestProgressBar)
 
         //Do In Async
         lifecycleScope.launch {
@@ -61,12 +97,10 @@ class NotificationsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, 
 
             badgeCount = commentCount + hotArticleCount
             if(badgeCount > 0) {
-                badge.isVisible = true
-                badge.number = badgeCount
+                badge.show(badgeCount.toString())
                 badge.badgeTextColor = Color.WHITE
-                badge.backgroundColor = Color.RED
             } else {
-                badge.isVisible = false
+                badge.clear()
             }
 
             val totalList = ArrayList<NotificationInterface>()
@@ -76,9 +110,12 @@ class NotificationsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, 
             totalList.take(20)
 
             recyclerView = view.findViewById(R.id.notifications_recycler)
-            adapter = NotificationRecyclerViewAdapter(::onClickArticle, totalList)
+            adapter = NotificationRecyclerViewAdapter(::onClickNotification, totalList)
             recyclerView.adapter = adapter
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
+            recyclerView.registerAutoRefresh(this@NotificationsFragment)
+
+            noMoreData = totalList.size < 20
 
             NotificationFactory.addEventListener(this@NotificationsFragment)
         }
@@ -96,10 +133,9 @@ class NotificationsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, 
 
             badgeCount = commentCount + hotArticleCount
             if(badgeCount > 0) {
-                badge.isVisible = true
-                badge.number = badgeCount
+                badge.show(badgeCount.toString())
             } else {
-                badge.isVisible = false
+                badge.clear()
             }
 
             val totalList = ArrayList<NotificationInterface>()
@@ -107,6 +143,8 @@ class NotificationsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, 
             totalList.addAll(hotArticles)
             totalList.sortByDescending { it.time }
             totalList.take(20)
+
+            noMoreData = totalList.size < 20
 
             adapter.resetData(totalList)
             view?.findViewById<SwipeRefreshLayout>(R.id.swipeLayout)?.isRefreshing = false
@@ -116,8 +154,7 @@ class NotificationsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, 
     override fun onCreatedNotification(item: NotificationInterface) {
         lifecycleScope.launch {
             adapter.addNotification(item)
-            badge.number = ++badgeCount
-
+            badge.show((++badgeCount).toString())
             //맨 위로 드래그 되어 있는가?
             if((recyclerView.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition() <= 1) {
                 recyclerView.smoothScrollToPosition(0)
@@ -125,47 +162,32 @@ class NotificationsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, 
         }
     }
 
-    private fun onClickArticle(articleId: String, commentId: String) {
-        requireActivity().showDarkOverlay()
+    private fun onClickNotification(notification: NotificationInterface) {
+        val intent = Intent(
+            requireActivity(),
+            ArticleDetailActivity::class.java
+        )
 
-        NetworkManager.apiService.retrieveArticleDetail(articleId).enqueue(object :
-            Callback<ArticleDetailResponse> {
-            override fun onResponse(call: Call<ArticleDetailResponse>, response: Response<ArticleDetailResponse>) {
-                requireActivity().hideDarkOverlay()
-                if(!response.isSuccessful){
-                    Snackbar.make(view!!.findViewById(R.id.longFragment), "게시글 정보를 불러올 수 없습니다.", Snackbar.LENGTH_SHORT).show()
-                    return
+        if(!notification.readed) {
+            if((--badgeCount) == 0) {
+                badge.clear()
+            } else {
+                badge.show(badgeCount.toString())
+            }
+        }
+
+        when (notification) {
+            is NotificationComment -> {
+                if(!notification.readed) {
+                    notification.readed = true
+                    notification.save()
                 }
 
-                val articleDetail = response.body()!!.article
-                val comments = response.body()!!.comments
-
-                if(articleDetail.writer == null) {
-                    articleDetail.writer = "알 수 없는 사용자"
-                    articleDetail.userImg = ""
-                }
-                comments.forEach { comment ->
-                    if(comment.writer == null) {
-                        comment.writer = "알 수 없는 사용자"
-                        comment.userImg = ""
-                    }
-                }
-
-                val intent = Intent(
-                    requireActivity(),
-                    ArticleDetailActivity::class.java
-                )
-
-                intent.putExtra("move", commentId)
-                intent.putExtra("article", articleDetail)
-                intent.putParcelableArrayListExtra("comments", ArrayList(comments))
+                intent.putExtra("highlight", notification)
+                intent.putExtra("articleId", notification.articleId)
                 startActivity(intent)
             }
+        }
 
-            override fun onFailure(call: Call<ArticleDetailResponse>, err: Throwable) {
-                requireActivity().hideDarkOverlay()
-                Log.e("NotificationsFragment", "게시글 불러오기 실패$err")
-            }
-        })
     }
 }

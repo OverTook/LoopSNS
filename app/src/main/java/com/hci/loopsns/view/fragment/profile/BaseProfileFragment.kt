@@ -1,13 +1,13 @@
 package com.hci.loopsns.view.fragment.profile
 
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 import com.hci.loopsns.network.ArticleDetail
 import com.hci.loopsns.utils.factory.LikeArticleFactory
 import com.hci.loopsns.utils.factory.MyArticleFactory
 
 abstract class BaseProfileFragment : Fragment() {
 
-    abstract fun requestMoreArticle()
     abstract fun onInitializeArticle()
     abstract fun onArticleDelete(uid: String)
     abstract fun onArticleCreate(articleDetail: ArticleDetail)

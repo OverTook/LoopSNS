@@ -6,15 +6,22 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.GestureDetector
 import android.view.MenuItem
+import android.view.MotionEvent
+import android.view.View
+import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.content.IntentCompat
 import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
@@ -30,14 +37,20 @@ import com.hci.loopsns.view.fragment.ProfileFragment
 import com.hci.loopsns.view.fragment.MainViewPageAdapter
 import com.hci.loopsns.network.NetworkManager
 import com.hci.loopsns.storage.SharedPreferenceManager
+import com.hci.loopsns.storage.models.NotificationComment
 import com.hci.loopsns.utils.DoubleBackPressHandler
 import com.hci.loopsns.utils.hideDarkOverlay
 import com.hci.loopsns.utils.showDarkOverlay
+import github.com.st235.lib_expandablebottombar.OnItemClickListener
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import org.litepal.LitePal
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.math.abs
 
-class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListener, SplashScreen.KeepOnScreenCondition {
+class MainActivity : AppCompatActivity(), SplashScreen.KeepOnScreenCondition, OnItemClickListener {
 
     private lateinit var doubleBackPressHandler: DoubleBackPressHandler
     private lateinit var binding: ActivityMainBinding
@@ -58,6 +71,8 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
 
+        val splashScreen = installSplashScreen()
+        splashScreen.setKeepOnScreenCondition(this)
 
         homeFragment = HomeFragment()
         profileFragment = ProfileFragment()
@@ -73,95 +88,59 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
         binding.viewPager.adapter = adapter
         binding.viewPager.reduceDragSensitivity()
 
-        // TabLayout과 ViewPager2를 연결
-        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
-            when (position) {
-                0 -> tab.text = "Settings"
-                1 -> tab.text = "Home"
-                2 -> tab.text = "Notifications"
-            }
-        }.attach()
-
-
-        // BottomNavigationView의 아이템 선택 리스너 설정
-        binding.bottomNavigationView.setOnItemSelectedListener(this)
+        binding.bottomNavigationView.onItemSelectedListener = this
 
         // ViewPager2 페이지 변경 콜백 설정
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageScrollStateChanged(state: Int) {
+                super.onPageScrollStateChanged(state)
+                if (state == ViewPager2.SCROLL_STATE_IDLE) {
+                    if(binding.viewPager.currentItem == 1) {
+                        if(intent.getStringExtra("type") == null && splashScreenKeep) {
+                            splashScreenKeep = false
+                        }
+                    }
+                }
+            }
+
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                when (position) {
-                    0 -> {
-                        binding.bottomNavigationView.selectedItemId = R.id.menu_profile
-                        binding.viewPager.isUserInputEnabled = true
-                    }
-                    1 -> {
-                        binding.bottomNavigationView.selectedItemId = R.id.menu_home
-                        binding.viewPager.isUserInputEnabled = false
-                    }
-                    2 -> {
-                        binding.bottomNavigationView.selectedItemId = R.id.menu_notification
-                        binding.viewPager.isUserInputEnabled = true
-                    }
+                when(position) {
+                    0 -> binding.bottomNavigationView.menu.select(R.id.menu_profile)
+                    1 -> binding.bottomNavigationView.menu.select(R.id.menu_home)
+                    2 -> binding.bottomNavigationView.menu.select(R.id.menu_notification)
                 }
             }
         })
 
         binding.viewPager.offscreenPageLimit = 3
-        binding.bottomNavigationView.selectedItemId = R.id.menu_home
-        binding.viewPager.isUserInputEnabled = false
+        binding.viewPager.currentItem = 1
 
         doubleBackPressHandler = DoubleBackPressHandler(this)
         doubleBackPressHandler.enable()
 
         initPermission()
         checkNotification()
-
         setContentView(binding.root)
     }
 
     fun checkNotification() {
         when(intent.getStringExtra("type")) {
             "comment" -> {
-                val splashScreen = installSplashScreen()
-                splashScreen.setKeepOnScreenCondition(this)
+                val highlightComment = IntentCompat.getParcelableExtra(intent, "highlight", NotificationComment::class.java) ?: return
+                if(!highlightComment.readed) {
+                    val highlightCommentRef = LitePal.where(
+                        "articleId = ? AND commentId = ? AND subCommentId = ? AND writer = ? AND contents = ? AND userImg = ?",
+                        highlightComment.articleId,
+                        highlightComment.commentId,
+                        highlightComment.subCommentId,
+                        highlightComment.writer,
+                        highlightComment.contents,
+                        highlightComment.userImg
+                    ).limit(1).find(NotificationComment::class.java)[0]
 
-                val articleId = intent.getStringExtra("articleId")
-                val commentId = intent.getStringExtra("commentId")
-
-                if(articleId == null || commentId == null) return
-
-                onClickArticle(articleId, commentId)
-            }
-            else -> {
-
-            }
-        }
-    }
-
-    private fun onClickArticle(articleId: String, commentId: String) {
-        NetworkManager.apiService.retrieveArticleDetail(articleId).enqueue(object :
-            Callback<ArticleDetailResponse> {
-            override fun onResponse(call: Call<ArticleDetailResponse>, response: Response<ArticleDetailResponse>) {
-                splashScreenKeep = false
-
-                if(!response.isSuccessful){
-                    Snackbar.make(findViewById(R.id.main), "게시글 정보를 불러올 수 없습니다.", Snackbar.LENGTH_SHORT).show()
-                    return
-                }
-
-                val articleDetail = response.body()!!.article
-                val comments = response.body()!!.comments
-
-                if(articleDetail.writer == null) {
-                    articleDetail.writer = "알 수 없는 사용자"
-                    articleDetail.userImg = ""
-                }
-                comments.forEach { comment ->
-                    if(comment.writer == null) {
-                        comment.writer = "알 수 없는 사용자"
-                        comment.userImg = ""
-                    }
+                    highlightCommentRef.readed = true
+                    highlightCommentRef.save()
                 }
 
                 val intent = Intent(
@@ -169,17 +148,16 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
                     ArticleDetailActivity::class.java
                 )
 
-                intent.putExtra("move", commentId)
-                intent.putExtra("article", articleDetail)
-                intent.putParcelableArrayListExtra("comments", ArrayList(comments))
+                intent.putExtra("highlight", highlightComment)
+                intent.putExtra("articleId", highlightComment.articleId)
                 startActivity(intent)
-            }
 
-            override fun onFailure(call: Call<ArticleDetailResponse>, err: Throwable) {
                 splashScreenKeep = false
-                Log.e("NotificationsFragment", "게시글 불러오기 실패$err")
             }
-        })
+            else -> {
+
+            }
+        }
     }
 
     fun initPermission() {
@@ -296,28 +274,24 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
         touchSlopField.set(recyclerView, touchSlop*f) //8기본
     }
 
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
+    override fun shouldKeepOnScreen(): Boolean {
+        return splashScreenKeep
+    }
+
+    override fun invoke(v: View, menuItem: github.com.st235.lib_expandablebottombar.MenuItem, byUser: Boolean) {
+        when (menuItem.id) {
             R.id.menu_profile -> {
                 binding.viewPager.currentItem = 0
                 binding.viewPager.isUserInputEnabled = true
-                true
             }
             R.id.menu_home -> {
                 binding.viewPager.currentItem = 1
                 binding.viewPager.isUserInputEnabled = false
-                true
             }
             R.id.menu_notification -> {
                 binding.viewPager.currentItem = 2
                 binding.viewPager.isUserInputEnabled = true
-                true
             }
-            else -> false
         }
-    }
-
-    override fun shouldKeepOnScreen(): Boolean {
-        return splashScreenKeep
     }
 }

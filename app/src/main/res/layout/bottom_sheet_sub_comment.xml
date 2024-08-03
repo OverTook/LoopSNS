@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#FFFFFF">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="150dp"
+        android:layout_height="5dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bottom_sheet_top_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.skydoves.androidveil.VeilRecyclerFrameView
+        android:id="@+id/article_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="16dp"
+        android:paddingBottom="77dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:veilFrame_baseAlpha="0.6"
+        app:veilFrame_baseColor="@android:color/darker_gray"
+        app:veilFrame_highlightAlpha="1.0"
+        app:veilFrame_highlightColor="@color/gray"
+        app:veilFrame_layout="@layout/skeleton_detail_comment"
+        app:veilFrame_radius="8dp"
+        app:veilFrame_shimmerEnable="true"
+        app:veilFrame_veiled="true" />
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/requestProgressBar"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:indeterminate="true"
+        app:indicatorColor="@color/gray"
+        android:layout_marginBottom="-50dp"
+        app:layout_constraintBottom_toTopOf="@+id/comment_input_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/comment_input_layout"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:background="#FFFFFF"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+
+        <EditText
+            android:id="@+id/comment_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/map_overview_timeline_detail_comment_input_bg"
+            android:hint="@string/comment_hint"
+            android:imeOptions="actionSend"
+            android:inputType="text|textNoSuggestions"
+            android:paddingStart="60dp"
+            android:paddingTop="13dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="13dp"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/comment_input_icon"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="14dp"
+            android:src="@drawable/comment"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

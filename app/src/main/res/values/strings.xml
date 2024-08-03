@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Loop</string>
     <string name="google_sdk_id" translatable="false">775100543200-k9pr4r5j2n7tm1jd46tsoenqipg831cq.apps.googleusercontent.com</string>
+    <string name="map_id" translatable="false">eaa2c61e4be2455c</string>
     <string name="underlined_start_guest"><u>게스트로 시작하기</u></string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>

@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="#FFFFFF"
     android:paddingHorizontal="10dp"
-    android:background="#FFFFFF">
+    android:paddingBottom="10dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/comment_profile_image"
@@ -48,16 +50,25 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="50dp"
         android:fontFamily="@font/pretendard_regular"
         android:text="냄새가 여기까지 나네요!냄새가 여기까지 나네요!냄새가 여기까지 나네요!냄새가 여기까지 나네요!냄새가 여기까지 나네요!냄새가 여기까지 나네요!냄새가 여기까지 나네요!냄새가 여기까지 나네요!냄새가 여기까지 나네요!냄새가 여기까지 나네요!냄새가 여기까지 나네요!냄새가 여기까지 나네요!냄새가 여기까지 나네요!냄새가 여기까지 나네요!"
         android:textColor="@color/black"
         android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/comment_profile_image"
         app:layout_constraintTop_toBottomOf="@+id/comment_writer_name" />
+
+    <ImageButton
+        android:id="@+id/replyBtn"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="10dp"
+        android:background="@null"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/optionBtn"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/reply_24px" />
 
     <ImageButton
         android:id="@+id/optionBtn"
@@ -68,4 +79,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/options_30px" />
+
+    <TextView
+        android:id="@+id/reply_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/pretendard_bold"
+        android:text="답글 0개"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/comment_body"
+        app:layout_constraintTop_toBottomOf="@+id/comment_body" />
 </androidx.constraintlayout.widget.ConstraintLayout>

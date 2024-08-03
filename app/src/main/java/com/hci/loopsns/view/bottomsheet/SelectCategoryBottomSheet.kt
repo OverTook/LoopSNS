@@ -8,7 +8,7 @@ import android.widget.Button
 import android.widget.TextView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.hci.loopsns.R
-
+import kotlin.reflect.KFunction2
 
 class SelectCategoryBottomSheet : BottomSheetDialogFragment() {
 
@@ -16,7 +16,7 @@ class SelectCategoryBottomSheet : BottomSheetDialogFragment() {
 
     private lateinit var categories: List<String>
     private lateinit var keywords: List<String>
-    private lateinit var onSubmitAction: (List<String>, List<String>) -> Unit
+    private lateinit var onSubmitAction: KFunction2<List<String>, List<String>, Unit>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,7 +57,7 @@ class SelectCategoryBottomSheet : BottomSheetDialogFragment() {
         return viewOfLayout
     }
 
-    fun setData(categories: List<String>, keywords: List<String>, onSubmitAction: (List<String>, List<String>) -> Unit): SelectCategoryBottomSheet {
+    fun setData(categories: List<String>, keywords: List<String>, onSubmitAction: KFunction2<List<String>, List<String>, Unit>): SelectCategoryBottomSheet {
         this.categories = categories
         this.keywords = keywords
         this.onSubmitAction = onSubmitAction
