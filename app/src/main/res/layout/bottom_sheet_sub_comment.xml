@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#FFFFFF">
+    android:background="@color/activity_background">
 
     <ImageView
         android:id="@+id/imageView"
@@ -37,9 +37,9 @@
         android:id="@+id/requestProgressBar"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:layout_marginBottom="-50dp"
         android:indeterminate="true"
         app:indicatorColor="@color/gray"
-        android:layout_marginBottom="-50dp"
         app:layout_constraintBottom_toTopOf="@+id/comment_input_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -48,7 +48,7 @@
         android:id="@+id/comment_input_layout"
         android:layout_width="match_parent"
         android:layout_height="72dp"
-        android:background="#FFFFFF"
+        android:background="@color/activity_background"
         android:paddingHorizontal="20dp"
         android:paddingVertical="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -59,7 +59,7 @@
             android:id="@+id/comment_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/map_overview_timeline_detail_comment_input_bg"
+            android:background="@drawable/timeline_detail_comment_input_bg"
             android:hint="@string/comment_hint"
             android:imeOptions="actionSend"
             android:inputType="text|textNoSuggestions"

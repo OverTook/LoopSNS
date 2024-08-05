@@ -26,6 +26,11 @@
 -keep,allowobfuscation,allowshrinking class retrofit2.Response
 -keep,allowobfuscation,allowshrinking class kotlin.coroutines.Continuation
 
+-keep class com.luck.picture.lib.** { *; }
+-dontwarn com.yalantis.ucrop**
+-keep class com.yalantis.ucrop** { *; }
+-keep interface com.yalantis.ucrop** { *; }
+
 # https://github.com/square/okhttp/pull/6792
 -dontwarn org.bouncycastle.jsse.**
 -dontwarn org.conscrypt.*

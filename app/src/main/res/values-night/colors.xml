@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="gray">#AFAFAF</color>
+    <color name="tag_blue">#A4E2FF</color>
+    <color name="tag_blue_text">#2C7EBD</color>
+    <color name="tag_red">#BD2C2C</color>
+    <color name="tag_red_text">#FFB2B2</color>
+    <color name="keyword">#E1E9E9E9</color>
+
+    <color name="activity_background">#1C1C1C</color>
+    <color name="header_background">#1C1C1C</color>
+    <color name="header_border">#171717</color>
+    <color name="bottom_navigation_background">#1C1C1C</color>
+    <color name="notification_unread_item_background">#4C4C4C</color>
+    <color name="notification_read_item_background">#1C1C1C</color>
+    <color name="article_border">#4C4C4C</color>
+    <color name="input_background">#232323</color>
+
+    <color name="bottom_sheet_top_bar">#303030</color>
+
+    <color name="highlight_comment_background">#535353</color>
+
+    <color name="main_text">#FFFFFF</color>
+    <color name="sub_text_1">#838383</color>
+    <color name="sub_text_2">#AFAFAF</color>
+    <color name="sub_text_3">#009CFF</color>
+
+    <color name="main_caption">#000000</color>
+    <color name="sub_caption_1">#707070</color>
+
+    <color name="unregister_text">#ED3636</color>
+
+    <color name="toggle_background">#9A9A9A</color>
+    <color name="toggle_thumb">#11CFC5</color>
+    <color name="icon_arrow_back">#FFFFFF</color>
+    <color name="icon_setting_action_move">#BDBDBD</color>
+    <color name="icon_notifications_comment">#FFFFFF</color>
+    <color name="icon_reply">#FFFFFF</color>
+    <color name="icon_options">#FFFFFF</color>
+    <color name="icon_favorite">#FFFFFF</color>
+</resources>

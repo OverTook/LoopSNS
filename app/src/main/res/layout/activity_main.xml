@@ -12,11 +12,12 @@
         app:exb_item_horizontal_padding="10dp"
         app:exb_item_horizontal_margin="20dp"
         app:exb_items="@menu/bottom_navigation"
-        app:exb_backgroundColor="#FFFFFF"
+        app:exb_backgroundColor="@color/bottom_navigation_background"
         app:exb_itemInactiveColor="#656565"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:exb_elevation="20dp"/>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"

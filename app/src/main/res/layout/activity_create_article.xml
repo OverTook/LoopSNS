@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:background="@color/activity_background">
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/loadingAnim"
@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="65dp"
             android:layout_gravity="center"
-            android:background="@drawable/header"
+            android:background="@drawable/header_bg"
             android:paddingStart="10dp"
             app:titleTextColor="@android:color/black">
 
@@ -47,11 +47,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="25dp"
+                android:layout_gravity="center"
                 android:fontFamily="@font/pretendard_medium"
                 android:gravity="center_vertical"
                 android:text="게시글 작성하기"
-                android:textColor="@color/black"
+                android:textColor="@color/main_text"
                 android:textSize="20sp" />
 
         </androidx.appcompat.widget.Toolbar>
@@ -116,16 +116,16 @@
                 android:id="@+id/locationEditText"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="16dp"
                 android:autoSizeMaxTextSize="100sp"
                 android:autoSizeMinTextSize="10sp"
                 android:autoSizeStepGranularity="2sp"
                 android:autoSizeTextType="uniform"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="16dp"
-                android:text="현재 위치를 얻어오는 중"
-                android:textColor="@color/black"
                 android:maxLines="1"
+                android:text="현재 위치를 얻어오는 중"
+                android:textColor="@color/main_text"
                 android:textStyle="bold" />
 
             <EditText
@@ -140,7 +140,7 @@
                 android:hint="내용을 입력하세요."
                 android:inputType="textMultiLine"
                 android:paddingBottom="120dp"
-                android:textColor="@color/black" />
+                android:textColor="@color/sub_text_1" />
 
             <ImageView
                 android:id="@+id/attachment_picture"
@@ -157,7 +157,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:text="허위 정보, 불건전한 내용 개제 등 정책에 어긋나는 게시물은 제한될 수 있습니다.\n또한 첨부한 사진은 AI에 의해 자동 모자이크 처리될 수 있습니다."
-                android:textColor="@color/gray" />
+                android:textColor="@color/sub_text_1" />
         </LinearLayout>
 
     </ScrollView>

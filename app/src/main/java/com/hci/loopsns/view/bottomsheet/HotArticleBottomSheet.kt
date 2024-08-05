@@ -1,5 +1,6 @@
 package com.hci.loopsns.view.bottomsheet
 
+import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
@@ -75,8 +76,13 @@ class HotArticleBottomSheet(private val articleIntent: Intent, private val allVi
 
 
         (dialog as? BottomSheetDialog)?.behavior?.state = BottomSheetBehavior.STATE_EXPANDED
-        getLocation()
         return view
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        getLocation()
     }
 
     fun getLocation() {

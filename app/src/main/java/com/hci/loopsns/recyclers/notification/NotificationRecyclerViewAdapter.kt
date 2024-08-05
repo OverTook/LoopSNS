@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.hci.loopsns.R
 import com.hci.loopsns.storage.models.NotificationComment
@@ -17,7 +18,7 @@ import com.hci.loopsns.utils.formatTo
 import java.lang.reflect.Type
 import kotlin.reflect.KFunction1
 
-class NotificationRecyclerViewAdapter(private val notificationClickAction: KFunction1<NotificationInterface, Unit>, private var items: ArrayList<NotificationInterface>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class NotificationRecyclerViewAdapter(private val mContext: Context, private val notificationClickAction: KFunction1<NotificationInterface, Unit>, private var items: ArrayList<NotificationInterface>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     class CommentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val root = itemView.findViewById<ConstraintLayout>(R.id.main)
@@ -36,14 +37,14 @@ class NotificationRecyclerViewAdapter(private val notificationClickAction: KFunc
         when(item) {
             is NotificationComment -> {
                 (holder as CommentViewHolder).root.setOnClickListener {
-                    holder.root.setBackgroundColor(Color.rgb(255, 255, 255))
+                    holder.root.setBackgroundColor(ContextCompat.getColor(mContext, R.color.notification_read_item_background))
                     notificationClickAction(item)
                 }
 
                 if(item.readed) {
-                    holder.root.setBackgroundColor(Color.rgb(255, 255, 255))
+                    holder.root.setBackgroundColor(ContextCompat.getColor(mContext, R.color.notification_read_item_background))
                 } else {
-                    holder.root.setBackgroundColor(Color.rgb(255, 233, 233))
+                    holder.root.setBackgroundColor(ContextCompat.getColor(mContext, R.color.notification_unread_item_background))
                 }
 
                 holder.body.text = buildString {

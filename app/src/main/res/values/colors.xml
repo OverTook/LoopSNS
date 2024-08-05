@@ -8,4 +8,36 @@
     <color name="tag_red">#BD2C2C</color>
     <color name="tag_red_text">#FFB2B2</color>
     <color name="keyword">#E1E9E9E9</color>
+
+    <color name="activity_background">#FFFFFF</color>
+    <color name="header_background">#FFFFFF</color>
+    <color name="header_border">#E3E3E3</color>
+    <color name="bottom_navigation_background">#FFFFFF</color>
+    <color name="notification_unread_item_background">#FFE9E9</color>
+    <color name="notification_read_item_background">#FFFFFF</color>
+    <color name="article_border">#DEDEDE</color>
+    <color name="input_background">#EFEFEF</color>
+
+    <color name="bottom_sheet_top_bar">#E3E3E3</color>
+
+    <color name="highlight_comment_background">#D6D6D6</color>
+
+    <color name="main_text">#000000</color>
+    <color name="sub_text_1">#838383</color>
+    <color name="sub_text_2">#AFAFAF</color>
+    <color name="sub_text_3">#009CFF</color>
+
+    <color name="main_caption">#000000</color>
+    <color name="sub_caption_1">#454545</color>
+
+    <color name="unregister_text">#ED3636</color>
+
+    <color name="toggle_background">#EDEDED</color>
+    <color name="toggle_thumb">#11CFC5</color>
+    <color name="icon_arrow_back">#000000</color>
+    <color name="icon_setting_action_move">#AAAAAA</color>
+    <color name="icon_notifications_comment">#000000</color>
+    <color name="icon_reply">#000000</color>
+    <color name="icon_options">#000000</color>
+    <color name="icon_favorite">#000000</color>
 </resources>

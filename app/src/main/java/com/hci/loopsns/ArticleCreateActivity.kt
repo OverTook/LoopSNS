@@ -2,9 +2,8 @@ package com.hci.loopsns
 
 import android.content.Context
 import android.content.Intent
-import android.content.pm.ApplicationInfo
-import android.content.pm.PackageManager
 import android.database.Cursor
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -14,17 +13,17 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.lifecycleScope
+import androidx.fragment.app.Fragment
 import com.airbnb.lottie.LottieAnimationView
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.hci.loopsns.network.AddressResponse
 import com.hci.loopsns.network.AddressResult
-import com.hci.loopsns.view.bottomsheet.SelectCategoryBottomSheet
 import com.hci.loopsns.network.ArticleCreateResponse
 import com.hci.loopsns.network.CategoryResponse
 import com.hci.loopsns.network.Comment
@@ -33,12 +32,16 @@ import com.hci.loopsns.utils.GlideEngine
 import com.hci.loopsns.utils.factory.MyArticleFactory
 import com.hci.loopsns.utils.fadeIn
 import com.hci.loopsns.utils.fadeOut
+import com.hci.loopsns.view.bottomsheet.SelectCategoryBottomSheet
 import com.luck.picture.lib.basic.PictureSelector
 import com.luck.picture.lib.config.SelectMimeType
+import com.luck.picture.lib.engine.CompressFileEngine
+import com.luck.picture.lib.engine.CropEngine
+import com.luck.picture.lib.engine.CropFileEngine
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
-import id.zelory.compressor.Compressor
-import kotlinx.coroutines.launch
+import com.yalantis.ucrop.UCrop
+import com.yalantis.ucrop.UCropImageEngine
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -46,6 +49,8 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import top.zibin.luban.Luban
+import top.zibin.luban.OnNewCompressListener
 import java.io.File
 import java.util.Locale
 
@@ -97,56 +102,50 @@ class ArticleCreateActivity : AppCompatActivity(), View.OnClickListener {
         if(picture.isNotEmpty()) {
             val file = File(getRealPathFromUri(Uri.parse(picture), this@ArticleCreateActivity)!!)
 
-            lifecycleScope.launch {
-                val compressedFile = Compressor.compress(this@ArticleCreateActivity, file)
+            val requestFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
+            image = MultipartBody.Part.createFormData("images", file.name, requestFile)
 
-                val requestFile = compressedFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
-                image = MultipartBody.Part.createFormData("images", compressedFile.name, requestFile)
-
-
-
-                NetworkManager.apiService.createArticle(
-                    listOf(image),
-                    listOf(
-                        categories[0].toRequestBody("text/plain".toMediaTypeOrNull()),
-                        categories[1].toRequestBody("text/plain".toMediaTypeOrNull())
-                    ),
-                    listOf(
-                        keywords[0].toRequestBody("text/plain".toMediaTypeOrNull()),
-                        keywords[1].toRequestBody("text/plain".toMediaTypeOrNull()),
-                        keywords[2].toRequestBody("text/plain".toMediaTypeOrNull()),
-                        keywords[3].toRequestBody("text/plain".toMediaTypeOrNull())
-                    ),
-                    description,
-                    x.toString().toRequestBody("text/plain".toMediaTypeOrNull()),
-                    y.toString().toRequestBody("text/plain".toMediaTypeOrNull())
-                ).enqueue(object : Callback<ArticleCreateResponse> {
-                    override fun onResponse(call: Call<ArticleCreateResponse>, response: Response<ArticleCreateResponse>) {
-                        animation.fadeOut(200)
-                        if(!response.isSuccessful) {
-                            Snackbar.make(findViewById(R.id.main), "게시글 작성에 실패했습니다. 오류 코드 " + response.code(), Snackbar.LENGTH_SHORT).show()
-                            return
-                        }
-
-                        val result = response.body()!!
-
-                        MyArticleFactory.addCreatedArticle(result.article)
-
-                        val intent = Intent(
-                            this@ArticleCreateActivity,
-                            ArticleDetailActivity::class.java
-                        )
-                        intent.putExtra("article", result.article)
-                        intent.putParcelableArrayListExtra("comments", ArrayList<Comment>())
-                        startActivity(intent)
-                        finish()
+            NetworkManager.apiService.createArticle(
+                listOf(image),
+                listOf(
+                    categories[0].toRequestBody("text/plain".toMediaTypeOrNull()),
+                    categories[1].toRequestBody("text/plain".toMediaTypeOrNull())
+                ),
+                listOf(
+                    keywords[0].toRequestBody("text/plain".toMediaTypeOrNull()),
+                    keywords[1].toRequestBody("text/plain".toMediaTypeOrNull()),
+                    keywords[2].toRequestBody("text/plain".toMediaTypeOrNull()),
+                    keywords[3].toRequestBody("text/plain".toMediaTypeOrNull())
+                ),
+                description,
+                x.toString().toRequestBody("text/plain".toMediaTypeOrNull()),
+                y.toString().toRequestBody("text/plain".toMediaTypeOrNull())
+            ).enqueue(object : Callback<ArticleCreateResponse> {
+                override fun onResponse(call: Call<ArticleCreateResponse>, response: Response<ArticleCreateResponse>) {
+                    animation.fadeOut(200)
+                    if(!response.isSuccessful) {
+                        Snackbar.make(findViewById(R.id.main), "게시글 작성에 실패했습니다. 오류 코드 " + response.code(), Snackbar.LENGTH_SHORT).show()
+                        return
                     }
 
-                    override fun onFailure(call: Call<ArticleCreateResponse>, err: Throwable) {
+                    val result = response.body()!!
 
-                    }
-                })
-            }
+                    MyArticleFactory.addCreatedArticle(result.article)
+
+                    val intent = Intent(
+                        this@ArticleCreateActivity,
+                        ArticleDetailActivity::class.java
+                    )
+                    intent.putExtra("article", result.article)
+                    intent.putParcelableArrayListExtra("comments", ArrayList<Comment>())
+                    startActivity(intent)
+                    finish()
+                }
+
+                override fun onFailure(call: Call<ArticleCreateResponse>, err: Throwable) {
+
+                }
+            })
             return
         }
 
@@ -286,6 +285,38 @@ class ArticleCreateActivity : AppCompatActivity(), View.OnClickListener {
             R.id.addPictureButton -> {
                 PictureSelector.create(this)
                     .openGallery(SelectMimeType.ofImage())
+                    .setMaxSelectNum(1)
+                    .setCompressEngine(CompressFileEngine { context, source, call ->
+                        Luban.with(context).load(source).ignoreBy(100)
+                            .setCompressListener(object  : OnNewCompressListener {
+                                override fun onStart() {
+                                    Log.e("Compress Started", "Start!")
+                                }
+
+                                override fun onSuccess(source: String?, compressFile: File?) {
+                                    if(source == null || compressFile == null) {
+                                        Snackbar.make(findViewById(R.id.main), "이미지 압축 엔진에 이상이 있습니다. 파일이 없습니다.", Snackbar.LENGTH_SHORT).show()
+                                        Log.e("Compress Failed", "File Null")
+                                        return
+                                    }
+                                    Log.e("Compress Success", "Good " + source + " - " + compressFile.absolutePath)
+                                    call.onCallback(source, compressFile.absolutePath)
+                                }
+
+                                override fun onError(source: String?, e: Throwable?) {
+                                    if(e == null) {
+                                        return
+                                    }
+                                    Snackbar.make(findViewById(R.id.main), "이미지 압축 엔진에 이상이 있습니다.", Snackbar.LENGTH_SHORT).show()
+                                    Log.e("Compress Failed", e.toString())
+                                }
+                            }).launch()
+                    })
+                    .setCropEngine { fragment, srcUri, destinationUri, dataSource, requestCode ->
+                        val uCrop: UCrop = UCrop.of(srcUri, destinationUri, dataSource)
+                        uCrop.withAspectRatio(1F, 1F)
+                        uCrop.start(fragment.requireContext(), fragment, requestCode)
+                    }
                     .setImageEngine(GlideEngine.createGlideEngine())
                     .forResult(object : OnResultCallbackListener<LocalMedia?> {
                         override fun onResult(result: ArrayList<LocalMedia?>) {

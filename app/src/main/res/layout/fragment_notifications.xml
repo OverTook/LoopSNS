@@ -5,9 +5,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    android:background="#FFFFFF">
+    android:background="@color/activity_background">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -19,7 +17,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="65dp"
-            android:background="@drawable/header"
+            android:background="@drawable/header_bg"
             app:layout_scrollFlags="scroll|enterAlways"
             app:titleTextColor="@android:color/black">
 
@@ -30,7 +28,7 @@
                 android:fontFamily="@font/pretendard_medium"
                 android:gravity="center_vertical"
                 android:text="알림"
-                android:textColor="@color/black"
+                android:textColor="@color/main_text"
                 android:textSize="20sp" />
 
         </androidx.appcompat.widget.Toolbar>

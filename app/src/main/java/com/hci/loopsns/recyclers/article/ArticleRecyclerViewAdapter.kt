@@ -11,6 +11,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -174,7 +175,7 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity): R
                     Glide.with(activity)
                         .load(article.images[0])
                         .thumbnail(Glide.with(activity).load(R.drawable.picture_placeholder))
-                        .apply(RequestOptions.bitmapTransform(RoundedCorners(150)))
+                        .apply(RequestOptions.bitmapTransform(RoundedCorners(30)))
                         .into(holder.articleImage)
                 } else {
                     holder.articleImage.visibility = View.GONE
@@ -227,13 +228,13 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity): R
 
                 if(highlightComment!!.isDeleted) {
                     holder.optionButton.visibility = View.GONE
-                    holder.writer.setTextColor(Color.GRAY)
+                    holder.writer.setTextColor(ContextCompat.getColor(activity.applicationContext, R.color.sub_text_2))
                     holder.writer.text = "(삭제)"
                     holder.time.text = ""
                     holder.articleContent.text = "삭제된 댓글입니다."
                 } else {
                     holder.optionButton.visibility = View.VISIBLE
-                    holder.writer.setTextColor(Color.BLACK)
+                    holder.writer.setTextColor(ContextCompat.getColor(activity.applicationContext, R.color.main_text))
                     holder.writer.text = highlightComment!!.writer
                     holder.time.text = highlightComment!!.time.toDate().formatTo("yyyy-MM-dd HH:mm")
                     holder.articleContent.text = highlightComment!!.contents
@@ -277,17 +278,17 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity): R
             is CommentViewHolder -> {
                 val item = comments[(comments.size) - (position - 1)] //역수 취해주기
 
-                holder.root.setBackgroundColor(Color.rgb(255, 255, 255))
+                holder.root.setBackgroundColor(ContextCompat.getColor(activity.applicationContext, R.color.activity_background))
 
                 if(item.isDeleted) {
                     holder.optionButton.visibility = View.GONE
-                    holder.writer.setTextColor(Color.GRAY)
+                    holder.writer.setTextColor(ContextCompat.getColor(activity.applicationContext, R.color.sub_text_2))
                     holder.writer.text = "(삭제)"
                     holder.time.text = ""
                     holder.articleContent.text = "삭제된 댓글입니다."
                 } else {
                     holder.optionButton.visibility = View.VISIBLE
-                    holder.writer.setTextColor(Color.BLACK)
+                    holder.writer.setTextColor(ContextCompat.getColor(activity.applicationContext, R.color.main_text))
                     holder.writer.text = item.writer
                     holder.time.text = item.time.toDate().formatTo("yyyy-MM-dd HH:mm")
                     holder.articleContent.text = item.contents

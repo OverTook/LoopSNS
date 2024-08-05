@@ -1,5 +1,6 @@
 package com.hci.loopsns.view.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,12 +12,13 @@ import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.hci.loopsns.R
+import com.hci.loopsns.SettingsActivity
 import com.hci.loopsns.storage.SharedPreferenceManager
 import com.hci.loopsns.view.fragment.profile.ProfileMyArticleFragment
 import com.hci.loopsns.view.fragment.profile.ProfileMyLikeFragment
 
 
-class ProfileFragment : Fragment() {
+class ProfileFragment : Fragment(), View.OnClickListener {
 
     private lateinit var myArticleFragment: ProfileMyArticleFragment
     private lateinit var myLikeFragment: ProfileMyLikeFragment
@@ -87,9 +89,7 @@ class ProfileFragment : Fragment() {
         myArticleFragment.onInitializeArticle()
         myLikeFragment.onInitializeArticle()
 
-        view.findViewById<AppCompatImageButton>(R.id.settingBtn).setOnClickListener {
-            //
-        }
+        view.findViewById<AppCompatImageButton>(R.id.settingBtn).setOnClickListener(this)
     }
 
     override fun onResume() {
@@ -97,5 +97,19 @@ class ProfileFragment : Fragment() {
 
         myLikeFragment.onResumeSelf()
         myArticleFragment.onResumeSelf()
+    }
+
+    override fun onClick(view: View?) {
+        if(view == null) return
+        when(view.id) {
+            R.id.settingBtn -> {
+                startActivity(
+                    Intent(
+                        requireContext(),
+                        SettingsActivity::class.java
+                    )
+                )
+            }
+        }
     }
 }

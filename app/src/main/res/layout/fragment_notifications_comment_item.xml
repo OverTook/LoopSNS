@@ -4,7 +4,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#FFE9E9"
+    android:background="@color/notification_read_item_background"
     android:paddingHorizontal="10dp">
 
     <ImageView
@@ -25,7 +25,7 @@
         android:layout_marginTop="15dp"
         android:fontFamily="@font/pretendard_bold"
         android:text="새로운 댓글"
-        android:textColor="@color/black"
+        android:textColor="@color/main_text"
         android:textSize="15sp"
         app:layout_constraintStart_toEndOf="@+id/comment_icon"
         app:layout_constraintTop_toTopOf="parent" />
@@ -38,7 +38,7 @@
         android:layout_marginEnd="20dp"
         android:fontFamily="@font/pretendard_medium"
         android:text="닉네임: 내용이 여기에 들어갑니다."
-        android:textColor="@color/black"
+        android:textColor="@color/main_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/comment_icon"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
@@ -53,7 +53,7 @@
         android:layout_marginBottom="10dp"
         android:fontFamily="@font/pretendard_regular"
         android:text="2024-07-31"
-        android:textColor="@color/gray"
+        android:textColor="@color/sub_text_2"
         android:textSize="11sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

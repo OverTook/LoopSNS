@@ -1,9 +1,11 @@
 package com.hci.loopsns.view.fragment
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.graphics.Color
 import android.location.Location
 import android.os.Bundle
@@ -32,6 +34,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.VisibleRegion
@@ -45,6 +48,9 @@ import com.hci.loopsns.network.AddressResult
 import com.hci.loopsns.network.ArticleMarkersResponse
 import com.hci.loopsns.network.ArticleTimelineResponse
 import com.hci.loopsns.network.NetworkManager
+import com.hci.loopsns.storage.NightMode
+import com.hci.loopsns.storage.OnNightModeChangeListener
+import com.hci.loopsns.storage.SettingManager
 import com.hci.loopsns.utils.hideDarkOverlay
 import com.hci.loopsns.utils.showDarkOverlay
 import com.hci.loopsns.view.bottomsheet.HotArticleBottomSheet
@@ -57,7 +63,8 @@ import java.util.Locale
 import java.util.concurrent.Executors
 
 
-class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListener, GoogleMap.OnMarkerClickListener {
+class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListener, GoogleMap.OnMarkerClickListener,
+    OnNightModeChangeListener {
 
     private lateinit var googleMap: GoogleMap
 
@@ -101,6 +108,12 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
 
         initGPS()
         return viewOfLayout
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        SettingManager.getInstance(context).registerNightModeCallback(this)
     }
 
     fun initGPS(){
@@ -316,7 +329,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
 
         spannable.setSpan(RelativeSizeSpan(0.6f), 0, locationString.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         spannable.setSpan(
-            ForegroundColorSpan(Color.rgb(0, 156, 255)), locationString.length,
+            ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.sub_text_3)), locationString.length,
             (locationString.length + articleCount.toString().length), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
 
@@ -351,6 +364,23 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
 
     override fun onMapReady(googleMap: GoogleMap) {
         this.googleMap = googleMap
+
+        googleMap.setMaxZoomPreference(16.9F)
+
+        if(SettingManager.getInstance(requireContext()).isNightMode(requireContext())) {
+            googleMap.setMapStyle(
+                MapStyleOptions.loadRawResourceStyle(
+                    requireContext(), R.raw.google_map_night
+                )
+            )
+        } else {
+            googleMap.setMapStyle(
+                MapStyleOptions.loadRawResourceStyle(
+                    requireContext(), R.raw.google_map_day
+                )
+            )
+        }
+
         googleMap.setOnCameraIdleListener(this)
         googleMap.setOnMarkerClickListener(this)
 
@@ -457,5 +487,16 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
             // 1000미터 이상일 때는 킬로미터 단위로
             "%.2fkm".format(distance / 1000)
         }
+    }
+
+    override fun onChangedNightMode(context: Context, isNightTheme: Boolean) {
+        googleMap.setMapStyle(
+            MapStyleOptions.loadRawResourceStyle(
+                context, when(isNightTheme) {
+                    true -> R.raw.google_map_night
+                    false -> R.raw.google_map_day
+                }
+            )
+        )
     }
 }

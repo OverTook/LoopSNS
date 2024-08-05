@@ -110,7 +110,7 @@ class NotificationsFragment() : Fragment(), SwipeRefreshLayout.OnRefreshListener
             totalList.take(20)
 
             recyclerView = view.findViewById(R.id.notifications_recycler)
-            adapter = NotificationRecyclerViewAdapter(::onClickNotification, totalList)
+            adapter = NotificationRecyclerViewAdapter(requireContext(), ::onClickNotification, totalList)
             recyclerView.adapter = adapter
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
             recyclerView.registerAutoRefresh(this@NotificationsFragment)

@@ -88,7 +88,9 @@ dependencies {
     implementation(libs.androidx.swiperefreshlayout)
     implementation(libs.androidx.work.runtime.ktx) //새로고침 레이아웃 라이브러리
 
-    implementation("id.zelory:compressor:3.0.1") //이미지 압축 라이브러리
+    //implementation("top.zibin:Luban:1.1.8") //이미지 압축 라이브러리
+    implementation("io.github.lucksiege:compress:v3.11.2") //자체 이미지 압축 라이브러리
+    implementation("io.github.lucksiege:ucrop:v3.11.2") //이미지 크롭
 
     implementation("org.litepal.guolindev:core:3.2.3") //SQLite 사용 라이브러리
 
@@ -96,6 +98,12 @@ dependencies {
     implementation("com.github.skydoves:androidveil:1.1.4") //로딩하는 동안 데이터 가리기
 
     implementation("com.github.st235:expandablebottombar:1.5.3") //하단 메뉴 디자인 라이브러리
+
+    implementation("com.afollestad.material-dialogs:input:3.3.0") //팝업
+    implementation("com.github.YarikSOffice:lingver:1.3.0") //다국어 처리
+
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="20dp"
-    android:background="#FFFFFF"
+    android:background="@color/activity_background"
     android:paddingHorizontal="10dp"
     android:paddingBottom="10dp">
 
@@ -28,7 +28,7 @@
         android:layout_marginTop="5dp"
         android:fontFamily="@font/pretendard_bold"
         android:text="작성자 이름"
-        android:textColor="@color/black"
+        android:textColor="@color/main_text"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/comment_profile_image"
         app:layout_constraintTop_toTopOf="parent" />
@@ -41,7 +41,7 @@
         android:layout_marginTop="9dp"
         android:fontFamily="@font/pretendard_medium"
         android:text="2024-07-01 12:00"
-        android:textColor="@color/gray"
+        android:textColor="@color/sub_text_2"
         android:textSize="12sp"
         app:layout_constraintStart_toEndOf="@+id/comment_writer_name"
         app:layout_constraintTop_toTopOf="parent" />
@@ -53,7 +53,7 @@
         android:layout_marginStart="10dp"
         android:fontFamily="@font/pretendard_regular"
         android:text="냄새가 여기까지 나네요!냄새가 여기까지 나네요!냄새가 여기까지 나네요!냄새가 여기까지 나네요!냄새가 여기까지 나네요!냄새가 여기까지 나네요!냄새가 여기까지 나네요!냄새가 여기까지 나네요!냄새가 여기까지 나네요!냄새가 여기까지 나네요!냄새가 여기까지 나네요!냄새가 여기까지 나네요!냄새가 여기까지 나네요!냄새가 여기까지 나네요!"
-        android:textColor="@color/black"
+        android:textColor="@color/main_text"
         android:textSize="13sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/optionBtn"

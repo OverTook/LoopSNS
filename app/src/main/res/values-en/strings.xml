@@ -44,4 +44,6 @@
     <string name="article_list">My posts</string>
     <string name="user_good_list">Favorites</string>
     <string name="article_list_simple">Post Contents</string>
+
+    <string name="setting_dark_mode">Dark Mode</string>
 </resources>

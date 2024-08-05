@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">Loop</string>
     <string name="google_sdk_id" translatable="false">775100543200-k9pr4r5j2n7tm1jd46tsoenqipg831cq.apps.googleusercontent.com</string>
-    <string name="map_id" translatable="false">eaa2c61e4be2455c</string>
     <string name="underlined_start_guest"><u>게스트로 시작하기</u></string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
@@ -37,7 +36,6 @@
     <string name="notification_article">게시글 내용( 내용 다 안들어가면 마지막에 ...)</string>
 
 
-
     <string name="user_name">닉네임</string>
     <string name="user_location">주소</string>
     <string name="set_my_profile">내 프로필 관리</string>
@@ -48,7 +46,7 @@
     <string name="question">문의사항</string>
     <string name="version_info">버전정보</string>
     <string name="out_loop">회원 탈퇴</string>
-    
+
     <string name="location_inquiry">위치 조회 중</string>
 
     <string name="user_profile_bar">프로필</string>
@@ -57,5 +55,6 @@
     <string name="article_list_simple">게시글 내용(길어질 시 ...으로 줄이기</string>
     <string name="notification_title">어제 가장 인기있었던 소식이에요</string>
     <string name="another_user_location">충청북도 충주시 충원대로 268</string>
-
+    <!-- Strings used for fragments for navigation -->
+    <string name="setting_dark_mode">다크 모드</string>
 </resources>

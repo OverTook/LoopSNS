@@ -11,6 +11,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.hci.loopsns.ArticleDetailActivity
@@ -113,13 +114,13 @@ class SubCommentsRecyclerViewAdapter(private val activity: ArticleDetailActivity
         when(holder) {
             is CommentViewHolder -> {
                 if(parentComment.isDeleted) {
-                    holder.writer.setTextColor(Color.GRAY)
+                    holder.writer.setTextColor(ContextCompat.getColor(activity.applicationContext, R.color.sub_text_2))
                     holder.optionButton.visibility = View.GONE
                     holder.writer.text = "(삭제)"
                     holder.time.text = ""
                     holder.articleContent.text = "삭제된 댓글입니다."
                 } else {
-                    holder.writer.setTextColor(Color.BLACK)
+                    holder.writer.setTextColor(ContextCompat.getColor(activity.applicationContext, R.color.main_text))
                     holder.optionButton.visibility = View.VISIBLE
                     holder.writer.text = parentComment.writer
                     holder.time.text = parentComment.time.toDate().formatTo("yyyy-MM-dd HH:mm")
@@ -152,13 +153,13 @@ class SubCommentsRecyclerViewAdapter(private val activity: ArticleDetailActivity
 
                 if(highlightComment!!.isDeleted) {
                     holder.optionButton.visibility = View.GONE
-                    holder.writer.setTextColor(Color.GRAY)
+                    holder.writer.setTextColor(ContextCompat.getColor(activity.applicationContext, R.color.sub_text_2))
                     holder.writer.text = "(삭제)"
                     holder.time.text = ""
                     holder.articleContent.text = "삭제된 댓글입니다."
                 } else {
                     holder.optionButton.visibility = View.VISIBLE
-                    holder.writer.setTextColor(Color.BLACK)
+                    holder.writer.setTextColor(ContextCompat.getColor(activity.applicationContext, R.color.main_text))
                     holder.writer.text = highlightComment!!.writer
                     holder.time.text = highlightComment!!.time.toDate().formatTo("yyyy-MM-dd HH:mm")
                     holder.articleContent.text = highlightComment!!.contents
@@ -187,13 +188,13 @@ class SubCommentsRecyclerViewAdapter(private val activity: ArticleDetailActivity
 
                 if(item.isDeleted) {
                     holder.optionButton.visibility = View.GONE
-                    holder.writer.setTextColor(Color.GRAY)
+                    holder.writer.setTextColor(ContextCompat.getColor(activity.applicationContext, R.color.sub_text_2))
                     holder.writer.text = "(삭제)"
                     holder.time.text = ""
                     holder.articleContent.text = "삭제된 댓글입니다."
                 } else {
                     holder.optionButton.visibility = View.VISIBLE
-                    holder.writer.setTextColor(Color.BLACK)
+                    holder.writer.setTextColor(ContextCompat.getColor(activity.applicationContext, R.color.main_text))
                     holder.writer.text = item.writer
                     holder.time.text = item.time.toDate().formatTo("yyyy-MM-dd HH:mm")
                     holder.articleContent.text = item.contents
