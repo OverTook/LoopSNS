@@ -192,8 +192,9 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity): R
 
                 commentCountView = holder.commentCount
                 commentCountView?.text = buildString {
-                    append("댓글 ")
+                    append(activity.getString(R.string.article_detail_comment_count_start))
                     append(article.commentCount)
+                    append(activity.getString(R.string.article_detail_comment_count_end))
                 }
 
                 if(article.isLiked!!) {
@@ -229,9 +230,9 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity): R
                 if(highlightComment!!.isDeleted) {
                     holder.optionButton.visibility = View.GONE
                     holder.writer.setTextColor(ContextCompat.getColor(activity.applicationContext, R.color.sub_text_2))
-                    holder.writer.text = "(삭제)"
+                    holder.writer.text = activity.getString(R.string.comment_writer_deleted)
                     holder.time.text = ""
-                    holder.articleContent.text = "삭제된 댓글입니다."
+                    holder.articleContent.text = activity.getString(R.string.comment_contents_deleted)
                 } else {
                     holder.optionButton.visibility = View.VISIBLE
                     holder.writer.setTextColor(ContextCompat.getColor(activity.applicationContext, R.color.main_text))
@@ -255,9 +256,9 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity): R
                 if(highlightComment!!.subCommentCount > 0) {
                     holder.replyCount.visibility = View.VISIBLE
                     holder.replyCount.text = buildString {
-                        append("답글 ")
+                        append(activity.getString(R.string.article_detail_sub_comment_count_start))
                         append(highlightComment!!.subCommentCount)
-                        append("개")
+                        append(activity.getString(R.string.article_detail_sub_comment_count_end))
                     }
                     holder.replyCount.setOnClickListener {
                         activity.openSubComment(highlightComment!!, false)
@@ -283,9 +284,9 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity): R
                 if(item.isDeleted) {
                     holder.optionButton.visibility = View.GONE
                     holder.writer.setTextColor(ContextCompat.getColor(activity.applicationContext, R.color.sub_text_2))
-                    holder.writer.text = "(삭제)"
+                    holder.writer.text = activity.getString(R.string.comment_writer_deleted)
                     holder.time.text = ""
-                    holder.articleContent.text = "삭제된 댓글입니다."
+                    holder.articleContent.text = activity.getString(R.string.comment_contents_deleted)
                 } else {
                     holder.optionButton.visibility = View.VISIBLE
                     holder.writer.setTextColor(ContextCompat.getColor(activity.applicationContext, R.color.main_text))
@@ -309,9 +310,9 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity): R
                 if(item.subCommentCount > 0) {
                     holder.replyCount.visibility = View.VISIBLE
                     holder.replyCount.text = buildString {
-                        append("답글 ")
+                        append(activity.getString(R.string.article_detail_sub_comment_count_start))
                         append(item.subCommentCount)
-                        append("개")
+                        append(activity.getString(R.string.article_detail_sub_comment_count_end))
                     }
                     holder.replyCount.setOnClickListener {
                         activity.openSubComment(item, false)
@@ -424,8 +425,9 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity): R
 
 //            this.comments.removeAt(i)
             val countString = buildString {
-                append("댓글 ")
+                append(activity.getString(R.string.article_detail_comment_count_start))
                 append((--article.commentCount).toString())
+                append(activity.getString(R.string.article_detail_comment_count_end))
             }
             commentCountView?.text = countString
             this.notifyItemChanged((comments.size + 1) - (i)) //게시글 하나 있음
@@ -435,8 +437,9 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity): R
 
     override fun onCommentCreated(comment: Comment) {
         val countString = buildString {
-            append("댓글 ")
+            append(activity.getString(R.string.article_detail_comment_count_start))
             append((++article.commentCount).toString())
+            append(activity.getString(R.string.article_detail_comment_count_end))
         }
         commentCountView?.text = countString
         this.comments.add(comment)

@@ -42,6 +42,7 @@ import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import com.yalantis.ucrop.UCrop
 import com.yalantis.ucrop.UCropImageEngine
+import com.yariksoffice.lingver.Lingver
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -209,7 +210,7 @@ class ArticleCreateActivity : AppCompatActivity(), View.OnClickListener {
     fun getLocation() {
         NetworkManager.apiService.getAddress(
             "$x,$y",
-            Locale.getDefault().language
+            Lingver.getInstance().getLocale().language
         ).enqueue(object:Callback<AddressResponse> {
             override fun onResponse(call: Call<AddressResponse>, response: Response<AddressResponse>) {
                 if(!response.isSuccessful) return

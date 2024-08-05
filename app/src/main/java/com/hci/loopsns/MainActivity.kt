@@ -6,11 +6,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.GestureDetector
-import android.view.MenuItem
-import android.view.MotionEvent
 import android.view.View
-import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -18,37 +14,28 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.IntentCompat
 import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.messaging.FirebaseMessaging
 import com.hci.loopsns.databinding.ActivityMainBinding
 import com.hci.loopsns.network.AddFcmTokenRequest
-import com.hci.loopsns.network.ArticleDetailResponse
 import com.hci.loopsns.network.FcmTokenResponse
-import com.hci.loopsns.view.fragment.HomeFragment
-import com.hci.loopsns.view.fragment.NotificationsFragment
-import com.hci.loopsns.view.fragment.ProfileFragment
-import com.hci.loopsns.view.fragment.MainViewPageAdapter
 import com.hci.loopsns.network.NetworkManager
+import com.hci.loopsns.storage.SettingManager
 import com.hci.loopsns.storage.SharedPreferenceManager
 import com.hci.loopsns.storage.models.NotificationComment
 import com.hci.loopsns.utils.DoubleBackPressHandler
-import com.hci.loopsns.utils.hideDarkOverlay
-import com.hci.loopsns.utils.showDarkOverlay
+import com.hci.loopsns.view.fragment.HomeFragment
+import com.hci.loopsns.view.fragment.MainViewPageAdapter
+import com.hci.loopsns.view.fragment.NotificationsFragment
+import com.hci.loopsns.view.fragment.ProfileFragment
 import github.com.st235.lib_expandablebottombar.OnItemClickListener
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import org.litepal.LitePal
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import kotlin.math.abs
 
 class MainActivity : AppCompatActivity(), SplashScreen.KeepOnScreenCondition, OnItemClickListener {
 
@@ -229,6 +216,7 @@ class MainActivity : AppCompatActivity(), SplashScreen.KeepOnScreenCondition, On
         super.onResume()
         if(mAuth!!.currentUser == null || NetworkManager.token.token.isEmpty()) {
             finish()
+            return
         }
     }
 

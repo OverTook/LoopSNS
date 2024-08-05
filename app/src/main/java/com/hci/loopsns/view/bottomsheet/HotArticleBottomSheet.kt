@@ -26,6 +26,7 @@ import com.hci.loopsns.network.AddressResult
 import com.hci.loopsns.network.NetworkManager
 import com.hci.loopsns.utils.formatTo
 import com.hci.loopsns.utils.toDate
+import com.yariksoffice.lingver.Lingver
 import java.util.Locale
 
 class HotArticleBottomSheet(private val articleIntent: Intent, private val allViewIntent: Intent, private val article: ArticleDetail, private val lat: Double, private val lng: Double) : BottomSheetDialogFragment(), View.OnClickListener {
@@ -88,7 +89,7 @@ class HotArticleBottomSheet(private val articleIntent: Intent, private val allVi
     fun getLocation() {
         NetworkManager.apiService.getAddress(
             "$lat,$lng",
-            Locale.getDefault().language
+            Lingver.getInstance().getLocale().language
         ).enqueue(object: retrofit2.Callback<AddressResponse> {
             override fun onResponse(call: retrofit2.Call<AddressResponse>, response: retrofit2.Response<AddressResponse>) {
                 if(!response.isSuccessful) return

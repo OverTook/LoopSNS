@@ -3,10 +3,7 @@ package com.hci.loopsns.view.fragment
 import android.Manifest
 import android.content.Context
 import android.content.Intent
-import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
-import android.content.res.Configuration
-import android.graphics.Color
 import android.location.Location
 import android.os.Bundle
 import android.text.Spannable
@@ -49,11 +46,11 @@ import com.hci.loopsns.network.ArticleMarkersResponse
 import com.hci.loopsns.network.ArticleTimelineResponse
 import com.hci.loopsns.network.NetworkManager
 import com.hci.loopsns.storage.NightMode
-import com.hci.loopsns.storage.OnNightModeChangeListener
 import com.hci.loopsns.storage.SettingManager
 import com.hci.loopsns.utils.hideDarkOverlay
 import com.hci.loopsns.utils.showDarkOverlay
 import com.hci.loopsns.view.bottomsheet.HotArticleBottomSheet
+import com.yariksoffice.lingver.Lingver
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -63,8 +60,7 @@ import java.util.Locale
 import java.util.concurrent.Executors
 
 
-class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListener, GoogleMap.OnMarkerClickListener,
-    OnNightModeChangeListener {
+class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListener, GoogleMap.OnMarkerClickListener {
 
     private lateinit var googleMap: GoogleMap
 
@@ -110,12 +106,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
         return viewOfLayout
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        SettingManager.getInstance(context).registerNightModeCallback(this)
-    }
-
     fun initGPS(){
         if(ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return
@@ -144,7 +134,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
 
         val mapFragment = (childFragmentManager.findFragmentById(R.id.googleMap) as SupportMapFragment)
         mapFragment.getMapAsync(this)
-
+        Log.e("GoogleMap", "Init Start")
         getCurrentLocation()
     }
 
@@ -247,11 +237,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
     }
 
     fun updateLocationText() {
-        val context = requireContext()
+        Log.e("Locale is", Locale.getDefault().language)
 
         NetworkManager.apiService.getAddress(
             "${googleMap.cameraPosition.target.latitude},${googleMap.cameraPosition.target.longitude}",
-            Locale.getDefault().language
+            Lingver.getInstance().getLocale().language
         ).enqueue(object:Callback<AddressResponse>{
             override fun onResponse(call: Call<AddressResponse>, response: Response<AddressResponse>) {
                 if(!response.isSuccessful) {
@@ -310,16 +300,21 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
         addressText = address.formattedAddress
 
         if(country.isNotBlank() && addressText.contains(country)) {
-            addressText = addressText.split(country)[1].trim()
+            val splited = addressText.split(country)
+            if(splited[1].trim().isBlank()) { //이게 비어있으면 영문 주소일 가능성이 있음
+                addressText = splited[0].trim()
+            } else {
+                addressText = splited[1]
+            }
         }
 
         val locationString = buildString {
             append(addressText)
-            append(" 인근 ")
+            append(getString(R.string.nearby))
             append(getMapVisibleRadius())
             append("\n")
         }
-        val endString = " 개의 게시물이 올라왔어요."
+        val endString = getString(R.string.posts_came_up)
 
         val spannable: Spannable = SpannableString(buildString {
             append(locationString)
@@ -341,7 +336,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
             viewOfLayout.findViewById<TextView>(R.id.overview_text).text = spannable
             viewOfLayout.findViewById<TextView>(R.id.overview_time).text = buildString {
                 append(currentDateTime.format(formatter))
-                append(" 기준")
+                append(getString(R.string.based))
             }
         }
     }
@@ -367,19 +362,20 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
 
         googleMap.setMaxZoomPreference(16.9F)
 
-        if(SettingManager.getInstance(requireContext()).isNightMode(requireContext())) {
-            googleMap.setMapStyle(
-                MapStyleOptions.loadRawResourceStyle(
-                    requireContext(), R.raw.google_map_night
-                )
+        googleMap.setMapStyle(
+            MapStyleOptions.loadRawResourceStyle(
+                requireContext(), when(SettingManager.getInstance(requireContext()).getNightMode()) {
+                    NightMode.NIGHT -> R.raw.google_map_night
+                    NightMode.DAY -> R.raw.google_map_day
+                    else -> {
+                        when(SettingManager.getInstance(requireContext()).isSystemNightMode(requireContext())) {
+                            true -> R.raw.google_map_night
+                            else -> R.raw.google_map_day
+                        }
+                    }
+                }
             )
-        } else {
-            googleMap.setMapStyle(
-                MapStyleOptions.loadRawResourceStyle(
-                    requireContext(), R.raw.google_map_day
-                )
-            )
-        }
+        )
 
         googleMap.setOnCameraIdleListener(this)
         googleMap.setOnMarkerClickListener(this)
@@ -487,16 +483,5 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
             // 1000미터 이상일 때는 킬로미터 단위로
             "%.2fkm".format(distance / 1000)
         }
-    }
-
-    override fun onChangedNightMode(context: Context, isNightTheme: Boolean) {
-        googleMap.setMapStyle(
-            MapStyleOptions.loadRawResourceStyle(
-                context, when(isNightTheme) {
-                    true -> R.raw.google_map_night
-                    false -> R.raw.google_map_day
-                }
-            )
-        )
     }
 }

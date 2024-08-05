@@ -90,7 +90,6 @@
             android:layout_marginStart="5dp"
             android:layout_marginTop="36dp"
             android:fontFamily="@font/pretendard_medium"
-            android:text="@string/date"
             android:textColor="@color/gray"
             android:textSize="10sp"
             app:layout_constraintStart_toEndOf="@+id/tags"
@@ -257,7 +256,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="@string/writing_comment_number"
                     android:textColor="@color/gray"
                     android:textSize="12sp" />
 
@@ -275,7 +273,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="@string/writing_good_number"
                     android:textColor="@color/gray"
                     android:textSize="12sp" />
 

@@ -116,9 +116,9 @@ class SubCommentsRecyclerViewAdapter(private val activity: ArticleDetailActivity
                 if(parentComment.isDeleted) {
                     holder.writer.setTextColor(ContextCompat.getColor(activity.applicationContext, R.color.sub_text_2))
                     holder.optionButton.visibility = View.GONE
-                    holder.writer.text = "(삭제)"
+                    holder.writer.text = activity.getString(R.string.comment_writer_deleted)
                     holder.time.text = ""
-                    holder.articleContent.text = "삭제된 댓글입니다."
+                    holder.articleContent.text = activity.getString(R.string.comment_contents_deleted)
                 } else {
                     holder.writer.setTextColor(ContextCompat.getColor(activity.applicationContext, R.color.main_text))
                     holder.optionButton.visibility = View.VISIBLE
@@ -154,9 +154,9 @@ class SubCommentsRecyclerViewAdapter(private val activity: ArticleDetailActivity
                 if(highlightComment!!.isDeleted) {
                     holder.optionButton.visibility = View.GONE
                     holder.writer.setTextColor(ContextCompat.getColor(activity.applicationContext, R.color.sub_text_2))
-                    holder.writer.text = "(삭제)"
+                    holder.writer.text = activity.getString(R.string.comment_writer_deleted)
                     holder.time.text = ""
-                    holder.articleContent.text = "삭제된 댓글입니다."
+                    holder.articleContent.text = activity.getString(R.string.comment_contents_deleted)
                 } else {
                     holder.optionButton.visibility = View.VISIBLE
                     holder.writer.setTextColor(ContextCompat.getColor(activity.applicationContext, R.color.main_text))
@@ -189,9 +189,9 @@ class SubCommentsRecyclerViewAdapter(private val activity: ArticleDetailActivity
                 if(item.isDeleted) {
                     holder.optionButton.visibility = View.GONE
                     holder.writer.setTextColor(ContextCompat.getColor(activity.applicationContext, R.color.sub_text_2))
-                    holder.writer.text = "(삭제)"
+                    holder.writer.text = activity.getString(R.string.comment_writer_deleted)
                     holder.time.text = ""
-                    holder.articleContent.text = "삭제된 댓글입니다."
+                    holder.articleContent.text = activity.getString(R.string.comment_contents_deleted)
                 } else {
                     holder.optionButton.visibility = View.VISIBLE
                     holder.writer.setTextColor(ContextCompat.getColor(activity.applicationContext, R.color.main_text))

@@ -43,7 +43,7 @@
                     android:layout_gravity="center"
                     android:fontFamily="@font/pretendard_medium"
                     android:gravity="center_vertical"
-                    android:text="게시글 상세보기"
+                    android:text="@string/article_detail"
                     android:textColor="@color/main_text"
                     android:textSize="20sp" />
 

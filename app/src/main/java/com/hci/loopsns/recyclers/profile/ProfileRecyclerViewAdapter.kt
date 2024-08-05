@@ -156,9 +156,6 @@ class ProfileRecyclerViewAdapter(private val activity: BaseProfileFragment, priv
     }
 
     fun insertArticle(articles: List<ArticleDetail>) {
-        articles.forEach {
-            Log.e("article", it.contents)
-        }
         if(articles.isEmpty()) return
 
         items.addAll(articles)

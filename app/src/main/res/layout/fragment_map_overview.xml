@@ -21,7 +21,7 @@
             android:layout_height="43dp"
             android:background="@drawable/filter_button_bg"
             android:fontFamily="@font/pretendard_medium"
-            android:hint="근처에서 검색해보세요."
+            android:hint="@string/search_text"
             android:paddingStart="50dp"
             android:textColorHint="@color/gray"
             android:textSize="16sp"

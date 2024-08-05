@@ -24,7 +24,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="15dp"
         android:fontFamily="@font/pretendard_bold"
-        android:text="새로운 댓글"
+        android:text="@string/notifications_new_comment"
         android:textColor="@color/main_text"
         android:textSize="15sp"
         app:layout_constraintStart_toEndOf="@+id/comment_icon"

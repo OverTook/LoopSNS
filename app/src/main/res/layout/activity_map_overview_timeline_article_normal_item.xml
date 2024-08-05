@@ -26,13 +26,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_marginTop="13dp"
+        android:clickable="false"
         android:fontFamily="@font/pretendard_medium"
-        android:text="@string/date"
         android:textColor="@color/gray"
         android:textSize="10sp"
         app:layout_constraintStart_toEndOf="@+id/tags"
-        app:layout_constraintTop_toTopOf="parent"
-        android:clickable="false"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/article_icon"
@@ -204,10 +203,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="@string/writing_comment_number"
+                android:clickable="false"
                 android:textColor="@color/gray"
-                android:textSize="12sp"
-                android:clickable="false"/>
+                android:textSize="12sp" />
 
             <ImageView
                 android:id="@+id/like"
@@ -224,10 +222,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="@string/writing_good_number"
+                android:clickable="false"
                 android:textColor="@color/gray"
-                android:textSize="12sp"
-                android:clickable="false"/>
+                android:textSize="12sp" />
 
         </LinearLayout>
     </LinearLayout>

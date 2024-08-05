@@ -1,5 +1,6 @@
 package com.hci.loopsns.view.fragment
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -46,10 +47,12 @@ class ProfileFragment : Fragment(), View.OnClickListener {
                 .into(view.findViewById(R.id.profile_image))
         }
 
-        childFragmentManager.beginTransaction()
-            .add(R.id.containers, myArticleFragment)
-            .add(R.id.containers, myLikeFragment)
-            .hide(myLikeFragment).commit()
+        if(childFragmentManager.fragments.size < 2) {
+            childFragmentManager.beginTransaction()
+                .add(R.id.containers, myArticleFragment)
+                .add(R.id.containers, myLikeFragment)
+                .hide(myLikeFragment).commit()
+        }
 
         view.findViewById<TabLayout>(R.id.tabLayout).addOnTabSelectedListener(object : OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
@@ -86,11 +89,9 @@ class ProfileFragment : Fragment(), View.OnClickListener {
             }
         })
 
-        myArticleFragment.onInitializeArticle()
-        myLikeFragment.onInitializeArticle()
-
         view.findViewById<AppCompatImageButton>(R.id.settingBtn).setOnClickListener(this)
     }
+
 
     override fun onResume() {
         super.onResume()

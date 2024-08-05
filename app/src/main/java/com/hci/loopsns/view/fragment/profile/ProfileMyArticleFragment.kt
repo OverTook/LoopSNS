@@ -44,6 +44,8 @@ class ProfileMyArticleFragment() : BaseProfileFragment(), AutoRefresherInterface
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
+        onInitializeArticle()
+
         return view
     }
 
@@ -121,11 +123,5 @@ class ProfileMyArticleFragment() : BaseProfileFragment(), AutoRefresherInterface
         )
         intent.putExtra("articleId", uid)
         startActivity(intent)
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        Log.e("OnResume", "ProfileMyArticleFragment")
     }
 }
