@@ -170,7 +170,13 @@ class HotArticleBottomSheet(private val articleIntent: Intent, private val allVi
         addressText = address.formattedAddress
 
         if(country.isNotBlank() && addressText.contains(country)) {
-            addressText = addressText.split(country)[1].trim()
+            val splited = addressText.split(country)
+            if(splited[1].isBlank()) { //이게 비어있으면 영문 주소일 가능성이 있음
+                val lastCommaIndex = addressText.lastIndexOf(',') //따라서 영문 기준으로 잡고 마지막 국가를 지워준다.
+                addressText = addressText.substring(0, lastCommaIndex)
+            } else {
+                addressText = splited[1]
+            }
         }
 
         requireActivity().runOnUiThread {

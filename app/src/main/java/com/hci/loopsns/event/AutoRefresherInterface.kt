@@ -1,4 +1,4 @@
-package com.hci.loopsns
+package com.hci.loopsns.event
 
 import android.view.View
 

@@ -40,6 +40,7 @@ android {
 
     buildFeatures {
         viewBinding = true
+        dataBinding = true
     }
 }
 
@@ -81,7 +82,7 @@ dependencies {
     implementation (libs.material.v121)
     implementation (libs.androidx.viewpager2)
 
-    implementation (libs.pictureselector) //갤러리 라이브러리
+
 
     implementation (libs.lottie) //로티 애니메이션 라이브러리
 
@@ -91,6 +92,7 @@ dependencies {
     //implementation("top.zibin:Luban:1.1.8") //이미지 압축 라이브러리
     implementation("io.github.lucksiege:compress:v3.11.2") //자체 이미지 압축 라이브러리
     implementation("io.github.lucksiege:ucrop:v3.11.2") //이미지 크롭
+    //implementation (libs.pictureselector) //갤러리 라이브러리, Android 14 권한 문제로 제거
 
     implementation("org.litepal.guolindev:core:3.2.3") //SQLite 사용 라이브러리
 
@@ -102,8 +104,17 @@ dependencies {
     implementation("com.afollestad.material-dialogs:input:3.3.0") //팝업
     implementation("com.github.YarikSOffice:lingver:1.3.0") //다국어 처리
 
+    implementation("com.saadahmedev.popup-dialog:popup-dialog:2.0.0") //다이얼로그
+    implementation("com.royrodriguez:transitionbutton:0.2.0") //로그인 UI 디자인용
+
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+
+    implementation(fileTree(mapOf(
+        "dir" to "libs",
+        "include" to listOf("*.aar")
+        //"include" to listOf("*.aar", "*.jar")
+    ))) //갤러리 라이브러리 버그로 인하여 추가
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

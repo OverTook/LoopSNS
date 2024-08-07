@@ -39,16 +39,16 @@
             android:id="@+id/location_name"
             android:layout_width="0dp"
             android:layout_height="28dp"
-            android:autoSizeTextType="uniform"
-            android:autoSizeMinTextSize="10sp"
-            android:autoSizeMaxTextSize="100sp"
-            android:autoSizeStepGranularity="2sp"
             android:layout_marginStart="15dp"
             android:layout_marginTop="25dp"
             android:layout_marginEnd="10dp"
+            android:autoSizeMaxTextSize="100sp"
+            android:autoSizeMinTextSize="10sp"
+            android:autoSizeStepGranularity="2sp"
+            android:autoSizeTextType="uniform"
             android:fontFamily="@font/pretendard_semi_bold"
             android:text="@string/location_inquiry"
-            android:textColor="@color/black"
+            android:textColor="@color/main_text"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/top_location_image"
@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:fontFamily="@font/pretendard_medium"
-            android:textColor="@color/gray"
+            android:textColor="@color/sub_text_2"
             android:textSize="16sp"
             app:layout_constraintStart_toEndOf="@+id/top_location_image"
             app:layout_constraintTop_toBottomOf="@+id/location_name" />
@@ -235,7 +235,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pretendard_medium"
                 android:text="방학만 되면 먹을 게 없는 듯~~~~~~~~~~~~~~~~~~\n호암동에 맛집 있나요?\n게시글내용테스트 ~~~~~~~~~~~~~~~~"
-                android:textColor="@color/black" />
+                android:textColor="@color/main_text" />
 
             <LinearLayout
                 android:id="@+id/article_comment_like"

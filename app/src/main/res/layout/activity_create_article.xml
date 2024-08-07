@@ -26,7 +26,9 @@
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="65dp"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -50,7 +52,7 @@
                 android:layout_gravity="center"
                 android:fontFamily="@font/pretendard_medium"
                 android:gravity="center_vertical"
-                android:text="게시글 작성하기"
+                android:text="@string/toolbar_text_article_create"
                 android:textColor="@color/main_text"
                 android:textSize="20sp" />
 
@@ -62,16 +64,18 @@
         android:id="@+id/bottom"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_margin="16dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginHorizontal="10dp"
         android:background="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <android.widget.Button
             android:id="@+id/submit"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/black_r_button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/article_create_save_button_round"
             android:gravity="center"
             android:text="저장"
             android:textColor="@color/white"
@@ -79,29 +83,17 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:ignore="MissingConstraints" />
-
-        <android.widget.Button
-            android:id="@+id/addPictureButton"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/black_r_button"
-            android:gravity="center"
-            android:text="사진 첨부"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            tools:ignore="MissingConstraints" />
+            app:layout_constraintTop_toTopOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:clipToPadding="false"
         android:orientation="vertical"
-        android:paddingBottom="20dp"
+        android:paddingBottom="10dp"
         app:layout_constraintBottom_toTopOf="@+id/bottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -112,21 +104,37 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/locationEditText"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/attachment_layout"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="16dp"
-                android:autoSizeMaxTextSize="100sp"
-                android:autoSizeMinTextSize="10sp"
-                android:autoSizeStepGranularity="2sp"
-                android:autoSizeTextType="uniform"
-                android:maxLines="1"
-                android:text="현재 위치를 얻어오는 중"
-                android:textColor="@color/main_text"
-                android:textStyle="bold" />
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/attachment_picture"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:adjustViewBounds="true"
+                    android:maxHeight="250dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageButton
+                    android:id="@+id/attachment_delete"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@color/article_create_picture_remove_background"
+                    android:src="@drawable/close_48px"
+                    android:scaleType="fitCenter"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintEnd_toEndOf="@+id/attachment_picture"
+                    app:layout_constraintTop_toTopOf="@+id/attachment_picture"
+                    android:visibility="gone" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <EditText
                 android:id="@+id/contentText"
@@ -137,27 +145,115 @@
                 android:layout_marginEnd="16dp"
                 android:background="@null"
                 android:ems="10"
-                android:hint="내용을 입력하세요."
+                android:fontFamily="@font/pretendard_medium"
+                android:hint="@string/article_create_contents_hint"
                 android:inputType="textMultiLine"
-                android:paddingBottom="120dp"
-                android:textColor="@color/sub_text_1" />
+                android:paddingBottom="100dp"
+                android:textColor="@color/main_text"
+                android:textSize="16sp" />
 
-            <ImageView
-                android:id="@+id/attachment_picture"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/edit_location_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:adjustViewBounds="true"
-                android:maxHeight="250dp" />
+                android:paddingBottom="10dp">
+
+                <ImageView
+                    android:id="@+id/location_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/location_on_30px" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:fontFamily="@font/pretendard_bold"
+                    android:text="@string/article_create_edit_location"
+                    android:textColor="@color/main_text"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/location_icon"
+                    app:layout_constraintStart_toEndOf="@+id/location_icon"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/locationEditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/article_create_location_background"
+                    android:fontFamily="@font/pretendard_bold"
+                    android:maxWidth="330dp"
+                    android:maxLines="2"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="5dp"
+                    android:text="@string/location_loading"
+                    android:textColor="@color/main_text"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/location_icon" />
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginEnd="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/chevron_right_48px" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/add_photo_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp">
+
+                <ImageView
+                    android:id="@+id/icon_add_photo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/add_photo_alternate_30px" />
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:fontFamily="@font/pretendard_bold"
+                    android:text="@string/article_create_attach_picture"
+                    android:textColor="@color/main_text"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/icon_add_photo"
+                    app:layout_constraintStart_toEndOf="@+id/icon_add_photo"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginEnd="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/chevron_right_48px" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
-                android:id="@+id/notice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="16dp"
-                android:text="허위 정보, 불건전한 내용 개제 등 정책에 어긋나는 게시물은 제한될 수 있습니다.\n또한 첨부한 사진은 AI에 의해 자동 모자이크 처리될 수 있습니다."
-                android:textColor="@color/sub_text_1" />
+                android:fontFamily="@font/pretendard_bold"
+                android:text="@string/article_create_rules"
+                android:textColor="@color/sub_text_1"
+                android:textSize="12sp" />
         </LinearLayout>
 
     </ScrollView>

@@ -11,6 +11,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import com.google.protobuf.Internal.BooleanList
 import com.hci.loopsns.MainActivity
+import com.hci.loopsns.R
 import com.yariksoffice.lingver.Lingver
 import java.util.Locale
 
@@ -20,12 +21,27 @@ object NightMode {
     const val SYSTEM = 2
 }
 
+//object NotificationType {
+//    const val COMMENT = 1
+//    const val HOT_ARTICLE = 2
+//    const val FAVORITE_ARTICLE = 4
+//}
+
+enum class NotificationType(val code: Int, val string: Int, val enable: Boolean) {
+    COMMENT(1, R.string.settings_notification_comment_setting, true),
+    HOT_ARTICLE(2, R.string.settings_notification_hot_article_setting, true),
+    FAVORITE_ARTICLE(4, R.string.settings_notification_favorite_setting, false)
+}
+
 class SettingManager {
 
     companion object {
         private const val PREF_NAME = "settings"
         private const val KEY_NIGHT_MODE = "night_mode"
         private const val KEY_LANGUAGE = "language"
+        private const val KEY_FCM_TOKEN = "fcm_token"
+        private const val KEY_NOTIFICATION = "notification"
+
 
         val SupportedLanguage = listOf(
             Locale.ENGLISH,
@@ -45,6 +61,9 @@ class SettingManager {
                     instance!!.editor = sp.edit()
                 }
             }
+        }
+        fun getInstance(): SettingManager {
+            return instance!!
         }
     }
 
@@ -127,5 +146,58 @@ class SettingManager {
         val refresh = Intent(context, MainActivity::class.java)
         refresh.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         context.startActivity(refresh)
+    }
+
+    fun removeFcmToken() {
+        editor.remove(KEY_FCM_TOKEN).apply()
+    }
+
+    fun saveFcmToken(token: String, tokenChanged: Boolean = true) {
+        editor.putString(KEY_FCM_TOKEN, token)
+            .apply()
+    }
+
+
+    fun getFcmToken(): String? {
+        return sharedPreferences.getString(KEY_FCM_TOKEN, null)
+    }
+
+    fun setNotification(type: NotificationType, state: Boolean) {
+        var currentNotification = sharedPreferences.getInt(
+            KEY_NOTIFICATION,
+            NotificationType.entries
+                .filter { it.enable }
+                .fold(0) { acc, status ->
+                acc or status.code
+            }
+        )
+
+        currentNotification = if(state) {
+            currentNotification or type.code
+        } else {
+            currentNotification and type.code.inv()
+        }
+
+        editor.putInt(KEY_NOTIFICATION, currentNotification).apply()
+    }
+
+    fun getNotification(type: NotificationType): Boolean {
+        return (sharedPreferences.getInt(KEY_NOTIFICATION,
+            NotificationType.entries
+                .filter { it.enable }
+                .fold(0) { acc, status ->
+                acc or status.code
+            }
+        ) and type.code) == type.code
+    }
+
+    fun getNotifications(): Int {
+        return sharedPreferences.getInt(KEY_NOTIFICATION,
+            NotificationType.entries
+                .filter { it.enable }
+                .fold(0) { acc, status ->
+                acc or status.code
+            }
+        )
     }
 }

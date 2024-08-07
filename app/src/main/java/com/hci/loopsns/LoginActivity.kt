@@ -21,11 +21,6 @@ import androidx.credentials.PasswordCredential
 import androidx.credentials.exceptions.GetCredentialCancellationException
 import androidx.credentials.exceptions.GetCredentialException
 import androidx.lifecycle.lifecycleScope
-import com.hci.loopsns.network.AccountCreateResponse
-import com.hci.loopsns.network.NetworkManager
-import com.hci.loopsns.utils.DoubleBackPressHandler
-import com.hci.loopsns.utils.hideDarkOverlay
-import com.hci.loopsns.utils.showDarkOverlay
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -40,9 +35,12 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.ktx.Firebase
-import com.hci.loopsns.storage.SharedPreferenceManager
+import com.hci.loopsns.network.AccountCreateResponse
+import com.hci.loopsns.network.NetworkManager
+import com.hci.loopsns.utils.DoubleBackPressHandler
+import com.hci.loopsns.utils.hideDarkOverlay
+import com.hci.loopsns.utils.showDarkOverlay
 import com.kakao.sdk.auth.model.OAuthToken
-import com.kakao.sdk.common.KakaoSdk
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.common.util.Utility
@@ -50,7 +48,6 @@ import com.kakao.sdk.user.UserApiClient
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.litepal.LitePal
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -112,13 +109,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, SplashScreen.Ke
                 try {
                     // 구글 로그인은 성공, Firebase에 로그인
                     val account: GoogleSignInAccount = task.getResult(ApiException::class.java)
-
-                    val profileManager = SharedPreferenceManager(this)
-                    profileManager.saveProfileInfo(
-                        account.photoUrl.toString(),
-                        account.displayName?: "기본 닉네임",
-                        account.email?: "이메일 알 수 없음"
-                    )
 
                     retrieveCustomToken("google", account.idToken!!)
                 } catch (e: ApiException) {
@@ -195,13 +185,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, SplashScreen.Ke
                     try {
                         val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
 
-                        val profileManager = SharedPreferenceManager(this)
-                        profileManager.saveProfileInfo(
-                            googleIdTokenCredential.profilePictureUri.toString(),
-                            googleIdTokenCredential.displayName?: "기본 닉네임",
-                            googleIdTokenCredential.id
-                        )
-
                         retrieveCustomToken("google", googleIdTokenCredential.idToken)
                     } catch (e: GoogleIdTokenParsingException) {
                         Snackbar.make(findViewById(R.id.main), "로그인에 실패하였습니다.", Snackbar.LENGTH_LONG).show()
@@ -276,22 +259,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, SplashScreen.Ke
             }
     }
 
-    private fun kakaoInfoSave() {
-        UserApiClient.instance.me { user, error ->
-            if (error != null) {
-                Log.e("Kakao Error", "사용자 정보 요청 실패", error)
-            }
-            else if (user != null) {
-                val profileManager = SharedPreferenceManager(this)
-                profileManager.saveProfileInfo(
-                    user.kakaoAccount?.profile?.thumbnailImageUrl!!, //필수 동의임
-                    user.kakaoAccount?.profile?.nickname!!, //필수 동의임
-                    user.kakaoAccount?.email!! //필수 동의임
-                )
-            }
-        }
-    }
-
     private fun retrieveCustomToken(platform: String, token: String) {
         NetworkManager.apiService.createAccount(platform, token).enqueue(object :
             Callback<AccountCreateResponse> {
@@ -322,7 +289,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, SplashScreen.Ke
                                 this@LoginActivity.hideDarkOverlay()
                                 if (task2.isSuccessful) {
                                     val idToken = task2.result.token
-                                    NetworkManager.initNetworkManager(idToken.toString(), user.uid)
+                                    NetworkManager.initNetworkManager(idToken!!, user.uid)
 
                                     Firebase.crashlytics.setUserId(user.uid) //파이어베이스 보고 아이디 설정
 
@@ -374,7 +341,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, SplashScreen.Ke
                         //아래처럼 조작이 가능해진다는 문제점을 해결
                         //mAuth!!.createUserWithEmailAndPassword("fake@fake.com", "fakepassword")
 
-                        kakaoInfoSave()
                         retrieveCustomToken("kakao", token.accessToken)
                     }
                 }
@@ -392,7 +358,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, SplashScreen.Ke
 
                             UserApiClient.instance.loginWithKakaoAccount(this@LoginActivity, callback = callback)
                         } else if (token != null) {
-                            kakaoInfoSave()
                             retrieveCustomToken("kakao", token.accessToken)
                         }
                     }

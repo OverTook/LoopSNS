@@ -180,3 +180,30 @@ data class AddressComponent(
     val shortName: String,
     val types: List<String>
 )
+
+// ===============================================//
+
+data class UpdateProfileImageResponse (
+    val success: Boolean, //응답 성공 여부
+    val msg: String, //응답 실패 시 오류 메시지
+
+    @SerializedName("picture_url")
+    val pictureUrl: String
+)
+
+data class UpdateProfileResponse (
+    val success: Boolean, //응답 성공 여부
+    val msg: String //응답 실패 시 오류 메시지
+)
+
+data class UnregisterResponse (
+    val success: Boolean, //응답 성공 여부
+    val msg: String //응답 실패 시 오류 메시지
+)
+
+data class TermsOfAnyResponse (
+    val success: Boolean, //응답 성공 여부
+    val msg: String, //응답 실패 시 오류 메시지
+
+    val data: String
+)

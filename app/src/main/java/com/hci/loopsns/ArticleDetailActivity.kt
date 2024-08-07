@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
-import android.view.animation.DecelerateInterpolator
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
@@ -17,11 +16,11 @@ import androidx.core.content.IntentCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.snackbar.Snackbar
-import com.hci.loopsns.event.CommentListener
+import com.google.firebase.auth.FirebaseAuth
+import com.hci.loopsns.event.AutoRefresherInterface
 import com.hci.loopsns.event.CommentManager
 import com.hci.loopsns.network.ArticleDeleteResponse
 import com.hci.loopsns.network.ArticleDetail
@@ -36,7 +35,6 @@ import com.hci.loopsns.network.LikeArticleRequest
 import com.hci.loopsns.network.LikeResponse
 import com.hci.loopsns.network.NetworkManager
 import com.hci.loopsns.recyclers.article.ArticleRecyclerViewAdapter
-import com.hci.loopsns.storage.SharedPreferenceManager
 import com.hci.loopsns.storage.models.NotificationComment
 import com.hci.loopsns.utils.factory.LikeArticleFactory
 import com.hci.loopsns.utils.factory.MyArticleFactory
@@ -187,7 +185,7 @@ class ArticleDetailActivity() : AppCompatActivity(), SwipeRefreshLayout.OnRefres
 
         this.highlightComment = Pair(true, null)
 
-        if(!highlightComment.subCommentId.isNullOrBlank()) {
+        if(highlightComment.subCommentId.isNotBlank()) {
             this.highlightSubComment = Pair(true, null)
 
             bottomSheet.showKeyboard(false).show(supportFragmentManager, "SubCommentBottomSheet")
@@ -279,6 +277,11 @@ class ArticleDetailActivity() : AppCompatActivity(), SwipeRefreshLayout.OnRefres
     override fun getRequestAnimation(): View = requestAnimationView
 
     override fun requestMoreData() {
+        if(comments.isNullOrEmpty()) {
+            this@ArticleDetailActivity.requestEnd(true)
+            return
+        }
+
         NetworkManager.apiService.retrieveCommentList(article!!.uid, comments!![0].uid).enqueue(object : Callback<CommentListResponse> {
             override fun onResponse(
                 call: Call<CommentListResponse>,
@@ -422,6 +425,10 @@ class ArticleDetailActivity() : AppCompatActivity(), SwipeRefreshLayout.OnRefres
         }
 
         //좋아요 변동 있는 상태에서 액티비티 멈춤
+        if(article!!.isLiked == null) {
+            article!!.isLiked = false
+        }
+
         if(article!!.isLiked!!.xor(adapter.originalLike)) {
             if(article!!.isLiked!!) {
                 LikeArticleFactory.addLikedArticle(article!!)
@@ -446,7 +453,7 @@ class ArticleDetailActivity() : AppCompatActivity(), SwipeRefreshLayout.OnRefres
             override fun onResponse(call: Call<LikeResponse>, response: Response<LikeResponse>) {
                 if (response.isSuccessful) return
 
-                if(article!!.isLiked!!) {
+                if(article!!.isLiked == true) {
                     article!!.isLiked = false
                     article!!.likeCount--
                 } else {
@@ -458,7 +465,7 @@ class ArticleDetailActivity() : AppCompatActivity(), SwipeRefreshLayout.OnRefres
 
             override fun onFailure(call: Call<LikeResponse>, err: Throwable) {
                 Log.e("ArticleLike Failed", err.toString())
-                if(article!!.isLiked!!) {
+                if(article!!.isLiked == true) {
                     article!!.isLiked = false
                     article!!.likeCount--
                 } else {
@@ -549,15 +556,13 @@ class ArticleDetailActivity() : AppCompatActivity(), SwipeRefreshLayout.OnRefres
             override fun onResponse(call: Call<CommentCreateResponse>, response: Response<CommentCreateResponse>) {
                 if (!response.isSuccessful) return
 
-                val profile = SharedPreferenceManager(this@ArticleDetailActivity)
-
                 commentManager.onCommentCreated(
                     Comment(
                         response.body()!!.uid,
-                        profile.getNickname()!!,
+                        FirebaseAuth.getInstance().currentUser!!.displayName,
                         comment,
                         response.body()!!.time,
-                        profile.getImageURL()!!,
+                        FirebaseAuth.getInstance().currentUser!!.photoUrl!!.toString(),
                         true,
                         false,
                         0

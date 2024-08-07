@@ -3,15 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    android:background="#FFFFFF"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/activity_background">
 
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="300dp"
         android:layout_height="300dp"
-        android:layout_marginTop="130dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -38,37 +37,35 @@
         android:id="@+id/kakao_sign_btn"
         android:layout_width="244dp"
         android:layout_height="60dp"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="15dp"
         android:background="@drawable/kakao_login_large_narrow"
         android:elevation="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/login_guest_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/google_sign_btn"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/google_sign_btn"
         android:layout_width="252dp"
         android:layout_height="60dp"
-        android:layout_marginTop="180dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/kakao_sign_btn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/login_guest_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginBottom="50dp"
         android:fontFamily="@font/pretendard_bold"
         android:gravity="center"
         android:text="@string/underlined_start_guest"
         android:textColor="@color/gray"
         android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/kakao_sign_btn" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

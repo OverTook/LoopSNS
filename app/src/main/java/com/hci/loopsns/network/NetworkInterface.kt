@@ -3,6 +3,7 @@ package com.hci.loopsns.network
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -146,4 +147,24 @@ interface NetworkInterface {
         @Query("latlng") latlng: String,
         @Query("language") language: String
     ): Call<AddressResponse>
+
+    @Multipart
+    @POST("/update_profile_img")
+    fun updateProfileImage(
+        @Part image: MultipartBody.Part?
+    ): Call<UpdateProfileImageResponse>
+
+    @POST("/update_profile_nickname")
+    fun updateProfileNickname(
+        @Part("nickname") nickname: RequestBody
+    ): Call<UpdateProfileResponse>
+
+    @DELETE("/delete_user")
+    fun unregister(): Call<UnregisterResponse>
+
+    @GET("/terms_of_use")
+    fun getTermsOfUse(@Query("locale") locale: String): Call<TermsOfAnyResponse>
+
+    @GET("/terms_of_information")
+    fun getTermsOfInformation(@Query("locale") locale: String): Call<TermsOfAnyResponse>
 }

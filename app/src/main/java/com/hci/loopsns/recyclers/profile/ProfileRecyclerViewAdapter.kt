@@ -1,5 +1,6 @@
 package com.hci.loopsns.recyclers.profile
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Resources
 import android.util.Log
@@ -21,14 +22,12 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.android.flexbox.FlexboxLayout
 import com.hci.loopsns.R
 import com.hci.loopsns.network.ArticleDetail
+import com.hci.loopsns.utils.dp
 import com.hci.loopsns.utils.formatTo
 import com.hci.loopsns.utils.toDate
 import com.hci.loopsns.view.fragment.profile.BaseProfileFragment
 
 class ProfileRecyclerViewAdapter(private val activity: BaseProfileFragment, private var items: ArrayList<ArticleDetail>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-    private val Int.dp: Int
-        get() = (this * Resources.getSystem().displayMetrics.density + 0.5f).toInt()
 
     class ArticleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val root: ConstraintLayout = itemView.findViewById(R.id.main)
@@ -37,7 +36,7 @@ class ProfileRecyclerViewAdapter(private val activity: BaseProfileFragment, priv
         val time: TextView = itemView.findViewById(R.id.time)
         val picture: ImageView = itemView.findViewById(R.id.picture)
 
-        val tags: FlexboxLayout = itemView.findViewById(R.id.tags)
+        val tags: LinearLayout = itemView.findViewById(R.id.tags)
 
         val category1: TextView = itemView.findViewById(R.id.tag_1_article)
         val category2: TextView = itemView.findViewById(R.id.tag_2_article)
@@ -99,7 +98,10 @@ class ProfileRecyclerViewAdapter(private val activity: BaseProfileFragment, priv
                     if (i < item.keywords.size) {
                         if(item.keywords[i].isNotBlank()) {
                             keywords[i].visibility = View.VISIBLE
-                            keywords[i].text = item.keywords[i]
+                            keywords[i].text = buildString {
+                                append("#")
+                                append(item.keywords[i])
+                            }
                         }
                     }
                 }
@@ -155,7 +157,13 @@ class ProfileRecyclerViewAdapter(private val activity: BaseProfileFragment, priv
         this.notifyItemInserted(0)
     }
 
-    fun insertArticle(articles: List<ArticleDetail>) {
+    @SuppressLint("NotifyDataSetChanged")
+    fun resetArticles(articles: List<ArticleDetail>) {
+        items = articles as ArrayList<ArticleDetail>
+        this.notifyDataSetChanged()
+    }
+
+    fun insertArticles(articles: List<ArticleDetail>) {
         if(articles.isEmpty()) return
 
         items.addAll(articles)

@@ -9,7 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -20,8 +20,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="17dp"
             android:layout_marginTop="5dp"
+            android:ellipsize="end"
             android:fontFamily="@font/pretendard_medium"
-            android:text="게시글 내용이 여기에 들어갑니다."
+            android:maxLines="3"
+            android:text="게시글 내용이 여기에 들어갑니다.게시글 내용이 여기에 들어갑니다.게시글 내용이 여기에 들어갑니다.게시글 내용이 여기에 들어갑니다.게시글 내용이 여기에 들어갑니다.게시글 내용이 여기에 들어갑니다."
             android:textColor="@color/main_text"
             app:layout_constraintEnd_toEndOf="@+id/tags"
             app:layout_constraintStart_toStartOf="parent"
@@ -51,7 +53,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/loop_logo" />
 
-        <com.google.android.flexbox.FlexboxLayout
+        <LinearLayout
             android:id="@+id/tags"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -59,7 +61,6 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="120dp"
             android:orientation="horizontal"
-            app:flexWrap="wrap"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -94,67 +95,69 @@
                 android:textSize="12sp"
                 android:visibility="visible" />
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/keywords"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="15dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/time">
+
             <TextView
                 android:id="@+id/keyword_1_article"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="2dp"
-                android:background="@drawable/map_overview_article_tag_item_bg_black"
-                android:paddingLeft="13dp"
-                android:paddingTop="4dp"
-                android:paddingRight="13dp"
-                android:paddingBottom="4dp"
+                android:layout_marginHorizontal="2dp"
                 android:text="@string/tag"
-                android:textColor="@color/black"
+                android:textColor="@color/sub_text_1"
                 android:textSize="12sp"
-                android:visibility="gone" />
+                android:visibility="gone"
+                tools:layout_editor_absoluteX="119dp"
+                tools:layout_editor_absoluteY="2dp" />
 
             <TextView
                 android:id="@+id/keyword_2_article"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="2dp"
-                android:background="@drawable/map_overview_article_tag_item_bg_black"
-                android:paddingLeft="13dp"
-                android:paddingTop="4dp"
-                android:paddingRight="13dp"
-                android:paddingBottom="4dp"
+                android:layout_marginHorizontal="2dp"
                 android:text="@string/tag"
-                android:textColor="@color/black"
+                android:textColor="@color/sub_text_1"
                 android:textSize="12sp"
-                android:visibility="gone" />
+                android:visibility="gone"
+                tools:layout_editor_absoluteX="2dp"
+                tools:layout_editor_absoluteY="32dp" />
 
             <TextView
                 android:id="@+id/keyword_3_article"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="2dp"
-                android:background="@drawable/map_overview_article_tag_item_bg_black"
-                android:paddingLeft="13dp"
-                android:paddingTop="4dp"
-                android:paddingRight="13dp"
-                android:paddingBottom="4dp"
+                android:layout_marginHorizontal="2dp"
                 android:text="@string/tag"
-                android:textColor="@color/black"
+                android:textColor="@color/sub_text_1"
                 android:textSize="12sp"
-                android:visibility="gone" />
+                android:visibility="gone"
+                tools:layout_editor_absoluteX="61dp"
+                tools:layout_editor_absoluteY="32dp" />
 
             <TextView
                 android:id="@+id/keyword_4_article"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="2dp"
-                android:background="@drawable/map_overview_article_tag_item_bg_black"
-                android:paddingLeft="13dp"
-                android:paddingTop="4dp"
-                android:paddingRight="13dp"
-                android:paddingBottom="4dp"
+                android:layout_marginHorizontal="2dp"
                 android:text="@string/tag"
-                android:textColor="@color/black"
+                android:textColor="@color/sub_text_1"
                 android:textSize="12sp"
-                android:visibility="gone" />
+                android:visibility="gone"
+                tools:layout_editor_absoluteX="119dp"
+                tools:layout_editor_absoluteY="32dp" />
 
-        </com.google.android.flexbox.FlexboxLayout>
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -164,7 +167,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginHorizontal="10dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:background="@color/article_border"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout"

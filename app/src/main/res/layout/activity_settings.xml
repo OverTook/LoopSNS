@@ -52,14 +52,15 @@
             android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/setting_edit_profile_top"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/circleImageView"
+                    android:id="@+id/profile_image"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
-                    android:layout_marginStart="30dp"
+                    android:layout_marginStart="20dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="15dp"
                     android:src="@drawable/loop_logo"
@@ -79,7 +80,7 @@
                     android:text="이름 표시란"
                     android:textColor="@color/main_text"
                     android:textSize="20sp"
-                    app:layout_constraintStart_toEndOf="@+id/circleImageView"
+                    app:layout_constraintStart_toEndOf="@+id/profile_image"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
@@ -90,7 +91,7 @@
                     android:text="@string/settings_edit_profile"
                     android:textColor="@color/gray"
                     android:textSize="16sp"
-                    app:layout_constraintStart_toEndOf="@+id/circleImageView"
+                    app:layout_constraintStart_toEndOf="@+id/profile_image"
                     app:layout_constraintTop_toBottomOf="@+id/nickname" />
 
                 <ImageView
@@ -112,7 +113,7 @@
                 <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_marginStart="30dp"
+                    android:layout_marginStart="20dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/common_setting_background"
@@ -125,7 +126,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="100dp"
+                    android:layout_marginStart="90dp"
                     android:fontFamily="@font/pretendard_bold"
                     android:text="@string/settings_dark_mode"
                     android:textColor="@color/main_text"
@@ -153,7 +154,7 @@
                 <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_marginStart="30dp"
+                    android:layout_marginStart="20dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/common_setting_background"
@@ -166,7 +167,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="100dp"
+                    android:layout_marginStart="90dp"
                     android:fontFamily="@font/pretendard_bold"
                     android:text="@string/settings_language"
                     android:textColor="@color/main_text"
@@ -190,20 +191,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pretendard_bold"
-                android:paddingHorizontal="30dp"
+                android:paddingHorizontal="20dp"
                 android:paddingVertical="10dp"
                 android:text="@string/settings_category_personal_info"
-                android:textColor="#454545"
+                android:textColor="@color/sub_caption_1"
                 android:textSize="16sp" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/setting_edit_profile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_marginStart="30dp"
+                    android:layout_marginStart="20dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/person_edit_background"
@@ -216,7 +218,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="100dp"
+                    android:layout_marginStart="90dp"
                     android:fontFamily="@font/pretendard_bold"
                     android:text="@string/settings_edit_profile"
                     android:textColor="@color/main_text"
@@ -240,20 +242,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pretendard_bold"
-                android:paddingHorizontal="30dp"
+                android:paddingHorizontal="20dp"
                 android:paddingVertical="10dp"
                 android:text="@string/settings_customer_service"
-                android:textColor="#454545"
+                android:textColor="@color/sub_caption_1"
                 android:textSize="16sp" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/setting_terms_of_use"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_marginStart="30dp"
+                    android:layout_marginStart="20dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/contact_background"
@@ -266,7 +269,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="100dp"
+                    android:layout_marginStart="90dp"
                     android:fontFamily="@font/pretendard_bold"
                     android:text="@string/settings_terms_of_use"
                     android:textColor="@color/main_text"
@@ -288,13 +291,14 @@
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/setting_terms_of_information"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_marginStart="30dp"
+                    android:layout_marginStart="20dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/contact_background"
@@ -307,7 +311,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="100dp"
+                    android:layout_marginStart="90dp"
                     android:fontFamily="@font/pretendard_bold"
                     android:text="@string/settings_privacy_policy"
                     android:textColor="@color/main_text"
@@ -335,7 +339,7 @@
                 <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_marginStart="30dp"
+                    android:layout_marginStart="20dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/contact_background"
@@ -348,7 +352,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="100dp"
+                    android:layout_marginStart="90dp"
                     android:fontFamily="@font/pretendard_bold"
                     android:text="@string/settings_faq"
                     android:textColor="@color/main_text"
@@ -370,12 +374,13 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_marginStart="30dp"
+                    android:layout_marginStart="20dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/contact_background"
@@ -388,7 +393,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="100dp"
+                    android:layout_marginStart="90dp"
                     android:fontFamily="@font/pretendard_bold"
                     android:text="@string/settings_update_history"
                     android:textColor="@color/main_text"
@@ -412,20 +417,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pretendard_bold"
-                android:paddingHorizontal="30dp"
+                android:paddingHorizontal="20dp"
                 android:paddingVertical="10dp"
                 android:text="@string/settings_account_manage"
-                android:textColor="#454545"
+                android:textColor="@color/sub_caption_1"
                 android:textSize="16sp" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/setting_notification_setting"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_marginStart="30dp"
+                    android:layout_marginStart="20dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/manage_account_background"
@@ -438,7 +444,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="100dp"
+                    android:layout_marginStart="90dp"
                     android:fontFamily="@font/pretendard_bold"
                     android:text="@string/settings_notifications"
                     android:textColor="@color/main_text"
@@ -466,7 +472,7 @@
                 <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_marginStart="30dp"
+                    android:layout_marginStart="20dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/manage_account_background"
@@ -479,7 +485,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="100dp"
+                    android:layout_marginStart="90dp"
                     android:fontFamily="@font/pretendard_bold"
                     android:text="@string/settings_logout"
                     android:textColor="@color/main_text"
@@ -507,7 +513,7 @@
                 <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_marginStart="30dp"
+                    android:layout_marginStart="20dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/unregister_account_background"
@@ -520,7 +526,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="100dp"
+                    android:layout_marginStart="90dp"
                     android:fontFamily="@font/pretendard_extra_bold"
                     android:text="@string/settings_unregister"
                     android:textColor="@color/unregister_text"

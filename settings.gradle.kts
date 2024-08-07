@@ -14,6 +14,10 @@ pluginManagement {
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
+        flatDir {
+            dirs("libs")
+        }
+
         google()
         mavenCentral()
         maven { url = uri("https://devrepo.kakao.com/nexus/content/groups/public/") }

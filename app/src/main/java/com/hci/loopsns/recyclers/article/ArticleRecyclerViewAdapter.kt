@@ -2,7 +2,6 @@ package com.hci.loopsns.recyclers.article
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,6 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -25,7 +23,6 @@ import com.hci.loopsns.view.bottomsheet.ArticleOptionBottomSheet
 import com.hci.loopsns.view.bottomsheet.CommentOptionBottomSheet
 import com.hci.loopsns.network.ArticleDetail
 import com.hci.loopsns.network.Comment
-import com.hci.loopsns.storage.models.NotificationComment
 import com.hci.loopsns.utils.formatTo
 import com.hci.loopsns.utils.toDate
 
@@ -165,7 +162,10 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity): R
                     if (i < article.keywords.size) {
                         if(article.keywords[i].isNotBlank()) {
                             keywords[i].visibility = View.VISIBLE
-                            keywords[i].text = article.keywords[i]
+                            keywords[i].text = buildString {
+                                append("#")
+                                append(article.keywords[i])
+                            }
                         }
                     }
                 }
@@ -197,7 +197,7 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity): R
                     append(activity.getString(R.string.article_detail_comment_count_end))
                 }
 
-                if(article.isLiked!!) {
+                if(article.isLiked == true) {
                     holder.likeIcon.setImageResource(R.drawable.favorite_fill_48px)
                 } else {
                     holder.likeIcon.setImageResource(R.drawable.favorite_48px)
@@ -205,7 +205,7 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity): R
 
                 holder.likeCount.text = article.likeCount.toString()
                 holder.likeLayout.setOnClickListener {
-                    when(article.isLiked!!) {
+                    when(article.isLiked == true) {
                         true -> {
                             article.isLiked = false
                             animateLike(holder.likeIcon, false)
@@ -229,13 +229,13 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity): R
 
                 if(highlightComment!!.isDeleted) {
                     holder.optionButton.visibility = View.GONE
-                    holder.writer.setTextColor(ContextCompat.getColor(activity.applicationContext, R.color.sub_text_2))
+                    holder.writer.setTextColor(activity.getColor(R.color.sub_text_2))
                     holder.writer.text = activity.getString(R.string.comment_writer_deleted)
                     holder.time.text = ""
                     holder.articleContent.text = activity.getString(R.string.comment_contents_deleted)
                 } else {
                     holder.optionButton.visibility = View.VISIBLE
-                    holder.writer.setTextColor(ContextCompat.getColor(activity.applicationContext, R.color.main_text))
+                    holder.writer.setTextColor(activity.getColor(R.color.main_text))
                     holder.writer.text = highlightComment!!.writer
                     holder.time.text = highlightComment!!.time.toDate().formatTo("yyyy-MM-dd HH:mm")
                     holder.articleContent.text = highlightComment!!.contents
@@ -279,17 +279,17 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity): R
             is CommentViewHolder -> {
                 val item = comments[(comments.size) - (position - 1)] //역수 취해주기
 
-                holder.root.setBackgroundColor(ContextCompat.getColor(activity.applicationContext, R.color.activity_background))
+                //holder.root.setBackgroundColor(ContextCompat.getColor(activity.applicationContext, R.color.activity_background))
 
                 if(item.isDeleted) {
                     holder.optionButton.visibility = View.GONE
-                    holder.writer.setTextColor(ContextCompat.getColor(activity.applicationContext, R.color.sub_text_2))
+                    holder.writer.setTextColor(activity.getColor(R.color.sub_text_2))
                     holder.writer.text = activity.getString(R.string.comment_writer_deleted)
                     holder.time.text = ""
                     holder.articleContent.text = activity.getString(R.string.comment_contents_deleted)
                 } else {
                     holder.optionButton.visibility = View.VISIBLE
-                    holder.writer.setTextColor(ContextCompat.getColor(activity.applicationContext, R.color.main_text))
+                    holder.writer.setTextColor(activity.getColor(R.color.main_text))
                     holder.writer.text = item.writer
                     holder.time.text = item.time.toDate().formatTo("yyyy-MM-dd HH:mm")
                     holder.articleContent.text = item.contents
@@ -395,7 +395,7 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity): R
 
         this.notifyDataSetChanged()
 
-        originalLike = article.isLiked!!
+        originalLike = article.isLiked ?: false
     }
 
     fun addComments(newComments: ArrayList<Comment>) {

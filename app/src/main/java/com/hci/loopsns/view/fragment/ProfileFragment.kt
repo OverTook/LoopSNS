@@ -3,47 +3,55 @@ package com.hci.loopsns.view.fragment
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.fragment.app.Fragment
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.hci.loopsns.R
 import com.hci.loopsns.SettingsActivity
-import com.hci.loopsns.storage.SharedPreferenceManager
+import com.hci.loopsns.event.ProfileListener
+import com.hci.loopsns.event.ProfileManager
 import com.hci.loopsns.view.fragment.profile.ProfileMyArticleFragment
 import com.hci.loopsns.view.fragment.profile.ProfileMyLikeFragment
 
 
-class ProfileFragment : Fragment(), View.OnClickListener {
+class ProfileFragment : Fragment(), View.OnClickListener, ProfileListener, SwipeRefreshLayout.OnRefreshListener {
 
     private lateinit var myArticleFragment: ProfileMyArticleFragment
     private lateinit var myLikeFragment: ProfileMyLikeFragment
 
+    private lateinit var user: FirebaseUser
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        ProfileManager.getInstance().registerProfileListener(this)
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val profileManager = SharedPreferenceManager(requireContext())
+        if(!this::myArticleFragment.isInitialized) {
+            myArticleFragment = ProfileMyArticleFragment()
+            myLikeFragment = ProfileMyLikeFragment()
+        }
 
-        myArticleFragment = ProfileMyArticleFragment()
-        myLikeFragment = ProfileMyLikeFragment()
+        user = FirebaseAuth.getInstance().currentUser!!
+        view.findViewById<TextView>(R.id.name_text).text = user.displayName
 
-        view.findViewById<TextView>(R.id.name_text).text = profileManager.getNickname()
-
-        if(!profileManager.getImageURL().isNullOrBlank()) {
+        if(user.photoUrl != null) {
             Glide.with(requireActivity())
-                .load(profileManager.getImageURL())
+                .load(user.photoUrl!!.toString())
                 .into(view.findViewById(R.id.profile_image))
         }
 
@@ -61,22 +69,22 @@ class ProfileFragment : Fragment(), View.OnClickListener {
                     0 -> {
                         if(childFragmentManager.fragments.contains(myArticleFragment)) {
                             childFragmentManager.beginTransaction()
-                                .show(myArticleFragment)
                                 .hide(myLikeFragment)
+                                .show(myArticleFragment)
                                 .commit()
                             return
                         }
-                        childFragmentManager.beginTransaction().add(R.id.containers, myArticleFragment).commit()
+                        //childFragmentManager.beginTransaction().add(R.id.containers, myArticleFragment).commit()
                     }
                     else -> {
                         if(childFragmentManager.fragments.contains(myLikeFragment)) {
                             childFragmentManager.beginTransaction()
-                                .show(myLikeFragment)
                                 .hide(myArticleFragment)
+                                .show(myLikeFragment)
                                 .commit()
                             return
                         }
-                        childFragmentManager.beginTransaction().add(R.id.containers, myLikeFragment).commit()
+                        //childFragmentManager.beginTransaction().add(R.id.containers, myLikeFragment).commit()
                     }
                 }
 
@@ -89,15 +97,21 @@ class ProfileFragment : Fragment(), View.OnClickListener {
             }
         })
 
+        view.findViewById<SwipeRefreshLayout>(R.id.swipeLayout).setOnRefreshListener(this)
         view.findViewById<AppCompatImageButton>(R.id.settingBtn).setOnClickListener(this)
     }
-
 
     override fun onResume() {
         super.onResume()
 
         myLikeFragment.onResumeSelf()
         myArticleFragment.onResumeSelf()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        ProfileManager.getInstance().removeProfileListener(this)
     }
 
     override fun onClick(view: View?) {
@@ -112,5 +126,23 @@ class ProfileFragment : Fragment(), View.OnClickListener {
                 )
             }
         }
+    }
+
+    override fun onChangedProfile() {
+        user = FirebaseAuth.getInstance().currentUser!!
+        Log.e("user", user.displayName.toString())
+        requireView().findViewById<TextView>(R.id.name_text).text = user.displayName
+
+        if(user.photoUrl != null) {
+            Glide.with(requireActivity())
+                .load(user.photoUrl!!.toString())
+                .into(requireView().findViewById(R.id.profile_image))
+        }
+    }
+
+    override fun onRefresh() {
+        requireView().findViewById<SwipeRefreshLayout>(R.id.swipeLayout).isRefreshing = false
+        myLikeFragment.onInitializeArticle()
+        myArticleFragment.onInitializeArticle()
     }
 }

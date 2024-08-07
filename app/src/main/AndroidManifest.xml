@@ -23,6 +23,8 @@
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
+    <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED"/>
+
     <queries>
         <package android:name="com.hci.loopsns" />
         <package android:name="com.luck.pictureselector" />
@@ -79,8 +81,19 @@
             android:exported="true"/>
 
         <activity
+            android:name=".SelectLocationActivity"
+            android:exported="true"/>
+
+        <activity
             android:name=".SettingsActivity"
             android:exported="true" />
+
+        <activity
+            android:name=".EditProfileActivity"
+            android:exported="true"/>
+        <activity
+            android:name=".TermsActivity"
+            android:exported="true"/>
 
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"

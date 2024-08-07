@@ -1,13 +1,10 @@
 package com.hci.loopsns.utils
 
-import android.content.res.Resources
 import androidx.recyclerview.widget.RecyclerView
-import com.hci.loopsns.AutoRefresherInterface
-
-val Float.dp: Float
-    get() = (this * Resources.getSystem().displayMetrics.density + 0.5f)
+import com.hci.loopsns.event.AutoRefresherInterface
 
 fun <T : AutoRefresherInterface> RecyclerView.registerAutoRefresh(activity: T) {
+    this.clearOnScrollListeners()
     this.addOnScrollListener(object : RecyclerView.OnScrollListener() {
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)

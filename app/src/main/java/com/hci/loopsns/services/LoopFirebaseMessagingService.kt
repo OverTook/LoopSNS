@@ -21,7 +21,8 @@ import com.google.gson.JsonSerializer
 import com.hci.loopsns.LoginActivity
 import com.hci.loopsns.MainActivity
 import com.hci.loopsns.R
-import com.hci.loopsns.storage.SharedPreferenceManager
+import com.hci.loopsns.storage.NotificationType
+import com.hci.loopsns.storage.SettingManager
 import com.hci.loopsns.storage.models.NotificationComment
 import com.hci.loopsns.utils.factory.NotificationFactory
 import org.litepal.LitePal
@@ -42,7 +43,7 @@ class LoopFirebaseMessagingService : FirebaseMessagingService() {
     override fun onNewToken(token: String) {
         super.onNewToken(token)
         Log.d(TAG, "new Token ${token}")
-        SharedPreferenceManager(baseContext).saveFcmToken(token)
+        SettingManager.getInstance(baseContext).saveFcmToken(token)
     }
 
     override fun onMessageReceived(message: RemoteMessage) {
@@ -104,6 +105,8 @@ class LoopFirebaseMessagingService : FirebaseMessagingService() {
                     LitePal.initialize(baseContext)
                     comment.saveThrows()
                 }
+
+                if(!SettingManager.getInstance(baseContext).getNotification(NotificationType.COMMENT)) return
 
                 val pendingIntent = buildPendingIntent(uniId, intent)
 

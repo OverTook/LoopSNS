@@ -1,5 +1,7 @@
 package com.hci.loopsns
 
+import android.Manifest
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -7,9 +9,11 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.IntentCompat
 import androidx.core.splashscreen.SplashScreen
@@ -24,18 +28,27 @@ import com.hci.loopsns.network.AddFcmTokenRequest
 import com.hci.loopsns.network.FcmTokenResponse
 import com.hci.loopsns.network.NetworkManager
 import com.hci.loopsns.storage.SettingManager
-import com.hci.loopsns.storage.SharedPreferenceManager
 import com.hci.loopsns.storage.models.NotificationComment
 import com.hci.loopsns.utils.DoubleBackPressHandler
 import com.hci.loopsns.view.fragment.HomeFragment
 import com.hci.loopsns.view.fragment.MainViewPageAdapter
 import com.hci.loopsns.view.fragment.NotificationsFragment
 import com.hci.loopsns.view.fragment.ProfileFragment
+import com.luck.picture.lib.basic.PictureSelector
+import com.luck.picture.lib.config.PictureConfig
+import com.luck.picture.lib.config.SelectMimeType
+import com.luck.picture.lib.permissions.PermissionChecker
+import com.luck.picture.lib.permissions.PermissionConfig
+import com.luck.picture.lib.permissions.PermissionResultCallback
+import com.saadahmedev.popupdialog.PopupDialog
+import com.saadahmedev.popupdialog.listener.StandardDialogActionListener
+import com.yariksoffice.lingver.Lingver
 import github.com.st235.lib_expandablebottombar.OnItemClickListener
 import org.litepal.LitePal
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
 
 class MainActivity : AppCompatActivity(), SplashScreen.KeepOnScreenCondition, OnItemClickListener {
 
@@ -53,6 +66,9 @@ class MainActivity : AppCompatActivity(), SplashScreen.KeepOnScreenCondition, On
     private var mAuth: FirebaseAuth? = null
 
     private var splashScreenKeep = true
+    private var notificationComplete = false
+
+    private lateinit var viewPagerPageCallback: ViewPager2.OnPageChangeCallback
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,14 +93,51 @@ class MainActivity : AppCompatActivity(), SplashScreen.KeepOnScreenCondition, On
 
         binding.bottomNavigationView.onItemSelectedListener = this
 
-        // ViewPager2 페이지 변경 콜백 설정
-        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+        viewPagerPageCallback = object : ViewPager2.OnPageChangeCallback() {
             override fun onPageScrollStateChanged(state: Int) {
                 super.onPageScrollStateChanged(state)
                 if (state == ViewPager2.SCROLL_STATE_IDLE) {
+                    if(!splashScreenKeep && notificationComplete) {
+                        binding.viewPager.unregisterOnPageChangeCallback(viewPagerPageCallback)
+                        return
+                    }
+
                     if(binding.viewPager.currentItem == 1) {
                         if(intent.getStringExtra("type") == null && splashScreenKeep) {
                             splashScreenKeep = false
+
+
+                        }
+                    } else if(binding.viewPager.currentItem == 2) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !notificationComplete) {
+                            if (ContextCompat.checkSelfPermission(this@MainActivity, android.Manifest.permission.POST_NOTIFICATIONS)
+                                != PackageManager.PERMISSION_GRANTED) {
+                                //notificationPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+
+                                PopupDialog.getInstance(this@MainActivity)
+                                    .standardDialogBuilder()
+                                    .createStandardDialog()
+                                    .setHeading("권한 요청")
+                                    .setDescription(
+                                        "댓글 알림, 좋아요 알림 등의 작업을 위해서 알림 승인이 필요합니다."
+                                    )
+                                    .setIcon(R.drawable.location)
+                                    .setPositiveButtonText("허가")
+                                    .setNegativeButtonText("거부")
+                                    .build(object : StandardDialogActionListener {
+                                        override fun onPositiveButtonClicked(dialog: Dialog) {
+                                            dialog.dismiss()
+                                            notificationPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+                                        }
+
+                                        override fun onNegativeButtonClicked(dialog: Dialog) {
+                                            dialog.dismiss()
+                                            notificationComplete = true
+                                            Toast.makeText(this@MainActivity, "알림 수신을 거부하셨습니다.", Toast.LENGTH_SHORT).show()
+                                        }
+                                    })
+                                    .show()
+                            }
                         }
                     }
                 }
@@ -98,7 +151,9 @@ class MainActivity : AppCompatActivity(), SplashScreen.KeepOnScreenCondition, On
                     2 -> binding.bottomNavigationView.menu.select(R.id.menu_notification)
                 }
             }
-        })
+        }
+        // ViewPager2 페이지 변경 콜백 설정
+        binding.viewPager.registerOnPageChangeCallback(viewPagerPageCallback)
 
         binding.viewPager.offscreenPageLimit = 3
         binding.viewPager.currentItem = 1
@@ -150,6 +205,7 @@ class MainActivity : AppCompatActivity(), SplashScreen.KeepOnScreenCondition, On
     fun initPermission() {
         notificationPermissionLauncher = registerForActivityResult(
             ActivityResultContracts.RequestPermission()) { isGranted ->
+            notificationComplete = true
             if (!isGranted) {
                 Snackbar.make(findViewById(R.id.main), "알림 권한이 거부되었습니다.", Snackbar.LENGTH_SHORT).show()
             }
@@ -171,10 +227,31 @@ class MainActivity : AppCompatActivity(), SplashScreen.KeepOnScreenCondition, On
         if (ContextCompat.checkSelfPermission(this@MainActivity, android.Manifest.permission.ACCESS_COARSE_LOCATION)
             != PackageManager.PERMISSION_GRANTED) {
 
-            locationPermissionLauncher.launch(arrayOf(
-                android.Manifest.permission.ACCESS_FINE_LOCATION,
-                android.Manifest.permission.ACCESS_COARSE_LOCATION)
-            )
+            PopupDialog.getInstance(this)
+                .standardDialogBuilder()
+                .createStandardDialog()
+                .setHeading("권한 요청")
+                .setDescription(
+                    "정상적인 서비스 이용을 위해 위치 서비스 권한이 필요합니다."
+                )
+                .setIcon(R.drawable.location)
+                .setPositiveButtonText("허가")
+                .setNegativeButtonText("거부")
+                .build(object : StandardDialogActionListener {
+                    override fun onPositiveButtonClicked(dialog: Dialog) {
+                        dialog.dismiss()
+                        locationPermissionLauncher.launch(arrayOf(
+                            android.Manifest.permission.ACCESS_FINE_LOCATION,
+                            android.Manifest.permission.ACCESS_COARSE_LOCATION)
+                        )
+                    }
+
+                    override fun onNegativeButtonClicked(dialog: Dialog) {
+                        dialog.dismiss()
+                        Toast.makeText(this@MainActivity, "권한이 거부되어 정상적인 이용이 불가능합니다.", Toast.LENGTH_SHORT).show()
+                    }
+                })
+                .show()
         } else if (ContextCompat.checkSelfPermission(this@MainActivity, android.Manifest.permission.ACCESS_FINE_LOCATION)
             != PackageManager.PERMISSION_GRANTED) {
 
@@ -214,18 +291,53 @@ class MainActivity : AppCompatActivity(), SplashScreen.KeepOnScreenCondition, On
 
     override fun onResume() {
         super.onResume()
-        if(mAuth!!.currentUser == null || NetworkManager.token.token.isEmpty()) {
-            finish()
+
+        if(mAuth!!.currentUser == null) {
+            FirebaseAuth.getInstance().signOut()
+            val intent = Intent(
+                this,
+                LoginActivity::class.java
+            )
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(
+                intent
+            )
+            //finish()
             return
         }
+    }
+
+    override fun attachBaseContext(newBase: Context) {
+        setLocale(newBase)
+        super.attachBaseContext(newBase)
+    }
+
+    private fun setLocale(ctx: Context) {
+        val loc = Lingver.getInstance().getLocale()
+
+        val resources = ctx.resources
+        val configuration = resources.configuration
+        configuration.setLocale(loc)
+
+        ctx.createConfigurationContext(
+            configuration
+        )
     }
 
     fun locationPermissionCheckEnd() {
         homeFragment.initGPS()
 
         // FCM 토큰 받아오기
-        val sharedPreferences = SharedPreferenceManager(this)
-        val (savedToken, tokenChanged) = sharedPreferences.getFcmToken()
+        val sharedPreferences = SettingManager.getInstance()
+        val savedToken = sharedPreferences.getFcmToken()
+
+//        // 알림 권한 요청
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+//            if (ContextCompat.checkSelfPermission(this@MainActivity, android.Manifest.permission.POST_NOTIFICATIONS)
+//                != PackageManager.PERMISSION_GRANTED) {
+//                notificationPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+//            }
+//        }
 
         // sharedPreference에 토큰 값이 없다면 FCM 토큰을 받아옴
         if (savedToken.isNullOrEmpty()) {
@@ -240,14 +352,7 @@ class MainActivity : AppCompatActivity(), SplashScreen.KeepOnScreenCondition, On
                     Log.d("token", "FCM 토큰 가져오기 실패: ${task.exception?.message}")
                 }
             }
-            // 알림 권한 요청
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                if (ContextCompat.checkSelfPermission(this@MainActivity, android.Manifest.permission.POST_NOTIFICATIONS)
-                    != PackageManager.PERMISSION_GRANTED) {
-                    notificationPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
-                }
-            }
-        } else if(tokenChanged) {
+        } else {
             sendFcmTokenToServer(savedToken)
         }
     }

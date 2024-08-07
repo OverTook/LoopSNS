@@ -58,3 +58,13 @@ class CommentManager {
         subObservers.remove(listener)
     }
 }
+
+interface CommentListener {
+    fun onCommentDeleted(uid: String)
+    fun onCommentCreated(comment: Comment)
+}
+
+interface SubCommentListener {
+    fun onSubCommentDeleted(parentUid: String, uid: String)
+    fun onSubCommentCreated(parentUid: String, comment: Comment)
+}

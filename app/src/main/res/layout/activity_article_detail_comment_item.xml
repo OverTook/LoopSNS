@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#FFFFFF"
+    android:background="@color/activity_background"
     android:paddingHorizontal="10dp"
     android:paddingBottom="10dp">
 
@@ -16,6 +16,8 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="10dp"
         android:src="@drawable/loop_logo"
+        app:civ_border_color="#EDEDED"
+        app:civ_border_width="1dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,7 +29,7 @@
         android:layout_marginTop="5dp"
         android:fontFamily="@font/pretendard_bold"
         android:text="작성자 이름"
-        android:textColor="@color/black"
+        android:textColor="@color/main_text"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/comment_profile_image"
         app:layout_constraintTop_toTopOf="parent" />

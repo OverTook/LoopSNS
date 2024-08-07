@@ -1,0 +1,75 @@
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/activity_background">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:background="@drawable/header_bg"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:titleTextColor="@android:color/black">
+
+            <ImageButton
+                android:id="@+id/backButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@null"
+                android:src="@drawable/baseline_arrow_back_24" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:fontFamily="@font/pretendard_medium"
+                android:gravity="center_vertical"
+                android:text="@string/notifications_text"
+                android:textColor="@color/main_text"
+                android:textSize="20sp" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <com.skydoves.androidveil.VeilLayout
+            android:id="@+id/veilLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:veilFrame_baseAlpha="0.6"
+            app:veilFrame_baseColor="@android:color/darker_gray"
+            app:veilFrame_highlightAlpha="1.0"
+            app:veilFrame_highlightColor="@color/gray"
+            app:veilFrame_layout="@layout/skeleton_terms"
+            app:veilFrame_radius="8dp"
+            app:veilFrame_shimmerEnable="true"
+            app:veilFrame_veiled="true">
+
+            <TextView
+                android:id="@+id/body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/main_text"
+                android:layout_marginHorizontal="10dp"/>
+
+        </com.skydoves.androidveil.VeilLayout>
+
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

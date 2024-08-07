@@ -237,8 +237,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
     }
 
     fun updateLocationText() {
-        Log.e("Locale is", Locale.getDefault().language)
-
         NetworkManager.apiService.getAddress(
             "${googleMap.cameraPosition.target.latitude},${googleMap.cameraPosition.target.longitude}",
             Lingver.getInstance().getLocale().language
@@ -301,15 +299,16 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
 
         if(country.isNotBlank() && addressText.contains(country)) {
             val splited = addressText.split(country)
-            if(splited[1].trim().isBlank()) { //이게 비어있으면 영문 주소일 가능성이 있음
-                addressText = splited[0].trim()
+            if(splited[1].isBlank()) { //이게 비어있으면 영문 주소일 가능성이 있음
+                val lastCommaIndex = addressText.lastIndexOf(',') //따라서 영문 기준으로 잡고 마지막 국가를 지워준다.
+                addressText = addressText.substring(0, lastCommaIndex)
             } else {
                 addressText = splited[1]
             }
         }
 
         val locationString = buildString {
-            append(addressText)
+            append(addressText.trim())
             append(getString(R.string.nearby))
             append(getMapVisibleRadius())
             append("\n")
@@ -354,21 +353,27 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
 
     override fun onPause() {
         super.onPause()
-        fusedLocationClient.removeLocationUpdates(locationCallback)
+        if(this::locationCallback.isInitialized) {
+            fusedLocationClient.removeLocationUpdates(locationCallback)
+        }
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
         this.googleMap = googleMap
 
+        if(this::currentLocation.isInitialized) {
+            val cameraUpdate = CameraUpdateFactory.newLatLngZoom(currentLocation, 15f)
+            googleMap.moveCamera(cameraUpdate)
+        }
         googleMap.setMaxZoomPreference(16.9F)
 
         googleMap.setMapStyle(
             MapStyleOptions.loadRawResourceStyle(
-                requireContext(), when(SettingManager.getInstance(requireContext()).getNightMode()) {
+                requireContext(), when(SettingManager.getInstance().getNightMode()) {
                     NightMode.NIGHT -> R.raw.google_map_night
                     NightMode.DAY -> R.raw.google_map_day
                     else -> {
-                        when(SettingManager.getInstance(requireContext()).isSystemNightMode(requireContext())) {
+                        when(SettingManager.getInstance().isSystemNightMode(requireContext())) {
                             true -> R.raw.google_map_night
                             else -> R.raw.google_map_day
                         }

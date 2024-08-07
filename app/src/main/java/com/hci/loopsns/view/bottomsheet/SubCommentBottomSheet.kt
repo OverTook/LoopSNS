@@ -19,8 +19,9 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 import com.hci.loopsns.ArticleDetailActivity
-import com.hci.loopsns.AutoRefresherInterface
+import com.hci.loopsns.event.AutoRefresherInterface
 import com.hci.loopsns.R
 import com.hci.loopsns.event.CommentManager
 import com.hci.loopsns.network.Comment
@@ -29,7 +30,6 @@ import com.hci.loopsns.network.CommentListResponse
 import com.hci.loopsns.network.CreateSubCommentRequest
 import com.hci.loopsns.network.NetworkManager
 import com.hci.loopsns.recyclers.comments.SubCommentsRecyclerViewAdapter
-import com.hci.loopsns.storage.SharedPreferenceManager
 import com.hci.loopsns.utils.registerAutoRefresh
 import com.hci.loopsns.utils.requestEnd
 import com.skydoves.androidveil.VeilRecyclerFrameView
@@ -56,6 +56,11 @@ class SubCommentBottomSheet(private val activity: ArticleDetailActivity) : Botto
     override fun getRequestAnimation(): View = requestAnimationView
 
     override fun requestMoreData() {
+        if(comments.isNullOrEmpty()) {
+            this.requestEnd(true)
+            return
+        }
+
         NetworkManager.apiService.retrieveSubCommentList(articleUid, parentComment!!.uid, comments!![comments!!.size - 1].uid).enqueue(object : Callback<CommentListResponse> {
             override fun onResponse(
                 call: Call<CommentListResponse>,
@@ -239,16 +244,14 @@ class SubCommentBottomSheet(private val activity: ArticleDetailActivity) : Botto
             override fun onResponse(call: Call<CommentCreateResponse>, response: Response<CommentCreateResponse>) {
                 if (!response.isSuccessful) return
 
-                val profile = SharedPreferenceManager(activity)
-
                 CommentManager.getInstance().onSubCommentCreated(
                     parentComment!!.uid,
                     Comment(
                         response.body()!!.uid,
-                        profile.getNickname()!!,
+                        FirebaseAuth.getInstance().currentUser!!.displayName,
                         comment,
                         response.body()!!.time,
-                        profile.getImageURL()!!,
+                        FirebaseAuth.getInstance().currentUser!!.photoUrl!!.toString(),
                         true,
                         false,
                         0

@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.hci.loopsns.ArticleDetailActivity
-import com.hci.loopsns.AutoRefresherInterface
+import com.hci.loopsns.event.AutoRefresherInterface
 import com.hci.loopsns.R
 import com.hci.loopsns.network.ArticleDetail
 import com.hci.loopsns.network.MyArticleResponse
@@ -68,7 +68,7 @@ class ProfileMyArticleFragment() : BaseProfileFragment(), AutoRefresherInterface
                     return
                 }
 
-                adapter.insertArticle(articles)
+                adapter.insertArticles(articles)
                 this@ProfileMyArticleFragment.requestEnd(false)
             }
 
@@ -94,7 +94,7 @@ class ProfileMyArticleFragment() : BaseProfileFragment(), AutoRefresherInterface
                     noMoreData = true
                     return
                 }
-                adapter.insertArticle(articles)
+                adapter.resetArticles(articles)
                 recyclerView.scrollToPosition(0)
             }
 

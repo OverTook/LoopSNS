@@ -17,7 +17,9 @@
     <color name="notification_read_item_background">#1C1C1C</color>
     <color name="article_border">#4C4C4C</color>
     <color name="input_background">#232323</color>
-
+    <color name="article_create_location_background">#232323</color>
+    <color name="article_create_save_button_background">#838383</color>
+    <color name="article_create_picture_remove_background">#FFFFFF</color>
     <color name="bottom_sheet_top_bar">#303030</color>
 
     <color name="highlight_comment_background">#535353</color>
@@ -40,4 +42,7 @@
     <color name="icon_reply">#FFFFFF</color>
     <color name="icon_options">#FFFFFF</color>
     <color name="icon_favorite">#FFFFFF</color>
+    <color name="icon_location_marker">#FFFFFF</color>
+    <color name="icon_add_photo">#FFFFFF</color>
+    <color name="icon_close">#000000</color>
 </resources>

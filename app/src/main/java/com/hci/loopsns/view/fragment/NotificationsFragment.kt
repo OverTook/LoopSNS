@@ -12,34 +12,24 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.google.android.material.badge.BadgeDrawable
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.snackbar.Snackbar
 import com.hci.loopsns.ArticleDetailActivity
-import com.hci.loopsns.AutoRefresherInterface
+import com.hci.loopsns.event.AutoRefresherInterface
 import com.hci.loopsns.R
-import com.hci.loopsns.network.ArticleDetailResponse
-import com.hci.loopsns.network.NetworkManager
 import com.hci.loopsns.recyclers.notification.NotificationRecyclerViewAdapter
 import com.hci.loopsns.storage.models.NotificationComment
 import com.hci.loopsns.storage.models.NotificationHotArticle
 import com.hci.loopsns.storage.models.NotificationInterface
-import com.hci.loopsns.utils.dp
 import com.hci.loopsns.utils.factory.NotificationFactory
 import com.hci.loopsns.utils.factory.NotificationFactoryEventListener
-import com.hci.loopsns.utils.hideDarkOverlay
 import com.hci.loopsns.utils.registerAutoRefresh
 import com.hci.loopsns.utils.requestEnd
-import com.hci.loopsns.utils.showDarkOverlay
 import github.com.st235.lib_expandablebottombar.ExpandableBottomBar
 import github.com.st235.lib_expandablebottombar.Notification
 import kotlinx.coroutines.launch
 import org.litepal.LitePal
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
-class NotificationsFragment() : Fragment(), SwipeRefreshLayout.OnRefreshListener, NotificationFactoryEventListener, AutoRefresherInterface {
+class NotificationsFragment() : Fragment(), SwipeRefreshLayout.OnRefreshListener, NotificationFactoryEventListener,
+    AutoRefresherInterface {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: NotificationRecyclerViewAdapter
