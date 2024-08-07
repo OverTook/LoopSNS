@@ -58,10 +58,10 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity): R
         val articleImage: ImageView = itemView.findViewById(R.id.article_image)
         val articleContent: TextView = itemView.findViewById(R.id.article_text)
 
-        val commentCount: TextView = itemView.findViewById(R.id.comment_text)
-        val likeCount: TextView = itemView.findViewById(R.id.like_count_detail)
+        val commentCount: TextView = itemView.findViewById(R.id.comment_count)
+        val likeCount: TextView = itemView.findViewById(R.id.favorite_count)
         val likeLayout: ConstraintLayout = itemView.findViewById(R.id.article_like)
-        val likeIcon: ImageView = itemView.findViewById(R.id.like)
+        val likeIcon: ImageView = itemView.findViewById(R.id.favorite_icon)
 
         val optionButton: ImageButton = itemView.findViewById(R.id.optionBtn)
     }
@@ -191,11 +191,7 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity): R
                 holder.articleContent.text = article.contents
 
                 commentCountView = holder.commentCount
-                commentCountView?.text = buildString {
-                    append(activity.getString(R.string.article_detail_comment_count_start))
-                    append(article.commentCount)
-                    append(activity.getString(R.string.article_detail_comment_count_end))
-                }
+                commentCountView?.text = article.commentCount.toString()
 
                 if(article.isLiked == true) {
                     holder.likeIcon.setImageResource(R.drawable.favorite_fill_48px)
@@ -424,11 +420,7 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity): R
             this.comments[i].isDeleted = true
 
 //            this.comments.removeAt(i)
-            val countString = buildString {
-                append(activity.getString(R.string.article_detail_comment_count_start))
-                append((--article.commentCount).toString())
-                append(activity.getString(R.string.article_detail_comment_count_end))
-            }
+            val countString = (--article.commentCount).toString()
             commentCountView?.text = countString
             this.notifyItemChanged((comments.size + 1) - (i)) //게시글 하나 있음
             return
@@ -436,11 +428,7 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity): R
     }
 
     override fun onCommentCreated(comment: Comment) {
-        val countString = buildString {
-            append(activity.getString(R.string.article_detail_comment_count_start))
-            append((++article.commentCount).toString())
-            append(activity.getString(R.string.article_detail_comment_count_end))
-        }
+        val countString = (++article.commentCount).toString()
         commentCountView?.text = countString
         this.comments.add(comment)
         this.notifyItemInserted(2) //게시글 하나 있음

@@ -260,7 +260,7 @@
                     android:textSize="12sp" />
 
                 <ImageView
-                    android:id="@+id/like"
+                    android:id="@+id/favorite_icon"
                     android:layout_width="15dp"
                     android:layout_height="15dp"
                     android:layout_marginLeft="8dp"

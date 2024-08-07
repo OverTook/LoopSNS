@@ -22,10 +22,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ProfileMyArticleFragment() : BaseProfileFragment(), AutoRefresherInterface {
-
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: ProfileRecyclerViewAdapter
+class ProfileMyArticleFragment() : BaseProfileFragment() {
 
     override var requested: Boolean = false
     override var noMoreData: Boolean = false
@@ -102,26 +99,5 @@ class ProfileMyArticleFragment() : BaseProfileFragment(), AutoRefresherInterface
                 Log.e("RetrieveMyArticle Failed", err.toString())
             }
         })
-    }
-
-    override fun onArticleDelete(uid: String) {
-        adapter.deleteArticle(uid)
-    }
-
-    override fun onArticleCreate(articleDetail: ArticleDetail) {
-        adapter.createArticle(articleDetail)
-    }
-
-    override fun isInitialized(): Boolean {
-        return this::adapter.isInitialized
-    }
-
-    override fun onClickArticle(uid: String) {
-        val intent = Intent(
-            requireActivity(),
-            ArticleDetailActivity::class.java
-        )
-        intent.putExtra("articleId", uid)
-        startActivity(intent)
     }
 }

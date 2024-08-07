@@ -13,6 +13,7 @@ import com.hci.loopsns.ArticleDetailActivity
 import com.hci.loopsns.event.AutoRefresherInterface
 import com.hci.loopsns.R
 import com.hci.loopsns.network.ArticleDetail
+import com.hci.loopsns.network.Comment
 import com.hci.loopsns.network.MyArticleResponse
 import com.hci.loopsns.network.NetworkManager
 import com.hci.loopsns.recyclers.profile.ProfileRecyclerViewAdapter
@@ -23,9 +24,6 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class ProfileMyLikeFragment : BaseProfileFragment(), AutoRefresherInterface {
-
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: ProfileRecyclerViewAdapter
 
     override var requested: Boolean = false
     override var noMoreData: Boolean = false
@@ -102,26 +100,5 @@ class ProfileMyLikeFragment : BaseProfileFragment(), AutoRefresherInterface {
                 Log.e("RetrieveLikeArticle Failed", err.toString())
             }
         })
-    }
-
-    override fun onArticleDelete(uid: String) {
-        adapter.deleteArticle(uid)
-    }
-
-    override fun onArticleCreate(articleDetail: ArticleDetail) {
-        adapter.createArticle(articleDetail)
-    }
-
-    override fun isInitialized(): Boolean {
-        return this::adapter.isInitialized
-    }
-
-    override fun onClickArticle(uid: String) {
-        val intent = Intent(
-            requireActivity(),
-            ArticleDetailActivity::class.java
-        )
-        intent.putExtra("articleId", uid)
-        startActivity(intent)
     }
 }

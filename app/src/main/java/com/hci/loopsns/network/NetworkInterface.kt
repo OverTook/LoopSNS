@@ -163,8 +163,8 @@ interface NetworkInterface {
     fun unregister(): Call<UnregisterResponse>
 
     @GET("/terms_of_use")
-    fun getTermsOfUse(@Query("locale") locale: String): Call<TermsOfAnyResponse>
+    fun getTermsOfUse(@Query("language") language: String): Call<TermsOfAnyResponse>
 
     @GET("/terms_of_information")
-    fun getTermsOfInformation(@Query("locale") locale: String): Call<TermsOfAnyResponse>
+    fun getTermsOfInformation(@Query("language") language: String): Call<TermsOfAnyResponse>
 }

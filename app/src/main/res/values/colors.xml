@@ -45,4 +45,7 @@
     <color name="icon_location_marker">#000000</color>
     <color name="icon_add_photo">#000000</color>
     <color name="icon_close">#000000</color>
+    <color name="icon_comment">#000000</color>
+    <color name="icon_share">#000000</color>
+    <color name="icon_delete">#000000</color>
 </resources>

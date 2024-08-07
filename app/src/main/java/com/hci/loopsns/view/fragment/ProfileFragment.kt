@@ -101,13 +101,6 @@ class ProfileFragment : Fragment(), View.OnClickListener, ProfileListener, Swipe
         view.findViewById<AppCompatImageButton>(R.id.settingBtn).setOnClickListener(this)
     }
 
-    override fun onResume() {
-        super.onResume()
-
-        myLikeFragment.onResumeSelf()
-        myArticleFragment.onResumeSelf()
-    }
-
     override fun onDestroy() {
         super.onDestroy()
 

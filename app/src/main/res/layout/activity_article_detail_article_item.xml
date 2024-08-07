@@ -158,10 +158,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="2dp"
+                android:layout_marginBottom="10dp"
                 android:text="@string/tag"
                 android:textColor="@color/sub_text_1"
                 android:textSize="12sp"
-                android:visibility="visible"
+                android:visibility="gone"
                 tools:layout_editor_absoluteX="119dp"
                 tools:layout_editor_absoluteY="2dp" />
 
@@ -170,10 +171,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="2dp"
+                android:layout_marginBottom="10dp"
                 android:text="@string/tag"
                 android:textColor="@color/sub_text_1"
                 android:textSize="12sp"
-                android:visibility="visible"
+                android:visibility="gone"
                 tools:layout_editor_absoluteX="2dp"
                 tools:layout_editor_absoluteY="32dp" />
 
@@ -182,10 +184,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="2dp"
+                android:layout_marginBottom="10dp"
                 android:text="@string/tag"
                 android:textColor="@color/sub_text_1"
                 android:textSize="12sp"
-                android:visibility="visible"
+                android:visibility="gone"
                 tools:layout_editor_absoluteX="61dp"
                 tools:layout_editor_absoluteY="32dp" />
 
@@ -194,10 +197,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="2dp"
+                android:layout_marginBottom="10dp"
                 android:text="@string/tag"
                 android:textColor="@color/sub_text_1"
                 android:textSize="12sp"
-                android:visibility="visible"
+                android:visibility="gone"
                 tools:layout_editor_absoluteX="119dp"
                 tools:layout_editor_absoluteY="32dp" />
 
@@ -207,8 +211,30 @@
             android:id="@+id/article_like"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
             android:clickable="true">
+
+            <ImageView
+                android:id="@+id/comment_icon"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="10dp"
+                app:layout_constraintStart_toEndOf="@+id/favorite_count"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/chat_48px" />
+
+            <TextView
+                android:id="@+id/comment_count"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_marginStart="5dp"
+                android:fontFamily="@font/pretendard_regular"
+                android:gravity="center_vertical"
+                android:text="10"
+                android:textColor="@color/main_text"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/comment_icon"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <LinearLayout
                 android:id="@+id/likeIconContainer"
@@ -220,38 +246,27 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
-                    android:id="@+id/like"
+                    android:id="@+id/favorite_icon"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     app:srcCompat="@drawable/favorite_48px" />
             </LinearLayout>
 
             <TextView
-                android:id="@+id/like_count_detail"
+                android:id="@+id/favorite_count"
                 android:layout_width="wrap_content"
                 android:layout_height="25dp"
-                android:layout_marginStart="30dp"
+                android:layout_marginStart="5dp"
                 android:fontFamily="@font/pretendard_regular"
                 android:gravity="center_vertical"
-                android:text=""
+                android:text="10"
                 android:textColor="@color/main_text"
                 android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/likeIconContainer"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <TextView
-            android:id="@+id/comment_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:fontFamily="@font/pretendard_bold"
-            android:text="@string/article_detail_comment_count_start"
-            android:textColor="@color/main_text"
-            android:textSize="18sp" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

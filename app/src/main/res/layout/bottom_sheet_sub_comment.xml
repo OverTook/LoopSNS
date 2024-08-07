@@ -68,7 +68,7 @@
             android:paddingEnd="20dp"
             android:paddingBottom="13dp"
             android:singleLine="true"
-            android:textColor="@color/black"
+            android:textColor="@color/main_text"
             android:textColorHint="@color/gray"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

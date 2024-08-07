@@ -16,13 +16,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.fragment.app.Fragment
 import com.afollestad.materialdialogs.MaterialDialog
 import com.airbnb.lottie.LottieAnimationView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.snackbar.Snackbar
+import com.hci.loopsns.event.ArticleManager
 import com.hci.loopsns.network.AddressResponse
 import com.hci.loopsns.network.AddressResult
 import com.hci.loopsns.network.ArticleCreateResponse
@@ -30,26 +30,14 @@ import com.hci.loopsns.network.CategoryResponse
 import com.hci.loopsns.network.NetworkManager
 import com.hci.loopsns.utils.GlideEngine
 import com.hci.loopsns.utils.dp
-import com.hci.loopsns.utils.factory.MyArticleFactory
 import com.hci.loopsns.utils.fadeIn
 import com.hci.loopsns.utils.fadeOut
 import com.hci.loopsns.view.bottomsheet.SelectCategoryBottomSheet
-import com.luck.picture.lib.PictureSelectorFragment
-import com.luck.picture.lib.basic.PictureSelectionModel
 import com.luck.picture.lib.basic.PictureSelector
 import com.luck.picture.lib.config.SelectMimeType
 import com.luck.picture.lib.engine.CompressFileEngine
 import com.luck.picture.lib.entity.LocalMedia
-import com.luck.picture.lib.entity.LocalMediaFolder
-import com.luck.picture.lib.interfaces.OnCallbackListener
-import com.luck.picture.lib.interfaces.OnPermissionDeniedListener
-import com.luck.picture.lib.interfaces.OnPermissionDescriptionListener
-import com.luck.picture.lib.interfaces.OnPermissionsInterceptListener
-import com.luck.picture.lib.interfaces.OnQueryDataSourceListener
-import com.luck.picture.lib.interfaces.OnRequestPermissionListener
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
-import com.luck.picture.lib.permissions.PermissionChecker
-import com.luck.picture.lib.permissions.PermissionResultCallback
 import com.yalantis.ucrop.UCrop
 import com.yariksoffice.lingver.Lingver
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -156,7 +144,7 @@ class ArticleCreateActivity : AppCompatActivity(), View.OnClickListener {
 
                 val result = response.body()!!
 
-                MyArticleFactory.addCreatedArticle(result.article)
+                ArticleManager.getInstance().onArticleCreated(result.article)
 
                 val intent = Intent(
                     this@ArticleCreateActivity,

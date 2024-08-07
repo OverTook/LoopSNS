@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.hci.loopsns.R
 import kotlin.reflect.KFunction2
@@ -40,6 +41,15 @@ class SelectCategoryBottomSheet : BottomSheetDialogFragment() {
         }
 
         viewOfLayout.findViewById<Button>(R.id.submit).setOnClickListener {
+            if(keywordsList.all { it.text.isNullOrBlank() }) {
+                Toast.makeText(requireContext(), "키워드는 비워둘 수 없습니다.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if(keywordsList.any { it.text.length > 8 }) {
+                Toast.makeText(requireContext(), "키워드의 최대 길이는 8글자 입니다.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             this.onSubmitAction(
                 categories,
                 listOf(

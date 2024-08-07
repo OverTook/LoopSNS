@@ -46,11 +46,11 @@
             android:layout_marginStart="10dp"
             android:fontFamily="@font/pretendard_medium"
             android:text="@string/bottom_sheet_option_delete"
+            android:textColor="@color/main_text"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/deleteIcon"
-            app:layout_constraintTop_toTopOf="parent"
-            android:textColor="@color/black"/>
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -78,11 +78,11 @@
             android:layout_marginStart="10dp"
             android:fontFamily="@font/pretendard_medium"
             android:text="@string/bottom_sheet_option_share"
+            android:textColor="@color/main_text"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/shareIcon"
-            app:layout_constraintTop_toTopOf="parent"
-            android:textColor="@color/black"/>
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout

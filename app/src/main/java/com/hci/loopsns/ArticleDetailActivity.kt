@@ -20,8 +20,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.hci.loopsns.event.ArticleManager
 import com.hci.loopsns.event.AutoRefresherInterface
 import com.hci.loopsns.event.CommentManager
+import com.hci.loopsns.event.FavoriteManager
 import com.hci.loopsns.network.ArticleDeleteResponse
 import com.hci.loopsns.network.ArticleDetail
 import com.hci.loopsns.network.ArticleDetailResponse
@@ -36,8 +38,6 @@ import com.hci.loopsns.network.LikeResponse
 import com.hci.loopsns.network.NetworkManager
 import com.hci.loopsns.recyclers.article.ArticleRecyclerViewAdapter
 import com.hci.loopsns.storage.models.NotificationComment
-import com.hci.loopsns.utils.factory.LikeArticleFactory
-import com.hci.loopsns.utils.factory.MyArticleFactory
 import com.hci.loopsns.utils.hideDarkOverlay
 import com.hci.loopsns.utils.registerAutoRefresh
 import com.hci.loopsns.utils.requestEnd
@@ -386,8 +386,10 @@ class ArticleDetailActivity() : AppCompatActivity(), SwipeRefreshLayout.OnRefres
             override fun onResponse(call: Call<ArticleDeleteResponse>, response: Response<ArticleDeleteResponse>) {
                 if(!response.isSuccessful) return
 
-                MyArticleFactory.addDeletedArticles(article!!.uid)
-                LikeArticleFactory.addDeletedArticles(article!!.uid)
+                //MyArticleFactory.addDeletedArticles(article!!.uid)
+                //LikeArticleFactory.addDeletedArticles(article!!.uid)
+
+                ArticleManager.getInstance().onArticleDeleted(article!!.uid)
 
                 finish()
             }
@@ -430,11 +432,7 @@ class ArticleDetailActivity() : AppCompatActivity(), SwipeRefreshLayout.OnRefres
         }
 
         if(article!!.isLiked!!.xor(adapter.originalLike)) {
-            if(article!!.isLiked!!) {
-                LikeArticleFactory.addLikedArticle(article!!)
-            } else {
-                LikeArticleFactory.addDeletedArticles(article!!.uid)
-            }
+            FavoriteManager.getInstance().onFavoriteStateChanged(article!!, article!!.isLiked!!)
             addArticleLike(article!!.isLiked!!) //액티비티가 닫힐 때 요청 보내기
         }
     }

@@ -44,6 +44,9 @@ class ProfileRecyclerViewAdapter(private val activity: BaseProfileFragment, priv
         val keywords2: TextView = itemView.findViewById(R.id.keyword_2_article)
         val keywords3: TextView = itemView.findViewById(R.id.keyword_3_article)
         val keywords4: TextView = itemView.findViewById(R.id.keyword_4_article)
+
+        val likeCount: TextView = itemView.findViewById(R.id.favorite_count)
+        val commentCount: TextView = itemView.findViewById(R.id.comment_count)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -86,6 +89,9 @@ class ProfileRecyclerViewAdapter(private val activity: BaseProfileFragment, priv
 
                 holder.category1.text = item.cat1
                 holder.category2.text= item.cat2
+
+                holder.likeCount.text = item.likeCount.toString()
+                holder.commentCount.text = item.commentCount.toString()
 
                 val keywords = listOf(
                     holder.keywords1,
@@ -155,6 +161,26 @@ class ProfileRecyclerViewAdapter(private val activity: BaseProfileFragment, priv
     fun createArticle(article: ArticleDetail) {
         items.add(0, article)
         this.notifyItemInserted(0)
+    }
+
+    fun updateLikeCount(articleId: String, count: Int) {
+        for(i in 0..<items.size){
+            if(items[i].uid != articleId) continue
+
+            items[i].likeCount += count
+            this.notifyItemChanged(i)
+            return
+        }
+    }
+
+    fun updateCommentCount(articleId: String, count: Int) {
+        for(i in 0..<items.size){
+            if(items[i].uid != articleId) continue
+
+            items[i].commentCount += count
+            this.notifyItemChanged(i)
+            return
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
