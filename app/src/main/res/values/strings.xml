@@ -121,4 +121,10 @@
     <string name="settings_logout_body">정말 로그아웃하시겠습니까?</string>
     <string name="settings_logout_yes">예</string>
     <string name="settings_logout_no">아니오</string>
+    
+    <array name="spinner_items">
+        <item>Item 1</item>
+        <item>Item 2</item>
+        <item>Item 3</item>
+    </array>
 </resources>

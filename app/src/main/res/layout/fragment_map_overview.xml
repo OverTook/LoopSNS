@@ -1,44 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/activity_background">
+    android:background="@color/activity_background"
+    android:clipChildren="false">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/filter_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="15dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <EditText
+        <TextView
             android:id="@+id/filter"
-            android:layout_width="300dp"
-            android:layout_height="43dp"
+            android:layout_width="0dp"
+            android:layout_height="33dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
             android:background="@drawable/filter_button_bg"
             android:fontFamily="@font/pretendard_medium"
-            android:hint="@string/search_text"
-            android:paddingStart="50dp"
-            android:textColorHint="@color/gray"
-            android:textSize="16sp"
+            android:text="@string/search_text"
+            android:paddingStart="40dp"
+            android:paddingEnd="40dp"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:textColor="@color/gray"
+            android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/search_icon"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_marginStart="10dp"
             android:translationZ="100dp"
             app:layout_constraintBottom_toBottomOf="@+id/filter"
             app:layout_constraintStart_toStartOf="@+id/filter"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/search" />
+            app:srcCompat="@drawable/search_48px" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <fragment
@@ -104,6 +118,5 @@
         app:layout_constraintBottom_toBottomOf="@+id/googleMap"
         app:layout_constraintEnd_toEndOf="@+id/googleMap"
         app:srcCompat="@drawable/mark" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

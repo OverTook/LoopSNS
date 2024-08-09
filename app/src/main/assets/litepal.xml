@@ -2,10 +2,11 @@
 <litepal>
     <dbname value="loopsns" />
 
-    <version value="4" />
+    <version value="5" />
 
     <list>
         <mapping class="com.hci.loopsns.storage.models.NotificationComment"/>
         <mapping class="com.hci.loopsns.storage.models.NotificationHotArticle"/>
+        <mapping class="com.hci.loopsns.storage.models.SearchHistory"/>
     </list>
 </litepal>

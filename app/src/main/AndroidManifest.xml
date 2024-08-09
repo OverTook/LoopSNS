@@ -66,7 +66,8 @@
 
         <activity
             android:name=".MainActivity"
-            android:exported="true"/>
+            android:exported="true"
+            android:windowSoftInputMode="adjustNothing"/>
 
         <activity
             android:name=".ArticleDetailActivity"
@@ -87,9 +88,14 @@
         <activity
             android:name=".EditProfileActivity"
             android:exported="true"/>
+
         <activity
             android:name=".TermsActivity"
             android:exported="true"/>
+
+        <activity
+            android:name=".SearchResultActivity"
+            android:exported="false"/>
 
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"

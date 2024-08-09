@@ -1,6 +1,8 @@
 package com.hci.loopsns.view.fragment
 
 import android.Manifest
+import android.animation.ValueAnimator
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
@@ -10,15 +12,23 @@ import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
 import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -40,16 +50,20 @@ import com.google.android.material.snackbar.Snackbar
 import com.hci.loopsns.ArticleCreateActivity
 import com.hci.loopsns.ArticleDetailActivity
 import com.hci.loopsns.R
+import com.hci.loopsns.SearchResultActivity
 import com.hci.loopsns.network.AddressResponse
 import com.hci.loopsns.network.AddressResult
 import com.hci.loopsns.network.ArticleMarkersResponse
 import com.hci.loopsns.network.ArticleTimelineResponse
 import com.hci.loopsns.network.NetworkManager
+import com.hci.loopsns.recyclers.history.SearchHistoryRecyclerViewAdapter
 import com.hci.loopsns.storage.NightMode
 import com.hci.loopsns.storage.SettingManager
+import com.hci.loopsns.utils.dp
 import com.hci.loopsns.utils.hideDarkOverlay
 import com.hci.loopsns.utils.showDarkOverlay
 import com.hci.loopsns.view.bottomsheet.ArticleBottomSheet
+import github.com.st235.lib_expandablebottombar.ExpandableBottomBar
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -59,7 +73,7 @@ import java.util.Locale
 import java.util.concurrent.Executors
 
 
-class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListener, GoogleMap.OnMarkerClickListener {
+class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListener, GoogleMap.OnMarkerClickListener, View.OnClickListener {
 
     private lateinit var googleMap: GoogleMap
 
@@ -67,8 +81,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
     private lateinit var locationCallback: LocationCallback
     private lateinit var locationRequest: LocationRequest
     private lateinit var currentLocation: LatLng
-
-    private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
 
     private val executor = Executors.newSingleThreadScheduledExecutor()
 
@@ -78,6 +90,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
 
     private var articleMarkerRequest: Call<ArticleMarkersResponse>? = null
     private var articleCount: Int = 0
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -102,8 +115,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
             startActivity(intent)
         }
 
-        val bottomSheet = viewOfLayout.findViewById<LinearLayout>(R.id.bottom_sheet)
-        bottomSheetBehavior
+        viewOfLayout.findViewById<TextView>(R.id.filter).setOnClickListener(this)
 
         initGPS()
         return viewOfLayout
@@ -215,11 +227,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
                         .position(LatLng(item.lat, item.lng))
                         .icon(customMarkerIcon)
 
-                    val marker = googleMap.addMarker(markerOption)
-
-                    if(marker == null) {
-                        return
-                    }
+                    val marker = googleMap.addMarker(markerOption) ?: return
 
                     marker.tag = item.articles
 
@@ -434,8 +442,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
                     return
                 }
 
-
-
                 ArticleBottomSheet().setData(
                     response.body()!!.articles,
                     response.body()!!.hotArticles,
@@ -444,7 +450,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
                         ArticleDetailActivity::class.java
                     ),
                     marker.position.latitude,
-                    marker.position.longitude).show(requireActivity().supportFragmentManager, "ArticleBottomSheet")
+                    marker.position.longitude
+                ).show(
+                    requireActivity().supportFragmentManager,
+                    "ArticleBottomSheet"
+                )
             }
 
             override fun onFailure(call: Call<ArticleTimelineResponse>, err: Throwable) {
@@ -484,6 +494,21 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
         } else {
             // 1000미터 이상일 때는 킬로미터 단위로
             "%.2fkm".format(distance / 1000)
+        }
+    }
+
+    override fun onClick(view: View?) {
+        if(view == null) return
+
+        when(view.id) {
+            R.id.filter -> {
+                startActivity(
+                    Intent(
+                        requireActivity(),
+                        SearchResultActivity::class.java
+                    )
+                )
+            }
         }
     }
 }

@@ -219,6 +219,7 @@ class SubCommentBottomSheet(private val activity: ArticleDetailActivity) : Botto
         if (actionId == EditorInfo.IME_ACTION_SEND ||
             (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)) {
 
+            inputView?.clearFocus()
             val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(inputView?.windowToken, 0)
 

@@ -103,12 +103,12 @@ class ArticleBottomSheet() : BottomSheetDialogFragment(), View.OnClickListener {
                     return
                 }
 
-                body.results.forEach {
-                    if(it.types.contains("point_of_interest")) {
-                        onGeocodePointOfInterest(it)
-                        return@forEach
-                    }
-                }
+//                body.results.forEach {
+//                    if(it.types.contains("point_of_interest")) {
+//                        onGeocodePointOfInterest(it)
+//                        return@forEach
+//                    }
+//                }
 
                 body.results.forEach {
                     if(it.types.contains("sublocality_level_4")) {
@@ -145,20 +145,20 @@ class ArticleBottomSheet() : BottomSheetDialogFragment(), View.OnClickListener {
         })
     }
 
-    fun onGeocodePointOfInterest(address: AddressResult) {
-        var addressText = ""
-
-        address.addressComponents.forEach {
-            if (it.types.contains("point_of_interest")) {
-                addressText = it.longName
-                return@forEach
-            }
-        }
-
-        requireActivity().runOnUiThread {
-            view?.findViewById<TextView>(R.id.point_of_interest)?.text = addressText
-        }
-    }
+//    fun onGeocodePointOfInterest(address: AddressResult) {
+//        var addressText = ""
+//
+//        address.addressComponents.forEach {
+//            if (it.types.contains("point_of_interest")) {
+//                addressText = it.longName
+//                return@forEach
+//            }
+//        }
+//
+//        requireActivity().runOnUiThread {
+//            view?.findViewById<TextView>(R.id.point_of_interest)?.text = addressText
+//        }
+//    }
 
     fun onGeocodeLocation(address: AddressResult) {
         var addressText: String

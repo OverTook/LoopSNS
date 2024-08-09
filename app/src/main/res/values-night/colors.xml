@@ -49,4 +49,7 @@
     <color name="icon_share">#FFFFFF</color>
     <color name="icon_delete">#FFFFFF</color>
     <color name="icon_fire">#C13E3E</color>
+    <color name="icon_search">#9F9F9F</color>
+    <color name="icon_history_delete">#9F9F9F</color>
+    <color name="icon_history_back">#9F9F9F</color>
 </resources>

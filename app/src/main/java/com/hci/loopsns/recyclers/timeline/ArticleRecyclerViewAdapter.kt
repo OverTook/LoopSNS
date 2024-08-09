@@ -82,7 +82,7 @@ class ArticleRecyclerViewAdapter(private val context: Context, private val artic
             }
             else -> {
                 //TODO 광고 게시글 타임라인 기능
-                view = inflater.inflate(R.layout.activity_map_overview_timeline_article_normal_item, parent, false)
+                view = inflater.inflate(R.layout.activity_main_timeline_article_item, parent, false)
                 AdvertisementViewHolder(view)
             }
         }

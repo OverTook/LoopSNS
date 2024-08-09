@@ -587,6 +587,7 @@ class ArticleDetailActivity() : AppCompatActivity(), SwipeRefreshLayout.OnRefres
         if (actionId == EditorInfo.IME_ACTION_SEND ||
             (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)) {
             hideKeyboard()
+            inputView?.clearFocus()
             createComment(inputView?.text.toString())
             (inputView!! as EditText).text.clear()
             return true
