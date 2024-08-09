@@ -154,11 +154,6 @@ interface NetworkInterface {
         @Part image: MultipartBody.Part?
     ): Call<UpdateProfileImageResponse>
 
-    @POST("/update_profile_nickname")
-    fun updateProfileNickname(
-        @Part("nickname") nickname: RequestBody
-    ): Call<UpdateProfileResponse>
-
     @DELETE("/delete_user")
     fun unregister(): Call<UnregisterResponse>
 
@@ -167,4 +162,7 @@ interface NetworkInterface {
 
     @GET("/terms_of_information")
     fun getTermsOfInformation(@Query("language") language: String): Call<TermsOfAnyResponse>
+
+    @GET("/terms_of_faq")
+    fun getFAQ(@Query("language") language: String): Call<TermsOfAnyResponse>
 }

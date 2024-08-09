@@ -6,13 +6,10 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.content.res.Resources
-import android.os.Build
 import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
-import com.google.protobuf.Internal.BooleanList
 import com.hci.loopsns.MainActivity
 import com.hci.loopsns.R
-import com.yariksoffice.lingver.Lingver
 import java.util.Locale
 
 object NightMode {
@@ -119,17 +116,33 @@ class SettingManager {
     fun setLocaleAuto(context: Context) {
         //이미 비어있으면 이미 Auto임
         val currentLocale = sharedPreferences.getString(KEY_LANGUAGE, null) ?: return
-        val systemLocale = Resources.getSystem().configuration.locales[0].language
+        val systemLocale = Resources.getSystem().configuration.locales[0]
         editor.remove(KEY_LANGUAGE).apply()
 
         //자동으로 했을 때랑 기존 언어가 일치하면 재시작 필요없음
-        if(systemLocale == currentLocale) return
+        if(systemLocale.language == currentLocale) return
 
-        Lingver.getInstance().setLocale(context, systemLocale)
+        //Lingver.getInstance().setLocale(context, systemLocale)
+        Locale.setDefault(systemLocale)
 
         val refresh = Intent(context, MainActivity::class.java)
         refresh.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         context.startActivity(refresh)
+    }
+
+    fun getCurrentLocaleContext(context: Context): Context {
+        val currentLocale = sharedPreferences.getString(KEY_LANGUAGE, null)
+        Log.e("CURRENTLOCALE", currentLocale ?: "Auto")
+        if(currentLocale == null) {
+            val newConfig = Configuration()
+            newConfig.setLocale(Resources.getSystem().configuration.locales[0])
+            Locale.setDefault(Resources.getSystem().configuration.locales[0])
+            return context.createConfigurationContext(newConfig)
+        }
+        val newConfig = Configuration()
+        newConfig.setLocale(Locale(currentLocale))
+        Locale.setDefault(Locale(currentLocale))
+        return context.createConfigurationContext(newConfig)
     }
 
     fun setLocale(context: Context, language: String) {
@@ -140,7 +153,7 @@ class SettingManager {
             }
         }
 
-        Lingver.getInstance().setLocale(context, language)
+        Locale.setDefault(Locale(language))
         editor.putString(KEY_LANGUAGE, language).apply()
 
         val refresh = Intent(context, MainActivity::class.java)

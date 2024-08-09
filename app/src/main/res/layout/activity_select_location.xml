@@ -93,7 +93,7 @@
             android:id="@+id/submit"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="@drawable/article_create_save_button_round"
+            android:background="@drawable/common_button_background"
             android:gravity="center"
             android:text="저장"
             android:textColor="@color/white"

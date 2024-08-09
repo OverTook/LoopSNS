@@ -41,7 +41,7 @@
             app:srcCompat="@drawable/search" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <fragment xmlns:map="http://schemas.android.com/apk/res-auto"
+    <fragment
         android:id="@+id/googleMap"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
@@ -104,5 +104,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/googleMap"
         app:layout_constraintEnd_toEndOf="@+id/googleMap"
         app:srcCompat="@drawable/mark" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

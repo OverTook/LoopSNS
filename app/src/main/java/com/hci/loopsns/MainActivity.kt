@@ -13,7 +13,6 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.IntentCompat
 import androidx.core.splashscreen.SplashScreen
@@ -34,15 +33,9 @@ import com.hci.loopsns.view.fragment.HomeFragment
 import com.hci.loopsns.view.fragment.MainViewPageAdapter
 import com.hci.loopsns.view.fragment.NotificationsFragment
 import com.hci.loopsns.view.fragment.ProfileFragment
-import com.luck.picture.lib.basic.PictureSelector
-import com.luck.picture.lib.config.PictureConfig
-import com.luck.picture.lib.config.SelectMimeType
-import com.luck.picture.lib.permissions.PermissionChecker
-import com.luck.picture.lib.permissions.PermissionConfig
-import com.luck.picture.lib.permissions.PermissionResultCallback
 import com.saadahmedev.popupdialog.PopupDialog
 import com.saadahmedev.popupdialog.listener.StandardDialogActionListener
-import com.yariksoffice.lingver.Lingver
+import github.com.st235.lib_expandablebottombar.MenuItem
 import github.com.st235.lib_expandablebottombar.OnItemClickListener
 import org.litepal.LitePal
 import retrofit2.Call
@@ -110,7 +103,7 @@ class MainActivity : AppCompatActivity(), SplashScreen.KeepOnScreenCondition, On
                         }
                     } else if(binding.viewPager.currentItem == 2) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !notificationComplete) {
-                            if (ContextCompat.checkSelfPermission(this@MainActivity, android.Manifest.permission.POST_NOTIFICATIONS)
+                            if (ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.POST_NOTIFICATIONS)
                                 != PackageManager.PERMISSION_GRANTED) {
                                 //notificationPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
 
@@ -127,7 +120,7 @@ class MainActivity : AppCompatActivity(), SplashScreen.KeepOnScreenCondition, On
                                     .build(object : StandardDialogActionListener {
                                         override fun onPositiveButtonClicked(dialog: Dialog) {
                                             dialog.dismiss()
-                                            notificationPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+                                            notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
                                         }
 
                                         override fun onNegativeButtonClicked(dialog: Dialog) {
@@ -211,12 +204,32 @@ class MainActivity : AppCompatActivity(), SplashScreen.KeepOnScreenCondition, On
             }
         }
 
+        // FCM 토큰 받아오기
+        val sharedPreferences = SettingManager.getInstance()
+        val savedToken = sharedPreferences.getFcmToken()
+        // sharedPreference에 토큰 값이 없다면 FCM 토큰을 받아옴
+        if (savedToken.isNullOrEmpty()) {
+            FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val fcmToken = task.result
+                    sharedPreferences.saveFcmToken(fcmToken, false)
+                    // FCM 토큰을 서버로 전송
+                    sendFcmTokenToServer(fcmToken)
+                    Log.d("token", "FCM Token: $fcmToken")
+                } else {
+                    Log.d("token", "FCM 토큰 가져오기 실패: ${task.exception?.message}")
+                }
+            }
+        } else {
+            sendFcmTokenToServer(savedToken)
+        }
+
         locationPermissionLauncher = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()) {
-            if(it[android.Manifest.permission.ACCESS_COARSE_LOCATION]!! && !it[android.Manifest.permission.ACCESS_FINE_LOCATION]!!) {
+            if(it[Manifest.permission.ACCESS_COARSE_LOCATION]!! && !it[Manifest.permission.ACCESS_FINE_LOCATION]!!) {
                 //대략적 위치
                 Snackbar.make(findViewById(R.id.main), "정확한 위치 정보를 받아올 수 없어 정확성이 떨어집니다.", Snackbar.LENGTH_SHORT).show()
-            } else if(!it[android.Manifest.permission.ACCESS_COARSE_LOCATION]!! && !it[android.Manifest.permission.ACCESS_FINE_LOCATION]!!) {
+            } else if(!it[Manifest.permission.ACCESS_COARSE_LOCATION]!! && !it[Manifest.permission.ACCESS_FINE_LOCATION]!!) {
                 //거부
                 Snackbar.make(findViewById(R.id.main), "권한이 거부되어 정상적인 이용이 불가능합니다.", Snackbar.LENGTH_SHORT).show()
                 return@registerForActivityResult
@@ -224,7 +237,7 @@ class MainActivity : AppCompatActivity(), SplashScreen.KeepOnScreenCondition, On
             locationPermissionCheckEnd()
         }
 
-        if (ContextCompat.checkSelfPermission(this@MainActivity, android.Manifest.permission.ACCESS_COARSE_LOCATION)
+        if (ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.ACCESS_COARSE_LOCATION)
             != PackageManager.PERMISSION_GRANTED) {
 
             PopupDialog.getInstance(this)
@@ -241,8 +254,8 @@ class MainActivity : AppCompatActivity(), SplashScreen.KeepOnScreenCondition, On
                     override fun onPositiveButtonClicked(dialog: Dialog) {
                         dialog.dismiss()
                         locationPermissionLauncher.launch(arrayOf(
-                            android.Manifest.permission.ACCESS_FINE_LOCATION,
-                            android.Manifest.permission.ACCESS_COARSE_LOCATION)
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION)
                         )
                     }
 
@@ -252,10 +265,11 @@ class MainActivity : AppCompatActivity(), SplashScreen.KeepOnScreenCondition, On
                     }
                 })
                 .show()
-        } else if (ContextCompat.checkSelfPermission(this@MainActivity, android.Manifest.permission.ACCESS_FINE_LOCATION)
+        } else if (ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.ACCESS_FINE_LOCATION)
             != PackageManager.PERMISSION_GRANTED) {
 
             Snackbar.make(findViewById(R.id.main), "정확한 위치 정보를 받아올 수 없어 정확성이 떨어집니다.", Snackbar.LENGTH_SHORT).show()
+            locationPermissionCheckEnd()
         }
     }
 
@@ -307,54 +321,12 @@ class MainActivity : AppCompatActivity(), SplashScreen.KeepOnScreenCondition, On
         }
     }
 
-    override fun attachBaseContext(newBase: Context) {
-        setLocale(newBase)
-        super.attachBaseContext(newBase)
-    }
-
-    private fun setLocale(ctx: Context) {
-        val loc = Lingver.getInstance().getLocale()
-
-        val resources = ctx.resources
-        val configuration = resources.configuration
-        configuration.setLocale(loc)
-
-        ctx.createConfigurationContext(
-            configuration
-        )
+    override fun attachBaseContext(base: Context) {
+        super.attachBaseContext(SettingManager.getInstance().getCurrentLocaleContext(base))
     }
 
     fun locationPermissionCheckEnd() {
         homeFragment.initGPS()
-
-        // FCM 토큰 받아오기
-        val sharedPreferences = SettingManager.getInstance()
-        val savedToken = sharedPreferences.getFcmToken()
-
-//        // 알림 권한 요청
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-//            if (ContextCompat.checkSelfPermission(this@MainActivity, android.Manifest.permission.POST_NOTIFICATIONS)
-//                != PackageManager.PERMISSION_GRANTED) {
-//                notificationPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
-//            }
-//        }
-
-        // sharedPreference에 토큰 값이 없다면 FCM 토큰을 받아옴
-        if (savedToken.isNullOrEmpty()) {
-            FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val fcmToken = task.result
-                    sharedPreferences.saveFcmToken(fcmToken, false)
-                    // FCM 토큰을 서버로 전송
-                    sendFcmTokenToServer(fcmToken)
-                    Log.d("token", "FCM Token: $fcmToken")
-                } else {
-                    Log.d("token", "FCM 토큰 가져오기 실패: ${task.exception?.message}")
-                }
-            }
-        } else {
-            sendFcmTokenToServer(savedToken)
-        }
     }
 
     private fun ViewPager2.reduceDragSensitivity(f: Int = 4) {
@@ -371,7 +343,7 @@ class MainActivity : AppCompatActivity(), SplashScreen.KeepOnScreenCondition, On
         return splashScreenKeep
     }
 
-    override fun invoke(v: View, menuItem: github.com.st235.lib_expandablebottombar.MenuItem, byUser: Boolean) {
+    override fun invoke(v: View, menuItem: MenuItem, byUser: Boolean) {
         when (menuItem.id) {
             R.id.menu_profile -> {
                 binding.viewPager.currentItem = 0

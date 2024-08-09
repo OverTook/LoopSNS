@@ -102,7 +102,7 @@ dependencies {
     implementation("com.github.st235:expandablebottombar:1.5.3") //하단 메뉴 디자인 라이브러리
 
     implementation("com.afollestad.material-dialogs:input:3.3.0") //팝업
-    implementation("com.github.YarikSOffice:lingver:1.3.0") //다국어 처리
+    //implementation("com.github.YarikSOffice:lingver:1.3.0") //다국어 처리
 
     implementation("com.saadahmedev.popup-dialog:popup-dialog:2.0.0") //다이얼로그
     implementation("com.royrodriguez:transitionbutton:0.2.0") //로그인 UI 디자인용

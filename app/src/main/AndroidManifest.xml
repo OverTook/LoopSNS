@@ -69,10 +69,6 @@
             android:exported="true"/>
 
         <activity
-            android:name=".TimelineActivity"
-            android:exported="true"/>
-
-        <activity
             android:name=".ArticleDetailActivity"
             android:exported="true"/>
 

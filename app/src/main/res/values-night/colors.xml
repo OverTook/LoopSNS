@@ -48,4 +48,5 @@
     <color name="icon_comment">#FFFFFF</color>
     <color name="icon_share">#FFFFFF</color>
     <color name="icon_delete">#FFFFFF</color>
+    <color name="icon_fire">#C13E3E</color>
 </resources>

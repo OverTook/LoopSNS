@@ -1,6 +1,7 @@
 package com.hci.loopsns
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -22,10 +23,10 @@ import com.hci.loopsns.network.AddressResult
 import com.hci.loopsns.network.NetworkManager
 import com.hci.loopsns.storage.NightMode
 import com.hci.loopsns.storage.SettingManager
-import com.yariksoffice.lingver.Lingver
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.Locale
 
 
 class SelectLocationActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnCameraMoveStartedListener, GoogleMap.OnCameraIdleListener, View.OnClickListener {
@@ -126,10 +127,14 @@ class SelectLocationActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMa
             .start()
     }
 
+    override fun attachBaseContext(base: Context) {
+        super.attachBaseContext(SettingManager.getInstance().getCurrentLocaleContext(base))
+    }
+
     fun getLocation() {
         NetworkManager.apiService.getAddress(
             "${googleMap.cameraPosition.target.latitude},${googleMap.cameraPosition.target.longitude}",
-            Lingver.getInstance().getLocale().language
+            Locale.getDefault().language
         ).enqueue(object: Callback<AddressResponse> {
             override fun onResponse(call: Call<AddressResponse>, response: Response<AddressResponse>) {
                 submitButton.isClickable = true

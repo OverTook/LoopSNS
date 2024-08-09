@@ -1,5 +1,6 @@
 package com.hci.loopsns
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -28,6 +29,7 @@ import com.hci.loopsns.network.AddressResult
 import com.hci.loopsns.network.ArticleCreateResponse
 import com.hci.loopsns.network.CategoryResponse
 import com.hci.loopsns.network.NetworkManager
+import com.hci.loopsns.storage.SettingManager
 import com.hci.loopsns.utils.GlideEngine
 import com.hci.loopsns.utils.dp
 import com.hci.loopsns.utils.fadeIn
@@ -39,7 +41,6 @@ import com.luck.picture.lib.engine.CompressFileEngine
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import com.yalantis.ucrop.UCrop
-import com.yariksoffice.lingver.Lingver
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -50,6 +51,7 @@ import retrofit2.Response
 import top.zibin.luban.Luban
 import top.zibin.luban.OnNewCompressListener
 import java.io.File
+import java.util.Locale
 
 
 class ArticleCreateActivity : AppCompatActivity(), View.OnClickListener {
@@ -161,10 +163,14 @@ class ArticleCreateActivity : AppCompatActivity(), View.OnClickListener {
         })
     }
 
+    override fun attachBaseContext(base: Context) {
+        super.attachBaseContext(SettingManager.getInstance().getCurrentLocaleContext(base))
+    }
+
     fun getLocation() {
         NetworkManager.apiService.getAddress(
             "$x,$y",
-            Lingver.getInstance().getLocale().language
+            Locale.getDefault().language
         ).enqueue(object:Callback<AddressResponse> {
             override fun onResponse(call: Call<AddressResponse>, response: Response<AddressResponse>) {
                 if(!response.isSuccessful) return

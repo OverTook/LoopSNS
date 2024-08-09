@@ -1,6 +1,7 @@
 package com.hci.loopsns
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Color
@@ -73,6 +74,7 @@ class SettingsActivity : AppCompatActivity(), View.OnClickListener, ProfileListe
         ProfileManager.getInstance().registerProfileListener(this)
 
         findViewById<AppCompatImageButton>(R.id.backButton).setOnClickListener(this)
+
         findViewById<ConstraintLayout>(R.id.setting_logout).setOnClickListener(this)
         findViewById<ConstraintLayout>(R.id.setting_unregister).setOnClickListener(this)
         findViewById<ConstraintLayout>(R.id.setting_dark_mode).setOnClickListener(this)
@@ -82,6 +84,7 @@ class SettingsActivity : AppCompatActivity(), View.OnClickListener, ProfileListe
         findViewById<ConstraintLayout>(R.id.setting_edit_profile).setOnClickListener(this)
         findViewById<ConstraintLayout>(R.id.setting_terms_of_use).setOnClickListener(this)
         findViewById<ConstraintLayout>(R.id.setting_terms_of_information).setOnClickListener(this)
+        findViewById<ConstraintLayout>(R.id.setting_faq).setOnClickListener(this)
     }
 
     @SuppressLint("CheckResult")
@@ -106,6 +109,14 @@ class SettingsActivity : AppCompatActivity(), View.OnClickListener, ProfileListe
                     TermsActivity::class.java
                 )
                 intent.putExtra("type", "use")
+                startActivity(intent)
+            }
+            R.id.setting_faq -> {
+                val intent = Intent(
+                    this,
+                    TermsActivity::class.java
+                )
+                intent.putExtra("type", "faq")
                 startActivity(intent)
             }
             R.id.setting_notification_setting -> {
@@ -200,6 +211,11 @@ class SettingsActivity : AppCompatActivity(), View.OnClickListener, ProfileListe
                         title(R.string.settings_ask_app_restart_head)
                         message(R.string.settings_ask_app_restart_body)
                         positiveButton(R.string.settings_ask_app_restart_yes) { _ ->
+                            if(index == list.size - 1) {
+                                setting.setLocaleAuto(this@SettingsActivity) //언어 설정
+                                return@positiveButton
+                            }
+
                             setting.setLocale(this@SettingsActivity, SettingManager.SupportedLanguage[index].language)
                         }
                         negativeButton(R.string.settings_ask_app_restart_no) { dialog ->
@@ -358,4 +374,7 @@ class SettingsActivity : AppCompatActivity(), View.OnClickListener, ProfileListe
         ProfileManager.getInstance().removeProfileListener(this)
     }
 
+    override fun attachBaseContext(base: Context) {
+        super.attachBaseContext(SettingManager.getInstance().getCurrentLocaleContext(base))
+    }
 }

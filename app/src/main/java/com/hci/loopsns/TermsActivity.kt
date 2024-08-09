@@ -1,67 +1,23 @@
 package com.hci.loopsns
 
 import android.app.Activity
-import android.content.Intent
-import android.net.Uri
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
-import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
 import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.afollestad.materialdialogs.MaterialDialog
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestOptions
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MapStyleOptions
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
-import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthException
-import com.google.firebase.auth.FirebaseAuthInvalidUserException
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GetTokenResult
-import com.google.firebase.auth.UserProfileChangeRequest
-import com.hci.loopsns.event.ProfileManager
-import com.hci.loopsns.network.AddressResponse
-import com.hci.loopsns.network.AddressResult
 import com.hci.loopsns.network.NetworkManager
 import com.hci.loopsns.network.TermsOfAnyResponse
-import com.hci.loopsns.network.UpdateProfileImageResponse
-import com.hci.loopsns.network.UpdateProfileResponse
-import com.hci.loopsns.storage.NightMode
 import com.hci.loopsns.storage.SettingManager
-import com.hci.loopsns.utils.GlideEngine
-import com.hci.loopsns.utils.dp
-import com.luck.picture.lib.basic.PictureSelector
-import com.luck.picture.lib.config.SelectMimeType
-import com.luck.picture.lib.engine.CompressFileEngine
-import com.luck.picture.lib.entity.LocalMedia
-import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import com.skydoves.androidveil.VeilLayout
-import com.yalantis.ucrop.UCrop
-import com.yariksoffice.lingver.Lingver
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import top.zibin.luban.Luban
-import top.zibin.luban.OnNewCompressListener
-import java.io.File
+import java.util.Locale
 
 
 class TermsActivity : AppCompatActivity(), View.OnClickListener {
@@ -77,14 +33,21 @@ class TermsActivity : AppCompatActivity(), View.OnClickListener {
         requestDocument()
     }
 
+    override fun attachBaseContext(base: Context) {
+        super.attachBaseContext(SettingManager.getInstance().getCurrentLocaleContext(base))
+    }
+
     fun requestDocument() {
         var request: Call<TermsOfAnyResponse>? = null
         when(intent.getStringExtra("type") ?: "null") {
             "use" -> {
-                request = NetworkManager.apiService.getTermsOfUse(Lingver.getInstance().getLanguage())
+                request = NetworkManager.apiService.getTermsOfUse(Locale.getDefault().language)
             }
             "information" -> {
-                request = NetworkManager.apiService.getTermsOfInformation(Lingver.getInstance().getLanguage())
+                request = NetworkManager.apiService.getTermsOfInformation(Locale.getDefault().language)
+            }
+            "faq" -> {
+                request = NetworkManager.apiService.getFAQ(Locale.getDefault().language)
             }
             else -> {
                 Toast.makeText(this, "유효하지 않은 요청입니다.", Toast.LENGTH_SHORT).show()
@@ -103,8 +66,14 @@ class TermsActivity : AppCompatActivity(), View.OnClickListener {
                     return
                 }
 
+                val result = response.body()!!
                 findViewById<VeilLayout>(R.id.veilLayout).unVeil()
-                findViewById<TextView>(R.id.body).text = Html.fromHtml(response.body()!!.data, Html.FROM_HTML_MODE_COMPACT)
+                findViewById<TextView>(R.id.body).text = Html.fromHtml(result.data, Html.FROM_HTML_MODE_COMPACT)
+                if(result.mail == null) {
+                    findViewById<TextView>(R.id.contact).visibility = View.GONE
+                    return
+                }
+                findViewById<TextView>(R.id.contact).text = result.mail
             }
 
             override fun onFailure(p0: Call<TermsOfAnyResponse>, p1: Throwable) {

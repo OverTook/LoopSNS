@@ -43,7 +43,9 @@ data class ArticleTimelineResponse (
     val success: Boolean, //응답 성공 여부
     val msg: String, //응답 실패 시 오류 메시지
 
-    val articles: List<ArticleDetail> //게시글 목록
+    val articles: List<ArticleDetail>, //게시글 목록
+    @SerializedName("hot_articles")
+    val hotArticles: List<ArticleDetail>
 )
 
 data class ArticleDetailResponse (
@@ -205,5 +207,6 @@ data class TermsOfAnyResponse (
     val success: Boolean, //응답 성공 여부
     val msg: String, //응답 실패 시 오류 메시지
 
-    val data: String
+    val data: String,
+    val mail: String?
 )

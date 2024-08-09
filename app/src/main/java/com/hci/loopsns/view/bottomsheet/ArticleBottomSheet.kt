@@ -1,82 +1,71 @@
 package com.hci.loopsns.view.bottomsheet
 
+import android.animation.ValueAnimator
 import android.content.Context
 import android.content.Intent
-import android.content.pm.ApplicationInfo
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.MarginLayoutParams
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestOptions
+import androidx.core.view.marginBottom
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.ChangeBounds
+import androidx.transition.TransitionManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.hci.loopsns.R
 import com.hci.loopsns.network.ArticleDetail
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.hci.loopsns.network.AddressResponse
 import com.hci.loopsns.network.AddressResult
 import com.hci.loopsns.network.NetworkManager
-import com.hci.loopsns.utils.formatTo
-import com.hci.loopsns.utils.toDate
-import com.yariksoffice.lingver.Lingver
+import com.hci.loopsns.recyclers.timeline.ArticleRecyclerViewAdapter
+import com.skydoves.androidveil.VeilRecyclerFrameView
 import java.util.Locale
 
-class HotArticleBottomSheet(private val articleIntent: Intent, private val allViewIntent: Intent, private val article: ArticleDetail, private val lat: Double, private val lng: Double) : BottomSheetDialogFragment(), View.OnClickListener {
+class ArticleBottomSheet() : BottomSheetDialogFragment(), View.OnClickListener {
+
+    private lateinit var adapter: ArticleRecyclerViewAdapter
+    private lateinit var recyclerView: RecyclerView
+
+    private lateinit var articles: List<ArticleDetail>
+    private lateinit var hotArticles: List<ArticleDetail>
+
+    private lateinit var articleIntent: Intent
+
+    private var lat: Double = 0.0
+    private var lng: Double = 0.0
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-
+    ): View {
         val view = inflater.inflate(R.layout.bottom_sheet_map_overview_timeline_short, container, false)
 
+        adapter = ArticleRecyclerViewAdapter(requireContext(), ::onClickArticle)
 
-        view.findViewById<TextView>(R.id.tag_1).text = article.cat1
-        view.findViewById<TextView>(R.id.tag_2).text = article.cat2
+        recyclerView = view.findViewById(R.id.recyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.adapter = adapter
 
-        val keywordIds = listOf(
-            R.id.keyword_1,
-            R.id.keyword_2,
-            R.id.keyword_3,
-            R.id.keyword_4
-        )
+        adapter.setItemInCollapse(articles[0])
 
-        for (i in 0 until article.keywords.size) {
-            if (i < keywordIds.size) {
-                if(article.keywords[i].isNotBlank()) {
-                    view.findViewById<TextView>(keywordIds[i]).visibility = View.VISIBLE
-                    view.findViewById<TextView>(keywordIds[i]).text = article.keywords[i]
-                }
-            }
+        if(articles.size <= 1) {
+            view.findViewById<Button>(R.id.all_view_btn).visibility = View.GONE
+            return view
         }
 
         view.findViewById<Button>(R.id.all_view_btn).setOnClickListener(this)
-        view.findViewById<ConstraintLayout>(R.id.hot_article_overview).setOnClickListener(this)
-
-        view.findViewById<TextView>(R.id.content_text).text = article.contents
-        view.findViewById<TextView>(R.id.article_time).text = article.time.toDate().formatTo("yyyy-MM-dd HH:mm")
-        view.findViewById<TextView>(R.id.like_count).text = article.likeCount.toString()
-        view.findViewById<TextView>(R.id.comment_count).text = article.commentCount.toString()
-
-        if(article.images.isNotEmpty()) {
-            Glide.with(requireContext())
-                .load(article.images[0]) //TODO 한장만?
-                .thumbnail(Glide.with(requireContext()).load(R.drawable.picture_placeholder))
-                .apply(RequestOptions.bitmapTransform(RoundedCorners(150)))
-                .into(view.findViewById<ImageView>(R.id.content_image))
-        }
+        //(dialog as? BottomSheetDialog)?.behavior?.state = BottomSheetBehavior.STATE_EXPANDED
 
 
-        (dialog as? BottomSheetDialog)?.behavior?.state = BottomSheetBehavior.STATE_EXPANDED
         return view
     }
 
@@ -86,10 +75,24 @@ class HotArticleBottomSheet(private val articleIntent: Intent, private val allVi
         getLocation()
     }
 
+    fun onClickArticle(article: ArticleDetail) {
+        articleIntent.putExtra("articleId", article.uid)
+        startActivity(articleIntent)
+    }
+
+    fun setData(articles: List<ArticleDetail>, hotArticles: List<ArticleDetail>, articleIntent: Intent, lat: Double, lng: Double): ArticleBottomSheet {
+        this.articles = articles
+        this.hotArticles = hotArticles
+        this.articleIntent = articleIntent
+        this.lat = lat
+        this.lng = lng
+        return this
+    }
+
     fun getLocation() {
         NetworkManager.apiService.getAddress(
             "$lat,$lng",
-            Lingver.getInstance().getLocale().language
+            Locale.getDefault().language
         ).enqueue(object: retrofit2.Callback<AddressResponse> {
             override fun onResponse(call: retrofit2.Call<AddressResponse>, response: retrofit2.Response<AddressResponse>) {
                 if(!response.isSuccessful) return
@@ -158,7 +161,7 @@ class HotArticleBottomSheet(private val articleIntent: Intent, private val allVi
     }
 
     fun onGeocodeLocation(address: AddressResult) {
-        var addressText = ""
+        var addressText: String
 
         var country = ""
         address.addressComponents.forEach {
@@ -189,16 +192,57 @@ class HotArticleBottomSheet(private val articleIntent: Intent, private val allVi
             return
 
         when(view.id) {
-            R.id.hot_article_overview -> {
-                dismiss()
-                articleIntent.putExtra("articleId", article.uid)
-                startActivity(articleIntent)
-            }
             R.id.all_view_btn -> {
-                dismiss()
-                allViewIntent.putExtra("name", requireView().findViewById<TextView>(R.id.location_name).text.toString())
-                allViewIntent.putExtra("point", requireView().findViewById<TextView>(R.id.point_of_interest).text.toString())
-                startActivity(allViewIntent)
+                dialog?.let {
+                    val bottomSheet = it.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+                    bottomSheet?.let { sheet ->
+                        val behavior = BottomSheetBehavior.from(sheet)
+                        behavior.state = BottomSheetBehavior.STATE_EXPANDED
+                        behavior.skipCollapsed = true
+                    }
+                }
+
+
+                adapter.setItems(articles, hotArticles)
+
+                val bottom = requireView().findViewById<View>(R.id.bottom)
+                bottom.animate()
+                    .alpha(0f)
+                    .withEndAction {
+                        bottom.visibility = View.GONE
+                    }
+                    .start()
+
+
+                val main = requireView().findViewById<ConstraintLayout>(R.id.main)
+                val transition = ChangeBounds()
+                transition.duration = 300
+                transition.interpolator = FastOutSlowInInterpolator()
+                TransitionManager.beginDelayedTransition(main, transition)
+
+                val layoutParams = recyclerView.layoutParams as ViewGroup.MarginLayoutParams
+                layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+                layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
+                recyclerView.layoutParams = layoutParams
+                recyclerView.requestFocus()
+                recyclerView.bringToFront()
+
+                val bottomSheetView = requireView().parent as? ViewGroup
+                bottomSheetView?.let {
+                    TransitionManager.beginDelayedTransition(it, transition)
+                    val bottomSheetLayoutParams = it.layoutParams
+                    bottomSheetLayoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+
+                    it.layoutParams = bottomSheetLayoutParams
+                    main.setPadding(
+                        0,
+                        0,
+                        0,
+                        10
+                    )
+                }
+
+                TransitionManager.endTransitions(main)
             }
         }
     }

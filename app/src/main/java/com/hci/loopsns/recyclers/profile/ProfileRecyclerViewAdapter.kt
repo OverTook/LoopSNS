@@ -37,6 +37,7 @@ class ProfileRecyclerViewAdapter(private val activity: BaseProfileFragment, priv
         val picture: ImageView = itemView.findViewById(R.id.picture)
 
         val tags: LinearLayout = itemView.findViewById(R.id.tags)
+        val keywords: FlexboxLayout = itemView.findViewById(R.id.keywords)
 
         val category1: TextView = itemView.findViewById(R.id.tag_1_article)
         val category2: TextView = itemView.findViewById(R.id.tag_2_article)
@@ -115,13 +116,19 @@ class ProfileRecyclerViewAdapter(private val activity: BaseProfileFragment, priv
                 if (item.images.isNotEmpty()) {
                     holder.picture.visibility = View.VISIBLE
 
-                    val params = holder.tags.layoutParams as ConstraintLayout.LayoutParams
+                    var params = holder.tags.layoutParams as ConstraintLayout.LayoutParams
                     params.marginEnd = 120.dp
                     holder.tags.layoutParams = params
 
+                    params = holder.keywords.layoutParams as ConstraintLayout.LayoutParams
+                    params.marginEnd = 120.dp
+                    holder.keywords.layoutParams = params
+
                     Glide.with(activity)
                         .load(item.images[0])
-                        .thumbnail(Glide.with(activity).load(R.drawable.picture_placeholder))
+                        .thumbnail(
+                            Glide.with(activity).load(R.drawable.picture_placeholder)
+                        )
                         .transform(CenterCrop(), RoundedCorners(30))
                         //.apply(RequestOptions.bitmapTransform(RoundedCorners(150)))
                         .into(holder.picture)
@@ -129,9 +136,13 @@ class ProfileRecyclerViewAdapter(private val activity: BaseProfileFragment, priv
                 } else {
                     holder.picture.visibility = View.GONE
 
-                    val params = holder.tags.layoutParams as ConstraintLayout.LayoutParams
+                    var params = holder.tags.layoutParams as ConstraintLayout.LayoutParams
                     params.marginEnd = 10.dp
                     holder.tags.layoutParams = params
+
+                    params = holder.keywords.layoutParams as ConstraintLayout.LayoutParams
+                    params.marginEnd = 10.dp
+                    holder.keywords.layoutParams = params
                 }
             }
         }

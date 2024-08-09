@@ -144,11 +144,12 @@
             android:textColor="@color/main_text"
             android:textSize="15sp" />
 
-        <LinearLayout
+        <com.google.android.flexbox.FlexboxLayout
             android:id="@+id/keywords"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            app:flexWrap="wrap"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:layout_editor_absoluteY="94dp">
@@ -205,7 +206,7 @@
                 tools:layout_editor_absoluteX="119dp"
                 tools:layout_editor_absoluteY="32dp" />
 
-        </LinearLayout>
+        </com.google.android.flexbox.FlexboxLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/article_like"

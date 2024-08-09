@@ -1,5 +1,6 @@
 package com.hci.loopsns
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -37,6 +38,7 @@ import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.ktx.Firebase
 import com.hci.loopsns.network.AccountCreateResponse
 import com.hci.loopsns.network.NetworkManager
+import com.hci.loopsns.storage.SettingManager
 import com.hci.loopsns.utils.DoubleBackPressHandler
 import com.hci.loopsns.utils.hideDarkOverlay
 import com.hci.loopsns.utils.showDarkOverlay
@@ -226,6 +228,10 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, SplashScreen.Ke
 
     private fun isUserNonNull(): Boolean {
         return mAuth!!.currentUser != null
+    }
+
+    override fun attachBaseContext(base: Context) {
+        super.attachBaseContext(SettingManager.getInstance().getCurrentLocaleContext(base))
     }
 
     private fun updateUI() {

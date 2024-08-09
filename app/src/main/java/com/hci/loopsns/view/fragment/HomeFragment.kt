@@ -1,7 +1,6 @@
 package com.hci.loopsns.view.fragment
 
 import android.Manifest
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
@@ -15,6 +14,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -35,11 +35,11 @@ import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.VisibleRegion
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
 import com.hci.loopsns.ArticleCreateActivity
 import com.hci.loopsns.ArticleDetailActivity
 import com.hci.loopsns.R
-import com.hci.loopsns.TimelineActivity
 import com.hci.loopsns.network.AddressResponse
 import com.hci.loopsns.network.AddressResult
 import com.hci.loopsns.network.ArticleMarkersResponse
@@ -49,8 +49,7 @@ import com.hci.loopsns.storage.NightMode
 import com.hci.loopsns.storage.SettingManager
 import com.hci.loopsns.utils.hideDarkOverlay
 import com.hci.loopsns.utils.showDarkOverlay
-import com.hci.loopsns.view.bottomsheet.HotArticleBottomSheet
-import com.yariksoffice.lingver.Lingver
+import com.hci.loopsns.view.bottomsheet.ArticleBottomSheet
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -69,10 +68,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
     private lateinit var locationRequest: LocationRequest
     private lateinit var currentLocation: LatLng
 
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
+
     private val executor = Executors.newSingleThreadScheduledExecutor()
 
     private var markers: ArrayList<Marker>? = null
-    private var bottomSheetFragment: HotArticleBottomSheet? = null
 
     private lateinit var viewOfLayout: View
 
@@ -101,6 +101,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
             intent.putExtra("y", currentLocation.longitude)
             startActivity(intent)
         }
+
+        val bottomSheet = viewOfLayout.findViewById<LinearLayout>(R.id.bottom_sheet)
+        bottomSheetBehavior
 
         initGPS()
         return viewOfLayout
@@ -134,7 +137,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
 
         val mapFragment = (childFragmentManager.findFragmentById(R.id.googleMap) as SupportMapFragment)
         mapFragment.getMapAsync(this)
-        Log.e("GoogleMap", "Init Start")
         getCurrentLocation()
     }
 
@@ -239,7 +241,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
     fun updateLocationText() {
         NetworkManager.apiService.getAddress(
             "${googleMap.cameraPosition.target.latitude},${googleMap.cameraPosition.target.longitude}",
-            Lingver.getInstance().getLocale().language
+            Locale.getDefault().language
         ).enqueue(object:Callback<AddressResponse>{
             override fun onResponse(call: Call<AddressResponse>, response: Response<AddressResponse>) {
                 if(!response.isSuccessful) {
@@ -401,6 +403,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
     }
 
     override fun onCameraIdle() {
+        //Log.e("MOVE", Lingver.getInstance().getLanguage())
+        Log.e("MOVE DEFAULT", Locale.getDefault().language)
         requestMaker()
         //updateLocationText()
     }
@@ -430,24 +434,17 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
                     return
                 }
 
-                val list = response.body()!!.articles
 
 
-
-                bottomSheetFragment = HotArticleBottomSheet(
+                ArticleBottomSheet().setData(
+                    response.body()!!.articles,
+                    response.body()!!.hotArticles,
                     Intent(
                         requireActivity(),
                         ArticleDetailActivity::class.java
                     ),
-                    Intent(
-                        requireActivity(),
-                        TimelineActivity::class.java
-                    ).putParcelableArrayListExtra("articles", ArrayList(list)),
-                    list[0],
                     marker.position.latitude,
-                    marker.position.longitude
-                )
-                bottomSheetFragment!!.show(requireActivity().supportFragmentManager, bottomSheetFragment!!.tag)
+                    marker.position.longitude).show(requireActivity().supportFragmentManager, "ArticleBottomSheet")
             }
 
             override fun onFailure(call: Call<ArticleTimelineResponse>, err: Throwable) {
