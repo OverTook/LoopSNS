@@ -23,7 +23,7 @@
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
-    <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
 
     <queries>
         <package android:name="com.hci.loopsns" />
@@ -47,8 +47,7 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Base.Theme.LoopSNS"
-        tools:targetApi="31">
+        android:theme="@style/Base.Theme.LoopSNS">
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -57,29 +56,39 @@
         <activity
             android:name=".LoginActivity"
             android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="https" />
+                <data android:scheme="http" />
+                <data android:host="overtook.github.io" />
             </intent-filter>
         </activity>
 
         <activity
             android:name=".MainActivity"
-            android:exported="true"
-            android:windowSoftInputMode="adjustNothing"/>
+            android:exported="true" />
 
         <activity
             android:name=".ArticleDetailActivity"
-            android:exported="true"/>
+            android:exported="true" />
 
         <activity
             android:name=".ArticleCreateActivity"
-            android:exported="true"/>
+            android:exported="true" />
 
         <activity
             android:name=".SelectLocationActivity"
-            android:exported="true"/>
+            android:exported="true" />
 
         <activity
             android:name=".SettingsActivity"
@@ -87,15 +96,15 @@
 
         <activity
             android:name=".EditProfileActivity"
-            android:exported="true"/>
+            android:exported="true" />
 
         <activity
             android:name=".TermsActivity"
-            android:exported="true"/>
+            android:exported="true" />
 
         <activity
-            android:name=".SearchResultActivity"
-            android:exported="false"/>
+            android:name=".ArticleSearchActivity"
+            android:exported="false" />
 
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"

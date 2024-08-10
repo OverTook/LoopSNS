@@ -2,6 +2,7 @@ package com.hci.loopsns.recyclers.article
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -184,8 +185,10 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity): R
                 holder.optionButton.setOnClickListener {
                     ArticleOptionBottomSheet().setData(
                         article.canDelete!!,
-                        activity::deleteArticle
-                    ).show(activity.supportFragmentManager, "ArticleOptionBottomSheet")
+                        activity::deleteArticle,
+                    ) {
+                        activity.createDeepLinkShare("")
+                    } .show(activity.supportFragmentManager, "ArticleOptionBottomSheet")
                 }
 
                 holder.articleContent.text = article.contents
@@ -240,9 +243,12 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity): R
                 holder.optionButton.setOnClickListener {
                     CommentOptionBottomSheet().setData(
                         false,
-                        highlightComment!!.uid
+                        highlightComment!!.uid,
+                        {
+                            activity.deleteComment(highlightComment!!.uid)
+                        }
                     ) {
-                        activity.deleteComment(highlightComment!!.uid)
+                        activity.createDeepLinkShare(highlightComment!!.uid)
                     }.show(activity.supportFragmentManager, "CommentOptionBottomSheet")
                 }
                 holder.replyButton.setOnClickListener {
@@ -294,12 +300,17 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity): R
                 holder.optionButton.setOnClickListener {
                     CommentOptionBottomSheet().setData(
                         item.canDelete,
-                        item.uid
+                        item.uid,
+                        {
+                            activity.deleteComment(item.uid)
+                        }
                     ) {
-                        activity.deleteComment(item.uid)
+                        activity.createDeepLinkShare(item.uid)
                     }.show(activity.supportFragmentManager, "CommentOptionBottomSheet")
                 }
                 holder.replyButton.setOnClickListener {
+                    Log.e("ITEM ", item.contents)
+                    Log.e("ITEM ", item.isDeleted.toString())
                     activity.openSubComment(item, true)
                 }
 
@@ -417,6 +428,7 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity): R
                 continue
             }
 
+            //Log.e("DeletedBy", uid + " - " + i.toString())
             this.comments[i].isDeleted = true
 
 //            this.comments.removeAt(i)

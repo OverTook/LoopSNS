@@ -14,6 +14,7 @@ import com.hci.loopsns.network.NetworkManager
 import com.hci.loopsns.network.TermsOfAnyResponse
 import com.hci.loopsns.storage.SettingManager
 import com.skydoves.androidveil.VeilLayout
+import org.w3c.dom.Text
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -41,12 +42,16 @@ class TermsActivity : AppCompatActivity(), View.OnClickListener {
         var request: Call<TermsOfAnyResponse>? = null
         when(intent.getStringExtra("type") ?: "null") {
             "use" -> {
+                findViewById<TextView>(R.id.activity_name).text = getString(R.string.terms_of_use)
                 request = NetworkManager.apiService.getTermsOfUse(Locale.getDefault().language)
             }
             "information" -> {
+                findViewById<TextView>(R.id.activity_name).text =
+                    getString(R.string.terms_of_information)
                 request = NetworkManager.apiService.getTermsOfInformation(Locale.getDefault().language)
             }
             "faq" -> {
+                findViewById<TextView>(R.id.activity_name).text = getString(R.string.terms_of_faq)
                 request = NetworkManager.apiService.getFAQ(Locale.getDefault().language)
             }
             else -> {

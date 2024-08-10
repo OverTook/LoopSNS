@@ -24,6 +24,7 @@ import com.hci.loopsns.R
 import com.hci.loopsns.storage.NotificationType
 import com.hci.loopsns.storage.SettingManager
 import com.hci.loopsns.storage.models.NotificationComment
+import com.hci.loopsns.storage.models.NotificationFavorite
 import com.hci.loopsns.utils.factory.NotificationFactory
 import org.litepal.LitePal
 import java.lang.reflect.Type
@@ -115,6 +116,39 @@ class LoopFirebaseMessagingService : FirebaseMessagingService() {
                     .setSmallIcon(R.mipmap.ic_launcher) // 아이콘 설정
                     .setContentTitle(comment.writer) // 제목
                     .setContentText(comment.contents) // 메시지 내용
+                    .setAutoCancel(true) // 알람클릭시 삭제여부
+                    .setContentIntent(pendingIntent) // 알림 실행 시 Intent
+
+                notificationManager.notify(uniId, notificationBuilder.build())
+            }
+            "likes" -> {
+                val favorite = GsonBuilder()
+                    .registerTypeAdapter(Date::class.java, GsonUTCDateAdapter())
+                    .create()
+                    .fromJson(body, NotificationFavorite::class.java)
+
+                intent.putExtra("type", "likes")
+                intent.putExtra("favorite", favorite)
+
+                if(favorite.save()) {
+                    NotificationFactory.addNotification(favorite)
+                } else {
+                    LitePal.initialize(baseContext)
+                    favorite.saveThrows()
+                }
+
+                if(!SettingManager.getInstance(baseContext).getNotification(NotificationType.FAVORITE_ARTICLE)) return
+
+                val pendingIntent = buildPendingIntent(uniId, intent)
+
+                val notificationBuilder = NotificationCompat.Builder(this, channelId)
+                    .setPriority(NotificationCompat.PRIORITY_HIGH) // 중요도 (HIGH: 상단바 표시 가능)
+                    .setSmallIcon(R.mipmap.ic_launcher) // 아이콘 설정
+                    .setContentTitle("좋아요 알람") // 제목
+                    .setContentText(buildString {
+                        append(favorite.likeCount)
+                        append("명이 게시물에 좋아요를 눌렀습니다.")
+                    }) // 메시지 내용
                     .setAutoCancel(true) // 알람클릭시 삭제여부
                     .setContentIntent(pendingIntent) // 알림 실행 시 Intent
 

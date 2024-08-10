@@ -115,6 +115,7 @@ data class CommentResponse (
 
 @Parcelize
 data class Comment (
+    val articleId: String? = null,
     @SerializedName("comment_id")
     val uid: String, //댓글 유니크 아이디
     var writer: String?, //글쓴이
@@ -209,4 +210,11 @@ data class TermsOfAnyResponse (
 
     val data: String,
     val mail: String?
+)
+
+data class SearchResponse (
+    val success: Boolean, //응답 성공 여부
+    val msg: String, //응답 실패 시 오류 메시지
+
+    val articles: List<ArticleDetail> //게시글 목록
 )

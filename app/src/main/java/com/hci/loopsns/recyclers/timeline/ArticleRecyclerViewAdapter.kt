@@ -204,4 +204,44 @@ class ArticleRecyclerViewAdapter(private val context: Context, private val artic
         this.articles.addAll(articles)
         notifyItemRangeInserted(this.articles.size + this.hotArticles.size, articles.size)
     }
+
+    fun updateCommentcount(articleId: String, increment: Int) {
+        if(isCollapsed) {
+            if(articles[0].uid == articleId) {
+                articles[0].commentCount += increment
+                notifyItemChanged(0)
+            }
+            return
+        }
+
+        for(i in articles.indices) {
+            if(articles[i].uid != articleId) {
+                continue
+            }
+
+            articles[i].commentCount += increment
+            notifyItemChanged(i + hotArticles.size)
+            return
+        }
+    }
+
+    fun updateLikeCount(articleId: String, increment: Int) {
+        if(isCollapsed) {
+            if(articles[0].uid == articleId) {
+                articles[0].likeCount += increment
+                notifyItemChanged(0)
+            }
+            return
+        }
+
+        for(i in articles.indices) {
+            if(articles[i].uid != articleId) {
+                continue
+            }
+
+            articles[i].likeCount += increment
+            notifyItemChanged(i + hotArticles.size)
+            return
+        }
+    }
 }

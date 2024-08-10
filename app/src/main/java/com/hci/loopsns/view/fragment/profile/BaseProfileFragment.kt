@@ -94,6 +94,6 @@ abstract class BaseProfileFragment : Fragment(), ArticleListener, FavoriteListen
     }
 
     override fun onCommentCreated(comment: Comment) {
-        adapter.updateCommentCount(comment.uid, +1)
+        adapter.updateCommentCount(comment.articleId!!, +1)
     }
 }

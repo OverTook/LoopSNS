@@ -1,6 +1,11 @@
 package com.hci.loopsns
 
+import android.R.attr.label
+import android.R.attr.text
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
@@ -37,7 +42,9 @@ import com.hci.loopsns.network.LikeArticleRequest
 import com.hci.loopsns.network.LikeResponse
 import com.hci.loopsns.network.NetworkManager
 import com.hci.loopsns.recyclers.article.ArticleRecyclerViewAdapter
+import com.hci.loopsns.storage.SettingManager
 import com.hci.loopsns.storage.models.NotificationComment
+import com.hci.loopsns.utils.createDeepLink
 import com.hci.loopsns.utils.hideDarkOverlay
 import com.hci.loopsns.utils.registerAutoRefresh
 import com.hci.loopsns.utils.requestEnd
@@ -122,6 +129,11 @@ class ArticleDetailActivity() : AppCompatActivity(), SwipeRefreshLayout.OnRefres
                 response: Response<ArticleDetailResponse>
             ) {
                 if(!response.isSuccessful) {
+                    if (response.code() == 404) {
+                        Toast.makeText(this@ArticleDetailActivity, "삭제된 게시글입니다.", Toast.LENGTH_SHORT).show()
+                        finish()
+                        return
+                    }
                     Log.e("ArticleDetail Get Failed", "HTTP Code " + response.code())
                     Toast.makeText(this@ArticleDetailActivity, "게시글 정보 응답이 성공적이지 않습니다.", Toast.LENGTH_SHORT).show()
                     finish()
@@ -151,6 +163,9 @@ class ArticleDetailActivity() : AppCompatActivity(), SwipeRefreshLayout.OnRefres
                 response: Response<CommentListResponse>
             ) {
                 if(!response.isSuccessful) {
+                    if (response.code() == 404) {
+                        return
+                    }
                     Log.e("CommentList Get Failed", "HTTP Code " + response.code())
                     Toast.makeText(this@ArticleDetailActivity, "댓글 정보 응답이 성공적이지 않습니다.", Toast.LENGTH_SHORT).show()
                     finish()
@@ -194,6 +209,9 @@ class ArticleDetailActivity() : AppCompatActivity(), SwipeRefreshLayout.OnRefres
             NetworkManager.apiService.retrieveComment(articleId, highlightComment.commentId).enqueue(object : Callback<CommentResponse> {
                 override fun onResponse(call: Call<CommentResponse>, response: Response<CommentResponse>) {
                     if(!response.isSuccessful) {
+                        if (response.code() == 404) {
+                            return
+                        }
                         Log.e("Retrieve Comment Get Failed", "HTTP Code " + response.code())
                         Toast.makeText(this@ArticleDetailActivity, "댓글 정보 요청에 실패했습니다.", Toast.LENGTH_SHORT).show()
                         finish()
@@ -272,6 +290,10 @@ class ArticleDetailActivity() : AppCompatActivity(), SwipeRefreshLayout.OnRefres
     fun initRecyclerView() {
         recyclerView.setAdapter(adapter)
         recyclerView.getRecyclerView().registerAutoRefresh(this)
+    }
+
+    override fun attachBaseContext(base: Context) {
+        super.attachBaseContext(SettingManager.getInstance().getCurrentLocaleContext(base))
     }
 
     override fun getRequestAnimation(): View = requestAnimationView
@@ -357,6 +379,8 @@ class ArticleDetailActivity() : AppCompatActivity(), SwipeRefreshLayout.OnRefres
     }
 
     fun openSubComment(comment: Comment, openKeyboard: Boolean) {
+        if(supportFragmentManager.findFragmentByTag("SubCommentBottomSheet") != null) return
+
         if(article == null) {
             bottomSheet
                 .setData(intent.getStringExtra("articleId")!!, comment)
@@ -556,6 +580,7 @@ class ArticleDetailActivity() : AppCompatActivity(), SwipeRefreshLayout.OnRefres
 
                 commentManager.onCommentCreated(
                     Comment(
+                        article!!.uid,
                         response.body()!!.uid,
                         FirebaseAuth.getInstance().currentUser!!.displayName,
                         comment,
@@ -610,44 +635,18 @@ class ArticleDetailActivity() : AppCompatActivity(), SwipeRefreshLayout.OnRefres
         }
     }
 
-//    fun smoothScrollToPosition(recyclerView: RecyclerView, targetPosition: Int, duration: Int = 1000) {
-//        val layoutManager = recyclerView.layoutManager as? LinearLayoutManager ?: return
-//
-//        // 현재 첫 번째 보이는 아이템의 위치 가져오기
-//        val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
-//        if (firstVisibleItemPosition == RecyclerView.NO_POSITION) return
-//
-//        var scrollDistance = 0
-//
-//        // RecyclerView의 Adapter를 사용하여 각 아이템의 높이 측정
-//        val adapter = recyclerView.adapter ?: return
-//
-//        for (i in firstVisibleItemPosition until targetPosition) {
-//            val view = layoutManager.findViewByPosition(i)
-//
-//            if (view != null) {
-//                // 화면에 보이는 아이템의 높이 추가
-//                scrollDistance += view.height
-//            } else {
-//                // 화면에 보이지 않는 아이템의 높이 측정
-//                val viewType = adapter.getItemViewType(i)
-//                val viewHolder = adapter.createViewHolder(recyclerView, viewType)
-//                adapter.bindViewHolder(viewHolder, i)
-//
-//                // 아이템의 높이를 측정하기 위해 MeasureSpec 사용
-//                viewHolder.itemView.measure(
-//                    View.MeasureSpec.makeMeasureSpec(recyclerView.width, View.MeasureSpec.EXACTLY),
-//                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
-//                )
-//
-//                // 측정된 높이 추가
-//                scrollDistance += viewHolder.itemView.measuredHeight
-//            }
-//        }
-//        scrollDistance += toolbar.bottom
-//        recyclerView.smoothScrollBy(0, scrollDistance, DecelerateInterpolator(), duration)
-//    }
+    fun createDeepLinkShare(commentId: String, subCommentId: String = "") {
+        val deepLink = this.createDeepLink(article!!.uid, commentId, subCommentId)
+        val shareIntent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, "우리들의 연결고리! 루프에서 확인하세요. $deepLink")
+            type = "text/plain"
+        }
 
+        startActivity(Intent.createChooser(shareIntent, "공유 수단"))
+
+        Log.e("Deep Link", deepLink)
+    }
 
 
     override fun onDestroy() {

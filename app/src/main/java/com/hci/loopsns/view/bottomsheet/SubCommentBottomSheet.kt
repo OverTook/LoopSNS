@@ -248,6 +248,7 @@ class SubCommentBottomSheet(private val activity: ArticleDetailActivity) : Botto
                 CommentManager.getInstance().onSubCommentCreated(
                     parentComment!!.uid,
                     Comment(
+                        articleUid,
                         response.body()!!.uid,
                         FirebaseAuth.getInstance().currentUser!!.displayName,
                         comment,

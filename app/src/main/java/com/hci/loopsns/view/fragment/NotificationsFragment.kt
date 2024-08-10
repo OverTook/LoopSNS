@@ -17,7 +17,7 @@ import com.hci.loopsns.event.AutoRefresherInterface
 import com.hci.loopsns.R
 import com.hci.loopsns.recyclers.notification.NotificationRecyclerViewAdapter
 import com.hci.loopsns.storage.models.NotificationComment
-import com.hci.loopsns.storage.models.NotificationHotArticle
+import com.hci.loopsns.storage.models.NotificationFavorite
 import com.hci.loopsns.storage.models.NotificationInterface
 import com.hci.loopsns.utils.factory.NotificationFactory
 import com.hci.loopsns.utils.factory.NotificationFactoryEventListener
@@ -47,16 +47,16 @@ class NotificationsFragment() : Fragment(), SwipeRefreshLayout.OnRefreshListener
         currentPage++
 
         val lastCommentID = adapter.getLastNotificationID(NotificationComment::class.java)
-        val lastHotArticleID = adapter.getLastNotificationID(NotificationHotArticle::class.java)
+        val lastHotArticleID = adapter.getLastNotificationID(NotificationFavorite::class.java)
 
         Log.e("LastCommentID", lastCommentID.toString())
 
         val comments = LitePal.order("time desc").offset(lastCommentID).limit(20).find(NotificationComment::class.java)
-        val hotArticles = LitePal.order("time desc").offset(lastHotArticleID).limit(20).find(NotificationHotArticle::class.java)
+        val favoriteNotis = LitePal.order("time desc").offset(lastHotArticleID).limit(20).find(NotificationFavorite::class.java)
 
         val totalList = ArrayList<NotificationInterface>()
         totalList.addAll(comments)
-        totalList.addAll(hotArticles)
+        totalList.addAll(favoriteNotis)
         totalList.sortByDescending { it.time }
         totalList.take(20)
 
@@ -80,12 +80,12 @@ class NotificationsFragment() : Fragment(), SwipeRefreshLayout.OnRefreshListener
         //Do In Async
         lifecycleScope.launch {
             val comments = LitePal.order("time desc").limit(20).find(NotificationComment::class.java)
-            val hotArticles = LitePal.order("time desc").limit(20).find(NotificationHotArticle::class.java)
+            val favoriteNotis = LitePal.order("time desc").limit(20).find(NotificationFavorite::class.java)
 
             val commentCount = LitePal.where("readed = ?", "0").count(NotificationComment::class.java)
-            val hotArticleCount = LitePal.where("readed = ?", "0").count(NotificationHotArticle::class.java)
+            val favoriteNotisCount = LitePal.where("readed = ?", "0").count(NotificationFavorite::class.java)
 
-            badgeCount = commentCount + hotArticleCount
+            badgeCount = commentCount + favoriteNotisCount
             if(badgeCount > 0) {
                 badge.show(badgeCount.toString())
                 badge.badgeTextColor = Color.WHITE
@@ -95,7 +95,7 @@ class NotificationsFragment() : Fragment(), SwipeRefreshLayout.OnRefreshListener
 
             val totalList = ArrayList<NotificationInterface>()
             totalList.addAll(comments)
-            totalList.addAll(hotArticles)
+            totalList.addAll(favoriteNotis)
             totalList.sortByDescending { it.time }
             totalList.take(20)
 
@@ -116,12 +116,12 @@ class NotificationsFragment() : Fragment(), SwipeRefreshLayout.OnRefreshListener
     override fun onRefresh() {
         lifecycleScope.launch {
             val comments = LitePal.order("time desc").limit(20).find(NotificationComment::class.java)
-            val hotArticles = LitePal.order("time desc").limit(20).find(NotificationHotArticle::class.java)
+            val favoriteNotis = LitePal.order("time desc").limit(20).find(NotificationFavorite::class.java)
 
             val commentCount = LitePal.where("readed = ?", "0").count(NotificationComment::class.java)
-            val hotArticleCount = LitePal.where("readed = ?", "0").count(NotificationHotArticle::class.java)
+            val favoriteNotisCount = LitePal.where("readed = ?", "0").count(NotificationFavorite::class.java)
 
-            badgeCount = commentCount + hotArticleCount
+            badgeCount = commentCount + favoriteNotisCount
             if(badgeCount > 0) {
                 badge.show(badgeCount.toString())
             } else {
@@ -130,7 +130,7 @@ class NotificationsFragment() : Fragment(), SwipeRefreshLayout.OnRefreshListener
 
             val totalList = ArrayList<NotificationInterface>()
             totalList.addAll(comments)
-            totalList.addAll(hotArticles)
+            totalList.addAll(favoriteNotis)
             totalList.sortByDescending { it.time }
             totalList.take(20)
 
@@ -174,6 +174,15 @@ class NotificationsFragment() : Fragment(), SwipeRefreshLayout.OnRefreshListener
                 }
 
                 intent.putExtra("highlight", notification)
+                intent.putExtra("articleId", notification.articleId)
+                startActivity(intent)
+            }
+            is NotificationFavorite -> {
+                if(!notification.readed) {
+                    notification.readed = true
+                    notification.save()
+                }
+
                 intent.putExtra("articleId", notification.articleId)
                 startActivity(intent)
             }

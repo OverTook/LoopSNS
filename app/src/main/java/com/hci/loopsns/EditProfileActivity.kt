@@ -1,6 +1,7 @@
 package com.hci.loopsns
 
 import android.app.Activity
+import android.content.Context
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -12,6 +13,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatImageButton
 import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
@@ -24,6 +26,7 @@ import com.google.firebase.auth.UserProfileChangeRequest
 import com.hci.loopsns.event.ProfileManager
 import com.hci.loopsns.network.NetworkManager
 import com.hci.loopsns.network.UpdateProfileImageResponse
+import com.hci.loopsns.storage.SettingManager
 import com.hci.loopsns.utils.GlideEngine
 import com.hci.loopsns.utils.dp
 import com.hci.loopsns.utils.hideDarkOverlay
@@ -64,6 +67,8 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener,
                 .override(100.dp)
                 .into(findViewById(R.id.profile_image))
         }
+
+        findViewById<AppCompatImageButton>(R.id.backButton).setOnClickListener(this)
 
         findViewById<TextView>(R.id.profile_name_edit_text).text = user.displayName
         findViewById<TextView>(R.id.profile_email_edit_text).text = user.email
@@ -152,6 +157,10 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener,
             }
 
         })
+    }
+
+    override fun attachBaseContext(base: Context) {
+        super.attachBaseContext(SettingManager.getInstance().getCurrentLocaleContext(base))
     }
 
     override fun onClick(view: View?) {

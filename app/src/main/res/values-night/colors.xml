@@ -10,6 +10,7 @@
     <color name="keyword">#E1E9E9E9</color>
 
     <color name="activity_background">#1C1C1C</color>
+    <color name="bottom_sheet_background">#272727</color>
     <color name="header_background">#1C1C1C</color>
     <color name="header_border">#171717</color>
     <color name="bottom_navigation_background">#1C1C1C</color>

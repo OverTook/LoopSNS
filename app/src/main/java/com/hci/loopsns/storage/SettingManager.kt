@@ -26,8 +26,7 @@ object NightMode {
 
 enum class NotificationType(val code: Int, val string: Int, val enable: Boolean) {
     COMMENT(1, R.string.settings_notification_comment_setting, true),
-    HOT_ARTICLE(2, R.string.settings_notification_hot_article_setting, true),
-    FAVORITE_ARTICLE(4, R.string.settings_notification_favorite_setting, false)
+    FAVORITE_ARTICLE(2, R.string.settings_notification_favorite_setting, true)
 }
 
 class SettingManager {

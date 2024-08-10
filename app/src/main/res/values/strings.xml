@@ -15,7 +15,7 @@
     <string name="writing_location_1">건국대학교 글로컬캠퍼스</string>
     <string name="writing_location_2">충청북도 충주시 충원대로 268</string>
     <string name="writing_complete">작성 완료</string>
-    <string name="save">저장하기</string>
+    <string name="save">저장</string>
     <string name="category">카테고리</string>
     <string name="keyword">키워드</string>
     <string name="writing_text">작성 내용 *</string>
@@ -92,7 +92,7 @@
     <string name="settings_customer_service">고객 지원</string>
     <string name="settings_account_manage">계정 관리</string>
     <string name="article_create_rules"><![CDATA[게시글 작성 시 규칙 준수\n \n 1. 모든 게시물은 커뮤니티 규칙 및 현행 법률을 준수해야 합니다.\n 2. 불법 행위, 차별, 혐오, 명예훼손, 사생활 침해 등의 포함하는 내용은 금지됩니다.\n \n <금지 행위>\n 1. 폭력성, 음란성, 혐오감을 주는 게시물 금지\n 2. 타인의 개인정보를 동의없이 공유하거나 침해하는 행위 금지\n 3. 타인의 명의를 도용한 게시물 및 댓글 금지\n 4. 의도적 도배 게시물 및 댓글 금지\n \n 게시글 작성 Tip!\n 1. 이웃들에게 도움이 되는 유익하고 신뢰할 수 있는 정보를 공유하세요!\n 2. 사실에 근거한 내용을 작성하고, 허위사실 유포를 피하세요!\n 3. 적절한 언어를 사용하여 이웃들에게 불쾌감을 주지 않도록 주의하세요!\n \n <신고 및 제재>\n 1. 규칙 위반 게시물은 신고 버튼을 통해 신고할 수 있습니다\n 2. 반복적인 규칙 위반 시 서비스 이용이 제한될 수 있습니다.\n -> 1차 경고: 경미한 규칙 위반 시 경고 메시지를 받게 됩니다.\n -> 2차 제한: 반복적인 규칙 위반 시 일정 기간 동안 게시물 작성 및 커뮤니티 활동이 제한됩니다.\n -> 3차 영구 제한: 심각한 규칙 위반 또는 반복적인 위반 시 영구적으로 서비스 이용이 제한될 수 있습니다.\n \n 첨부한 사진은 AI에 의해 자동 모자이크 처리 될 수 있습니다.]]></string>
-    <string name="location_edit_ask_warning_body"><![CDATA[위치를 바꾸는 경우 게시물의 신뢰성이 낮아질 수 있으며, 위치를 바꾼 후 정책을 위반한 것으로 판단되는 경우 운영 정책에 의거 가중 처벌될 수 있습니다.\n계속하시겠습니까?]]></string>
+    <string name="location_edit_ask_warning_body"><![CDATA[위치를 바꾸는 경우 게시물의 신뢰성이 낮아질 수 있으며, 위치를 바꾼 후 정책을 위반한 것으로 판단되는 경우 운영 정책에 의해 삭제될 수 있습니다.\n계속하시겠습니까?]]></string>
     <string name="location_edit_ask_warning_head">위치 변경 경고</string>
     <string name="location_edit_ask_warning_yes">예</string>
     <string name="location_edit_ask_warning_no">아니오</string>
@@ -121,10 +121,20 @@
     <string name="settings_logout_body">정말 로그아웃하시겠습니까?</string>
     <string name="settings_logout_yes">예</string>
     <string name="settings_logout_no">아니오</string>
-    
-    <array name="spinner_items">
-        <item>Item 1</item>
-        <item>Item 2</item>
-        <item>Item 3</item>
-    </array>
+    <string name="no_articles">게시물이 없습니다.</string>
+    <string name="please_type_keywords">검색어를 입력해주세요.</string>
+    <string name="cant_get_current_location">현재 위치를 받아올 수 없습니다.</string>
+    <string name="terms_of_use">이용 약관</string>
+    <string name="terms_of_information">개인 정보 처리 방침</string>
+    <string name="terms_of_faq">FAQ</string>
+    <string name="notifications_new_favorite">새로운 공감</string>
+    <string name="article_delete_head">게시물 삭제</string>
+    <string name="article_delete_body">게시물을 정말로 삭제하시겠습니까?</string>
+    <string name="article_delete_yes">예</string>
+    <string name="article_delete_no">아니오</string>
+    <string name="comment_delete_head">댓글 삭제</string>
+    <string name="comment_delete_body">댓글을 정말로 삭제하시겠습니까?</string>
+    <string name="comment_delete_yes">예</string>
+    <string name="comment_delete_no">아니오</string>
+
 </resources>

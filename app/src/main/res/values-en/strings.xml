@@ -115,4 +115,19 @@
     <string name="settings_logout_body">Are you sure you want to sign out?</string>
     <string name="settings_logout_yes">Yes</string>
     <string name="settings_logout_no">No</string>
+    <string name="no_articles">게시물이 없습니다.</string>
+    <string name="please_type_keywords">검색어를 입력해주세요.</string>
+    <string name="cant_get_current_location">현재 위치를 받아올 수 없습니다.</string>
+    <string name="terms_of_use">이용 약관</string>
+    <string name="terms_of_information">개인 정보 처리 방침</string>
+    <string name="terms_of_faq">FAQ</string>
+    <string name="notifications_new_favorite">새로운 공감</string>
+    <string name="article_delete_head">게시물 삭제</string>
+    <string name="article_delete_body">게시물을 정말로 삭제하시겠습니까?</string>
+    <string name="article_delete_yes">예</string>
+    <string name="article_delete_no">아니오</string>
+    <string name="comment_delete_head">댓글 삭제</string>
+    <string name="comment_delete_body">댓글을 정말로 삭제하시겠습니까?</string>
+    <string name="comment_delete_yes">예</string>
+    <string name="comment_delete_no">아니오</string>
 </resources>

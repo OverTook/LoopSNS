@@ -1,8 +1,6 @@
 package com.hci.loopsns.view.fragment
 
 import android.Manifest
-import android.animation.ValueAnimator
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
@@ -12,23 +10,15 @@ import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
 import android.util.Log
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewTreeObserver
-import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
 import android.widget.ImageButton
-import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -45,25 +35,21 @@ import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.VisibleRegion
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
 import com.hci.loopsns.ArticleCreateActivity
 import com.hci.loopsns.ArticleDetailActivity
 import com.hci.loopsns.R
-import com.hci.loopsns.SearchResultActivity
+import com.hci.loopsns.ArticleSearchActivity
 import com.hci.loopsns.network.AddressResponse
 import com.hci.loopsns.network.AddressResult
 import com.hci.loopsns.network.ArticleMarkersResponse
 import com.hci.loopsns.network.ArticleTimelineResponse
 import com.hci.loopsns.network.NetworkManager
-import com.hci.loopsns.recyclers.history.SearchHistoryRecyclerViewAdapter
 import com.hci.loopsns.storage.NightMode
 import com.hci.loopsns.storage.SettingManager
-import com.hci.loopsns.utils.dp
 import com.hci.loopsns.utils.hideDarkOverlay
 import com.hci.loopsns.utils.showDarkOverlay
 import com.hci.loopsns.view.bottomsheet.ArticleBottomSheet
-import github.com.st235.lib_expandablebottombar.ExpandableBottomBar
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -101,11 +87,20 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
         viewOfLayout.findViewById<ImageButton>(R.id.gps_move_to_current_btn).setOnClickListener {
+            if(!this::currentLocation.isInitialized) {
+                Toast.makeText(requireContext(), "위치 권한이 없어 사용할 수 없습니다.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             val cameraUpdate = CameraUpdateFactory.newLatLngZoom(currentLocation, 15f)
             googleMap.animateCamera(cameraUpdate)
         }
 
         viewOfLayout.findViewById<ImageButton>(R.id.article_write_btn).setOnClickListener {
+            if(!this::currentLocation.isInitialized) {
+                Toast.makeText(requireContext(), "위치 권한이 없어 사용할 수 없습니다.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             val intent = Intent(
                 requireActivity(),
                 ArticleCreateActivity::class.java
@@ -122,34 +117,34 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
     }
 
     fun initGPS(){
-        if(ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return
-        }
-
-        locationRequest = LocationRequest.Builder(5000)
-            .setIntervalMillis(5000)
-            .setMinUpdateIntervalMillis(1000)
-            .setPriority(Priority.PRIORITY_HIGH_ACCURACY)
-            .build()
-
-        locationCallback = object : LocationCallback() {
-            override fun onLocationResult(locationResult: LocationResult) {
-                super.onLocationResult(locationResult)
-                locationResult.let {
-                    val lastLocation = locationResult.lastLocation
-                    lastLocation?.let {
-                        currentLocation = LatLng(it.latitude, it.longitude)
-                        return
-                    }
-                }
-
-                Snackbar.make(viewOfLayout.findViewById(R.id.main), "현재 위치를 받아올 수 없습니다.", Snackbar.LENGTH_LONG).show()
-            }
-        }
-
         val mapFragment = (childFragmentManager.findFragmentById(R.id.googleMap) as SupportMapFragment)
         mapFragment.getMapAsync(this)
-        getCurrentLocation()
+
+        if(ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            locationRequest = LocationRequest.Builder(5000)
+                .setIntervalMillis(5000)
+                .setMinUpdateIntervalMillis(1000)
+                .setPriority(Priority.PRIORITY_HIGH_ACCURACY)
+                .build()
+
+            locationCallback = object : LocationCallback() {
+                override fun onLocationResult(locationResult: LocationResult) {
+                    super.onLocationResult(locationResult)
+                    locationResult.let {
+                        val lastLocation = locationResult.lastLocation
+                        lastLocation?.let {
+                            currentLocation = LatLng(it.latitude, it.longitude)
+                            return
+                        }
+                    }
+
+                    Snackbar.make(viewOfLayout.findViewById(R.id.main),
+                        getString(R.string.cant_get_current_location), Snackbar.LENGTH_LONG).show()
+                }
+            }
+            getCurrentLocation()
+            return
+        }
     }
 
     fun getCurrentLocation() {
@@ -394,6 +389,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
 
         googleMap.setOnCameraIdleListener(this)
         googleMap.setOnMarkerClickListener(this)
+        requestMaker()
 
         if (ActivityCompat.checkSelfPermission(
                 requireContext(),
@@ -407,7 +403,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
         }
 
         googleMap.uiSettings.isMyLocationButtonEnabled = false
-        googleMap.isMyLocationEnabled = true;
+        googleMap.isMyLocationEnabled = true
     }
 
     override fun onCameraIdle() {
@@ -419,6 +415,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
 
     @Suppress("UNCHECKED_CAST")
     override fun onMarkerClick(marker: Marker): Boolean {
+        if(requireActivity().supportFragmentManager.findFragmentByTag("ArticleBottomSheet") != null) return false
+
         requireActivity().showDarkOverlay() //요청 중 다크
 
         val tag = marker.tag ?: return false
@@ -505,7 +503,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
                 startActivity(
                     Intent(
                         requireActivity(),
-                        SearchResultActivity::class.java
+                        ArticleSearchActivity::class.java
                     )
                 )
             }

@@ -12,7 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.hci.loopsns.R
 import com.hci.loopsns.storage.models.NotificationComment
-import com.hci.loopsns.storage.models.NotificationHotArticle
+import com.hci.loopsns.storage.models.NotificationFavorite
 import com.hci.loopsns.storage.models.NotificationInterface
 import com.hci.loopsns.utils.formatTo
 import java.lang.reflect.Type
@@ -26,7 +26,7 @@ class NotificationRecyclerViewAdapter(private val mContext: Context, private val
         val time = itemView.findViewById<TextView>(R.id.time)
     }
 
-    class HotArticleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class FavoriteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val root = itemView.findViewById<ConstraintLayout>(R.id.main)
         val body = itemView.findViewById<TextView>(R.id.body)
         val time = itemView.findViewById<TextView>(R.id.time)
@@ -55,8 +55,25 @@ class NotificationRecyclerViewAdapter(private val mContext: Context, private val
 
                 holder.time.text = item.time.formatTo("yyyy-MM-dd HH:mm")
             }
-            is NotificationHotArticle -> {
-                //TODO
+            is NotificationFavorite -> {
+                (holder as FavoriteViewHolder).root.setOnClickListener {
+                    holder.root.setBackgroundColor(ContextCompat.getColor(mContext, R.color.notification_read_item_background))
+                    notificationClickAction(item)
+                }
+
+                if(item.readed) {
+                    holder.root.setBackgroundColor(ContextCompat.getColor(mContext, R.color.notification_read_item_background))
+                } else {
+                    holder.root.setBackgroundColor(ContextCompat.getColor(mContext, R.color.notification_unread_item_background))
+                }
+
+                holder.body.text = buildString {
+                    append("게시물에 ")
+                    append(item.likeCount)
+                    append("개의 좋아요가 달렸습니다.")
+                }
+
+                holder.time.text = item.time.formatTo("yyyy-MM-dd HH:mm")
             }
         }
     }
@@ -67,10 +84,9 @@ class NotificationRecyclerViewAdapter(private val mContext: Context, private val
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
         return when (viewType) {
-            ViewType.HOT_ARTICLE -> {
-                TODO()
-                //view = inflater.inflate(R.layout.fra, parent, false)
-                //NotificationRecyclerViewAdapter.HotArticleViewHolder(view)
+            ViewType.FAVORITE_ARTICLE -> {
+                view = inflater.inflate(R.layout.fragment_notifications_favorite_item, parent, false)
+                FavoriteViewHolder(view)
             }
             ViewType.COMMENT -> {
                 view = inflater.inflate(R.layout.fragment_notifications_comment_item, parent, false)
@@ -91,12 +107,12 @@ class NotificationRecyclerViewAdapter(private val mContext: Context, private val
             is NotificationComment -> {
                 return ViewType.COMMENT
             }
-            is NotificationHotArticle -> {
-                return ViewType.HOT_ARTICLE
+            is NotificationFavorite -> {
+                return ViewType.FAVORITE_ARTICLE
             }
             //TODO
             else -> {
-                return ViewType.HOT_ARTICLE
+                return ViewType.FAVORITE_ARTICLE
             }
         }
     }

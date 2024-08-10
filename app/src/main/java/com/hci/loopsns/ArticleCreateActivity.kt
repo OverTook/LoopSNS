@@ -422,9 +422,12 @@ class ArticleCreateActivity : AppCompatActivity(), View.OnClickListener {
 
                         if(call.isCanceled) return
                         if(!response.isSuccessful) {
-                            Log.e("RetrieveCategory", "Failed With HTTP Code" + response.code())
+                            if(response.code() == 422) {
+                                Snackbar.make(findViewById(R.id.main), "부적절한 내용은 들어갈 수 없습니다.", Snackbar.LENGTH_SHORT).show()
+                            }
                             return
                         }
+
                         val result = response.body()!!
                         if(result.categories == null || result.categories.size != 2) {
                             Snackbar.make(findViewById(R.id.main), "서버 내부 오류로 카테고리 분석이 불가능합니다.", Snackbar.LENGTH_SHORT).show()

@@ -76,6 +76,7 @@ class SelectLocationActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMa
         }
     }
 
+    
     override fun onMapReady(googleMap: GoogleMap) {
         this.googleMap = googleMap
 

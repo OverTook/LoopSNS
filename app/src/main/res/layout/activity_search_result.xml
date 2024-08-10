@@ -1,120 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/activity_background"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/activity_background">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/filter_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_collapseMode="pin"
+        android:translationZ="100dp">
 
-        <!-- 250dp로 바꿔야함 -->
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:layout_width="match_parent"
-            android:layout_height="175dp"
-            android:background="@color/activity_background"
-            app:contentScrim="#00000000"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+        <EditText
+            android:id="@+id/filter"
+            android:layout_width="0dp"
+            android:layout_height="33dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/filter_button_bg"
+            android:fontFamily="@font/pretendard_medium"
+            android:hint="@string/search_text"
+            android:imeOptions="actionSearch"
+            android:paddingStart="40dp"
+            android:paddingEnd="40dp"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray"
+            android:textSize="14sp"
+            android:focusable="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" >
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/filter_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_collapseMode="pin"
-                android:translationZ="100dp">
+            <requestFocus />
+        </EditText>
 
-                <EditText
-                    android:id="@+id/filter"
-                    android:layout_width="0dp"
-                    android:layout_height="33dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:background="@drawable/filter_button_bg"
-                    android:fontFamily="@font/pretendard_medium"
-                    android:hint="@string/search_text"
-                    android:imeOptions="actionSearch"
-                    android:paddingStart="40dp"
-                    android:paddingEnd="40dp"
-                    android:singleLine="true"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/gray"
-                    android:textSize="14sp"
-                    android:focusable="true"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" >
+        <ImageView
+            android:id="@+id/search_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="10dp"
+            android:translationZ="100dp"
+            app:layout_constraintBottom_toBottomOf="@+id/filter"
+            app:layout_constraintStart_toStartOf="@+id/filter"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/search_48px" />
 
-                    <requestFocus />
-                </EditText>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <ImageView
-                    android:id="@+id/search_icon"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginStart="10dp"
-                    android:translationZ="100dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/filter"
-                    app:layout_constraintStart_toStartOf="@+id/filter"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/search_48px" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@android:color/transparent"
-                app:layout_collapseMode="pin"
-                android:clipChildren="false" />
-
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-        <!-- 뷰페이저와 연결할 탭 -->
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:tabTextColor="@color/main_text"
-            app:tabIndicatorColor="@color/main_text"
-            app:tabBackground="@color/activity_background">
-
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="내용"/>
-
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="키워드"/>
-
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="작성자"/>
-
-        </com.google.android.material.tabs.TabLayout>
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipeLayout"
+    <!--com.skydoves.androidveil.VeilRecyclerFrameView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:layout_height="0dp"
+        android:paddingTop="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/filter_layout"
+        app:veilFrame_layout="@layout/skeleton_terms"
+        app:veilFrame_baseAlpha="0.6"
+        app:veilFrame_baseColor="@android:color/darker_gray"
+        app:veilFrame_highlightAlpha="1.0"
+        app:veilFrame_highlightColor="@color/gray"
+        app:veilFrame_radius="8dp"
+        app:veilFrame_shimmerEnable="true" /-->
 
-        <FrameLayout
-            android:id="@+id/containers"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:paddingTop="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/filter_layout"
+        tools:listitem="@layout/activity_search_history_item" />
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

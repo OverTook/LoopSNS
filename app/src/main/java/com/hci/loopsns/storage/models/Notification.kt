@@ -24,10 +24,11 @@ data class NotificationComment (
 
 
 @Parcelize
-data class NotificationHotArticle (
-    val writer: String,
-    val contents: String,
-    val picture: String,
+data class NotificationFavorite (
+    @SerializedName("article_id")
+    val articleId: String,
+    @SerializedName("like_count")
+    val likeCount: Int,
     override val time: Date,
     override var readed: Boolean = false,
 ) : LitePalSupport(), NotificationInterface, Parcelable

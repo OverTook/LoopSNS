@@ -165,4 +165,12 @@ interface NetworkInterface {
 
     @GET("/terms_of_faq")
     fun getFAQ(@Query("language") language: String): Call<TermsOfAnyResponse>
+
+    @GET("/search")
+    fun search(
+        @Query("c1") cat1: String,
+        @Query("c2") cat2: String,
+        @Query("query") query: String,
+        @Query("search_type") searchType: String
+    ): Call<SearchResponse>
 }

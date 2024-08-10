@@ -28,6 +28,7 @@ import com.hci.loopsns.network.FcmTokenResponse
 import com.hci.loopsns.network.NetworkManager
 import com.hci.loopsns.storage.SettingManager
 import com.hci.loopsns.storage.models.NotificationComment
+import com.hci.loopsns.storage.models.NotificationFavorite
 import com.hci.loopsns.utils.DoubleBackPressHandler
 import com.hci.loopsns.view.fragment.HomeFragment
 import com.hci.loopsns.view.fragment.MainViewPageAdapter
@@ -41,6 +42,7 @@ import org.litepal.LitePal
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.Date
 
 
 class MainActivity : AppCompatActivity(), SplashScreen.KeepOnScreenCondition, OnItemClickListener {
@@ -178,15 +180,71 @@ class MainActivity : AppCompatActivity(), SplashScreen.KeepOnScreenCondition, On
                     highlightCommentRef.save()
                 }
 
-                val intent = Intent(
+                val newIntent = Intent(
                     this@MainActivity,
                     ArticleDetailActivity::class.java
                 )
 
-                intent.putExtra("highlight", highlightComment)
-                intent.putExtra("articleId", highlightComment.articleId)
-                startActivity(intent)
+                newIntent.putExtra("highlight", highlightComment)
+                newIntent.putExtra("articleId", highlightComment.articleId)
+                startActivity(newIntent)
 
+                intent.extras?.clear()
+                splashScreenKeep = false
+            }
+            "likes" -> {
+                val favorite = IntentCompat.getParcelableExtra(intent, "favorite", NotificationFavorite::class.java) ?: return
+                if(!favorite.readed) {
+                    val favoriteRef = LitePal.where(
+                        "articleId = ? AND likeCount = ?",
+                        favorite.articleId,
+                        favorite.likeCount.toString()
+                    ).limit(1).find(NotificationFavorite::class.java)[0]
+
+                    favoriteRef.readed = true
+                    favoriteRef.save()
+                }
+
+                val newIntent = Intent(
+                    this@MainActivity,
+                    ArticleDetailActivity::class.java
+                )
+                newIntent.putExtra("articleId", favorite.articleId)
+                startActivity(newIntent)
+
+                intent.extras?.clear()
+                splashScreenKeep = false
+            }
+            "deeplink" -> {
+                val newIntent = Intent(
+                    this@MainActivity,
+                    ArticleDetailActivity::class.java
+                )
+
+                val commentId = intent.getStringExtra("commentId") ?: ""
+                if(commentId.isEmpty()) {
+                    newIntent.putExtra("articleId", intent.getStringExtra("articleId") ?: "")
+                    startActivity(newIntent)
+
+                    intent.extras?.clear()
+                    splashScreenKeep = false
+                    return
+                }
+
+                newIntent.putExtra("highlight", NotificationComment(
+                    articleId = intent.getStringExtra("articleId") ?: "",
+                    commentId = intent.getStringExtra("commentId") ?: "",
+                    subCommentId = intent.getStringExtra("subCommentId") ?: "",
+                    writer = "",
+                    contents = "",
+                    userImg = "",
+                    time = Date(),
+                    readed = false
+                ))
+                newIntent.putExtra("articleId", intent.getStringExtra("articleId") ?: "")
+                startActivity(newIntent)
+
+                intent.extras?.clear()
                 splashScreenKeep = false
             }
             else -> {
@@ -232,7 +290,6 @@ class MainActivity : AppCompatActivity(), SplashScreen.KeepOnScreenCondition, On
             } else if(!it[Manifest.permission.ACCESS_COARSE_LOCATION]!! && !it[Manifest.permission.ACCESS_FINE_LOCATION]!!) {
                 //거부
                 Snackbar.make(findViewById(R.id.main), "권한이 거부되어 정상적인 이용이 불가능합니다.", Snackbar.LENGTH_SHORT).show()
-                return@registerForActivityResult
             }
             locationPermissionCheckEnd()
         }
@@ -262,6 +319,7 @@ class MainActivity : AppCompatActivity(), SplashScreen.KeepOnScreenCondition, On
                     override fun onNegativeButtonClicked(dialog: Dialog) {
                         dialog.dismiss()
                         Toast.makeText(this@MainActivity, "권한이 거부되어 정상적인 이용이 불가능합니다.", Toast.LENGTH_SHORT).show()
+                        locationPermissionCheckEnd()
                     }
                 })
                 .show()

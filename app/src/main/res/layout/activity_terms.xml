@@ -29,12 +29,12 @@
                 android:src="@drawable/baseline_arrow_back_24" />
 
             <TextView
+                android:id="@+id/activity_name"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:fontFamily="@font/pretendard_medium"
                 android:gravity="center_vertical"
-                android:text="@string/notifications_text"
                 android:textColor="@color/main_text"
                 android:textSize="20sp" />
 

@@ -87,6 +87,7 @@ class SettingsActivity : AppCompatActivity(), View.OnClickListener, ProfileListe
         findViewById<ConstraintLayout>(R.id.setting_faq).setOnClickListener(this)
     }
 
+
     @SuppressLint("CheckResult")
     override fun onClick(view: View?) {
         if(view == null) return

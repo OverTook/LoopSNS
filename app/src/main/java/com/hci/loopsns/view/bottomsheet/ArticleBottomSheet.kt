@@ -22,14 +22,19 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.hci.loopsns.R
 import com.hci.loopsns.network.ArticleDetail
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.hci.loopsns.event.CommentListener
+import com.hci.loopsns.event.CommentManager
+import com.hci.loopsns.event.FavoriteListener
+import com.hci.loopsns.event.FavoriteManager
 import com.hci.loopsns.network.AddressResponse
 import com.hci.loopsns.network.AddressResult
+import com.hci.loopsns.network.Comment
 import com.hci.loopsns.network.NetworkManager
 import com.hci.loopsns.recyclers.timeline.ArticleRecyclerViewAdapter
 import com.skydoves.androidveil.VeilRecyclerFrameView
 import java.util.Locale
 
-class ArticleBottomSheet() : BottomSheetDialogFragment(), View.OnClickListener {
+class ArticleBottomSheet() : BottomSheetDialogFragment(), View.OnClickListener, CommentListener, FavoriteListener {
 
     private lateinit var adapter: ArticleRecyclerViewAdapter
     private lateinit var recyclerView: RecyclerView
@@ -72,7 +77,16 @@ class ArticleBottomSheet() : BottomSheetDialogFragment(), View.OnClickListener {
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
+        CommentManager.getInstance().registerCommentListener(this)
+        FavoriteManager.getInstance().registerFavoriteListener(this)
         getLocation()
+    }
+
+    override fun dismiss() {
+        super.dismiss()
+
+        CommentManager.getInstance().removeCommentListener(this)
+        FavoriteManager.getInstance().removeFavoriteListener(this)
     }
 
     fun onClickArticle(article: ArticleDetail) {
@@ -245,5 +259,21 @@ class ArticleBottomSheet() : BottomSheetDialogFragment(), View.OnClickListener {
                 TransitionManager.endTransitions(main)
             }
         }
+    }
+
+    override fun onCommentDeleted(uid: String) {
+        adapter.updateCommentcount(uid, -1)
+    }
+
+    override fun onCommentCreated(comment: Comment) {
+        adapter.updateCommentcount(comment.articleId!!, 1)
+    }
+
+    override fun onFavoriteArticle(article: ArticleDetail) {
+        adapter.updateLikeCount(article.uid, 1)
+    }
+
+    override fun onUnfavoriteArticle(articleId: String) {
+        adapter.updateLikeCount(articleId, -1)
     }
 }

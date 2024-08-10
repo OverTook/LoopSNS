@@ -2,6 +2,7 @@ package com.hci.loopsns
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -80,7 +81,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, SplashScreen.Ke
         mAuth = FirebaseAuth.getInstance()
 
         Log.e("Kakao Hash", Utility.getKeyHash(this))
-        
+
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_login)
@@ -96,6 +97,17 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, SplashScreen.Ke
 
         initOldGoogle()
         doubleBackPressHandler.enable()
+
+        checkDeepLink()
+    }
+
+    fun checkDeepLink() {
+        val deepLink: Uri = intent.data ?: return
+
+        intent.putExtra("type", "deeplink")
+        intent.putExtra("articleId", deepLink.getQueryParameter("articleId") ?: "")
+        intent.putExtra("commentId", deepLink.getQueryParameter("commentId") ?: "")
+        intent.putExtra("subCommentId", deepLink.getQueryParameter("subCommentId") ?: "")
     }
 
     

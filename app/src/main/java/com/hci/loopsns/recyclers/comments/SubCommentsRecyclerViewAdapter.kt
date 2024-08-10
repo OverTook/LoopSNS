@@ -130,8 +130,11 @@ class SubCommentsRecyclerViewAdapter(private val activity: ArticleDetailActivity
                     CommentOptionBottomSheet().setData(
                         parentComment.canDelete,
                         parentComment.uid,
+                        {
+                            activity.deleteComment(parentComment.uid)
+                        }
                     ) {
-                        activity.deleteComment(parentComment.uid)
+                        activity.createDeepLinkShare(parentComment.uid)
                     }.show(activity.supportFragmentManager, "CommentOptionBottomSheet")
                 }
 
@@ -168,8 +171,11 @@ class SubCommentsRecyclerViewAdapter(private val activity: ArticleDetailActivity
                     CommentOptionBottomSheet().setData(
                         false,
                         highlightComment!!.uid,
+                        {
+                            deleteSubCommentRequest(highlightComment!!.uid)
+                        }
                     ) {
-                        deleteSubCommentRequest(highlightComment!!.uid)
+                        activity.createDeepLinkShare(parentComment.uid, highlightComment!!.uid)
                     }.show(activity.supportFragmentManager, "CommentOptionBottomSheet")
                 }
 
@@ -203,8 +209,11 @@ class SubCommentsRecyclerViewAdapter(private val activity: ArticleDetailActivity
                     CommentOptionBottomSheet().setData(
                         item.canDelete,
                         item.uid,
+                        {
+                            deleteSubCommentRequest(item.uid)
+                        }
                     ) {
-                        deleteSubCommentRequest(item.uid)
+                        activity.createDeepLinkShare(parentComment.uid, item.uid)
                     }.show(activity.supportFragmentManager, "CommentOptionBottomSheet")
                 }
 
@@ -276,6 +285,8 @@ class SubCommentsRecyclerViewAdapter(private val activity: ArticleDetailActivity
     }
 
     override fun onCommentDeleted(uid: String) {
+        if(uid != parentComment.uid) return
+
         parentComment.isDeleted = true
         this@SubCommentsRecyclerViewAdapter.notifyItemChanged(0)
     }
