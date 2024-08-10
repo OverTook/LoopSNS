@@ -88,7 +88,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
 
         viewOfLayout.findViewById<ImageButton>(R.id.gps_move_to_current_btn).setOnClickListener {
             if(!this::currentLocation.isInitialized) {
-                Toast.makeText(requireContext(), "위치 권한이 없어 사용할 수 없습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.no_location_permission), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             val cameraUpdate = CameraUpdateFactory.newLatLngZoom(currentLocation, 15f)
@@ -97,7 +97,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
 
         viewOfLayout.findViewById<ImageButton>(R.id.article_write_btn).setOnClickListener {
             if(!this::currentLocation.isInitialized) {
-                Toast.makeText(requireContext(), "위치 권한이 없어 사용할 수 없습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.no_location_permission), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -160,11 +160,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
                     return@addOnSuccessListener
                 }
 
-                Snackbar.make(viewOfLayout.findViewById(R.id.main), "현재 위치를 받아올 수 없습니다.", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(viewOfLayout.findViewById(R.id.main), getString(R.string.unable_get_current_location), Snackbar.LENGTH_LONG).show();
             }
         } catch (e: SecurityException) {
             Log.e("GPS Error", "Security Exception: ${e.message}")
-            Snackbar.make(viewOfLayout.findViewById(R.id.main), "현재 위치를 받아올 수 없습니다.", Snackbar.LENGTH_LONG).show()
+            Snackbar.make(viewOfLayout.findViewById(R.id.main), getString(R.string.unable_get_current_location), Snackbar.LENGTH_LONG).show()
         } catch (e: Exception) {
             Log.e("GPS Error", "Exception: ${e.message}")
         }
@@ -194,13 +194,13 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
 
                 if(!response.isSuccessful) {
                     Log.e("Marker Request Error", "HTTP CODE" + response.code().toString())
-                    Snackbar.make(viewOfLayout.findViewById(R.id.main), "마커 요청에 실패했습니다.", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(viewOfLayout.findViewById(R.id.main), getString(R.string.fail_create_post_error_code), Snackbar.LENGTH_LONG).show();
                     return
                 }
 
                 if(!response.body()!!.success) {
                     Log.e("Marker Request Error", response.body()!!.msg)
-                    Snackbar.make(viewOfLayout.findViewById(R.id.main), "마커 요청에 실패했습니다.", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(viewOfLayout.findViewById(R.id.main), getString(R.string.fail_marker_request), Snackbar.LENGTH_LONG).show();
                     return
                 }
 
@@ -430,13 +430,13 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
                 requireActivity().hideDarkOverlay()
 
                 if(!response.isSuccessful) {
-                    Snackbar.make(viewOfLayout.findViewById(R.id.main), "타임라인 요청에 실패했습니다.", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(viewOfLayout.findViewById(R.id.main), getString(R.string.fail_timeline_request), Snackbar.LENGTH_LONG).show();
                     return
                 }
 
                 if(!response.body()!!.success) {
                     Log.e("Marker Request Error", response.body()!!.msg)
-                    Snackbar.make(viewOfLayout.findViewById(R.id.main), "타임라인 요청에 실패했습니다.", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(viewOfLayout.findViewById(R.id.main), getString(R.string.fail_timeline_request), Snackbar.LENGTH_LONG).show();
                     return
                 }
 
@@ -459,7 +459,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
                 requireActivity().hideDarkOverlay()
 
                 Log.e("Marker Request Error", err.toString())
-                Snackbar.make(viewOfLayout.findViewById(R.id.main), "타임라인 요청에 실패했습니다.", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(viewOfLayout.findViewById(R.id.main), getString(R.string.fail_timeline_request), Snackbar.LENGTH_LONG).show();
             }
 
         })

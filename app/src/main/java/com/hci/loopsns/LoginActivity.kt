@@ -128,7 +128,8 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, SplashScreen.Ke
                 } catch (e: ApiException) {
                     // 구글 로그인 실패
                     Log.e("Google Login Error", e.toString())
-                    Snackbar.make(findViewById(R.id.main), "로그인에 실패하였습니다.", Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(findViewById(R.id.main), getString(R.string.fail_login), Snackbar.LENGTH_LONG).show()
+                    this@LoginActivity.hideDarkOverlay()
                 }
             }
         }
@@ -174,7 +175,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, SplashScreen.Ke
                     return@launch
                 }
                 Log.e("Google Credential Error", e.toString())
-                Snackbar.make(findViewById(R.id.main), "인증 절차에 실패했습니다.", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(findViewById(R.id.main), getString(R.string.authentication_process_fail), Snackbar.LENGTH_LONG).show()
             }
         }
     }
@@ -202,15 +203,18 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, SplashScreen.Ke
                         retrieveCustomToken("google", googleIdTokenCredential.idToken)
                     } catch (e: GoogleIdTokenParsingException) {
                         Snackbar.make(findViewById(R.id.main), "로그인에 실패하였습니다.", Snackbar.LENGTH_LONG).show()
+                        this@LoginActivity.hideDarkOverlay()
                         Log.e("Google Login Error", "Received an invalid google id token response", e)
                     }
                 } else {
                     Snackbar.make(findViewById(R.id.main), "로그인에 실패하였습니다.", Snackbar.LENGTH_LONG).show()
+                    this@LoginActivity.hideDarkOverlay()
                     Log.e("Google Login Error", "Unexpected type of credential")
                 }
             }
             else -> {
                 Snackbar.make(findViewById(R.id.main), "로그인에 실패하였습니다.", Snackbar.LENGTH_LONG).show()
+                this@LoginActivity.hideDarkOverlay()
                 Log.e("Google Login Error", "Unexpected type of credential")
             }
         }
@@ -270,9 +274,10 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, SplashScreen.Ke
                 } else {
                     Snackbar.make(
                         findViewById(R.id.main),
-                        "Token 값이 유효하지 않습니다.",
+                        getString(R.string.token_value_invalid),
                         Snackbar.LENGTH_SHORT
                     ).show();
+                    this@LoginActivity.hideDarkOverlay()
                 }
             }
     }
@@ -283,14 +288,14 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, SplashScreen.Ke
             override fun onResponse(call: Call<AccountCreateResponse>, response: Response<AccountCreateResponse>) {
                 if(!response.isSuccessful) {
                     this@LoginActivity.hideDarkOverlay()
-                    Snackbar.make(findViewById(R.id.main), "회원 정보 생성에 실패하였습니다.", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(findViewById(R.id.main), getString(R.string.fail_create_membership_information), Snackbar.LENGTH_SHORT).show();
                     return
                 }
 
                 if(!response.body()!!.success) {
                     Log.e("Error", response.body()!!.msg)
                     this@LoginActivity.hideDarkOverlay()
-                    Snackbar.make(findViewById(R.id.main), "회원 정보 생성에 실패하였습니다.", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(findViewById(R.id.main), getString(R.string.fail_create_membership_information), Snackbar.LENGTH_SHORT).show();
                     return
                 }
                 val customToken = response.body()!!.token
@@ -324,9 +329,10 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, SplashScreen.Ke
                                 } else {
                                     Snackbar.make(
                                         findViewById(R.id.main),
-                                        "Token 값이 유효하지 않습니다.",
+                                        getString(R.string.token_value_invalid),
                                         Snackbar.LENGTH_SHORT
                                     ).show();
+                                    this@LoginActivity.hideDarkOverlay()
                                 }
                             }
                     } else {
@@ -354,7 +360,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, SplashScreen.Ke
                 val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
                     if (error != null) {
                         this.hideDarkOverlay()
-                        Snackbar.make(findViewById(R.id.main), "로그인에 실패하였습니다.", Snackbar.LENGTH_LONG).show()
+                        Snackbar.make(findViewById(R.id.main), getString(R.string.fail_login), Snackbar.LENGTH_LONG).show()
                     } else if (token != null) {
                         //아래처럼 조작이 가능해진다는 문제점을 해결
                         //mAuth!!.createUserWithEmailAndPassword("fake@fake.com", "fakepassword")
@@ -370,7 +376,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, SplashScreen.Ke
 
                             if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
                                 this.hideDarkOverlay()
-                                Snackbar.make(findViewById(R.id.main), "로그인을 취소하였습니다.", Snackbar.LENGTH_LONG).show()
+                                Snackbar.make(findViewById(R.id.main), getString(R.string.cancel_login), Snackbar.LENGTH_LONG).show()
                                 return@loginWithKakaoTalk
                             }
 

@@ -12,6 +12,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.hci.loopsns.ArticleDetailActivity
 import com.hci.loopsns.event.AutoRefresherInterface
 import com.hci.loopsns.R
@@ -28,7 +30,7 @@ import github.com.st235.lib_expandablebottombar.Notification
 import kotlinx.coroutines.launch
 import org.litepal.LitePal
 
-class NotificationsFragment() : Fragment(), SwipeRefreshLayout.OnRefreshListener, NotificationFactoryEventListener,
+class NotificationsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, NotificationFactoryEventListener,
     AutoRefresherInterface {
 
     private lateinit var recyclerView: RecyclerView
@@ -41,9 +43,13 @@ class NotificationsFragment() : Fragment(), SwipeRefreshLayout.OnRefreshListener
     override var noMoreData: Boolean = false
     override lateinit var requestAnimationView: View
 
+    var user: FirebaseUser? = null
+
     override fun getRequestAnimation(): View = requestAnimationView
 
     override fun requestMoreData() {
+        if(user == null) return
+
         currentPage++
 
         val lastCommentID = adapter.getLastNotificationID(NotificationComment::class.java)
@@ -51,8 +57,8 @@ class NotificationsFragment() : Fragment(), SwipeRefreshLayout.OnRefreshListener
 
         Log.e("LastCommentID", lastCommentID.toString())
 
-        val comments = LitePal.order("time desc").offset(lastCommentID).limit(20).find(NotificationComment::class.java)
-        val favoriteNotis = LitePal.order("time desc").offset(lastHotArticleID).limit(20).find(NotificationFavorite::class.java)
+        val comments = LitePal.where("userId = ?", user!!.uid).order("time desc").offset(lastCommentID).limit(20).find(NotificationComment::class.java)
+        val favoriteNotis = LitePal.where("userId = ?", user!!.uid).order("time desc").offset(lastHotArticleID).limit(20).find(NotificationFavorite::class.java)
 
         val totalList = ArrayList<NotificationInterface>()
         totalList.addAll(comments)
@@ -69,21 +75,25 @@ class NotificationsFragment() : Fragment(), SwipeRefreshLayout.OnRefreshListener
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        user = FirebaseAuth.getInstance().currentUser
         return inflater.inflate(R.layout.fragment_notifications, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        if(user == null) return
+
         badge = requireActivity().findViewById<ExpandableBottomBar>(R.id.bottomNavigationView).menu.findItemById(R.id.menu_notification).notification()
         view.findViewById<SwipeRefreshLayout>(R.id.swipeLayout).setOnRefreshListener(this)
         requestAnimationView = view.findViewById(R.id.requestProgressBar)
 
         //Do In Async
         lifecycleScope.launch {
-            val comments = LitePal.order("time desc").limit(20).find(NotificationComment::class.java)
-            val favoriteNotis = LitePal.order("time desc").limit(20).find(NotificationFavorite::class.java)
+            val comments = LitePal.where("userId = ?", user!!.uid).order("time desc").limit(20).find(NotificationComment::class.java)
+            val favoriteNotis = LitePal.where("userId = ?", user!!.uid).order("time desc").limit(20).find(NotificationFavorite::class.java)
 
-            val commentCount = LitePal.where("readed = ?", "0").count(NotificationComment::class.java)
-            val favoriteNotisCount = LitePal.where("readed = ?", "0").count(NotificationFavorite::class.java)
+            Log.e("uid", user!!.uid)
+            val commentCount = LitePal.where("readed = ? AND userId = ?", "0", user!!.uid).count(NotificationComment::class.java)
+            val favoriteNotisCount = LitePal.where("readed = ? AND userId = ?", "0", user!!.uid).count(NotificationFavorite::class.java)
 
             badgeCount = commentCount + favoriteNotisCount
             if(badgeCount > 0) {
@@ -114,12 +124,14 @@ class NotificationsFragment() : Fragment(), SwipeRefreshLayout.OnRefreshListener
     }
 
     override fun onRefresh() {
-        lifecycleScope.launch {
-            val comments = LitePal.order("time desc").limit(20).find(NotificationComment::class.java)
-            val favoriteNotis = LitePal.order("time desc").limit(20).find(NotificationFavorite::class.java)
+        if(user == null) return
 
-            val commentCount = LitePal.where("readed = ?", "0").count(NotificationComment::class.java)
-            val favoriteNotisCount = LitePal.where("readed = ?", "0").count(NotificationFavorite::class.java)
+        lifecycleScope.launch {
+            val comments = LitePal.where("userId = ?", user!!.uid).order("time desc").limit(20).find(NotificationComment::class.java)
+            val favoriteNotis = LitePal.where("userId = ?", user!!.uid).order("time desc").limit(20).find(NotificationFavorite::class.java)
+
+            val commentCount = LitePal.where("readed = ? AND userId = ?", "0", user!!.uid).count(NotificationComment::class.java)
+            val favoriteNotisCount = LitePal.where("readed = ? AND userId = ?", "0", user!!.uid).count(NotificationFavorite::class.java)
 
             badgeCount = commentCount + favoriteNotisCount
             if(badgeCount > 0) {

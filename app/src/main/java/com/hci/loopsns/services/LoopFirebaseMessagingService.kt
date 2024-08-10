@@ -146,8 +146,9 @@ class LoopFirebaseMessagingService : FirebaseMessagingService() {
                     .setSmallIcon(R.mipmap.ic_launcher) // 아이콘 설정
                     .setContentTitle("좋아요 알람") // 제목
                     .setContentText(buildString {
+                        append(getString(R.string.notification_comment_prefix))
                         append(favorite.likeCount)
-                        append("명이 게시물에 좋아요를 눌렀습니다.")
+                        append(getString(R.string.notification_comment_suffix))
                     }) // 메시지 내용
                     .setAutoCancel(true) // 알람클릭시 삭제여부
                     .setContentIntent(pendingIntent) // 알림 실행 시 Intent

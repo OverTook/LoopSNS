@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="categories1_array">
+        <item>전체 주제</item>
+        <item>일상</item>
+        <item>동물</item>
+        <item>전자제품</item>
+        <item>정보공유</item>
+        <item>질문</item>
+        <item>일정</item>
+        <item>광고</item>
+        <item>제보</item>
+        <item>제안</item>
+        <item>폭력적</item>
+        <item>성인물</item>
+        <item>기타</item>
+        <item>건강</item>
+        <item>여행</item>
+        <item>음식</item>
+        <item>기술</item>
+        <item>문화</item>
+        <item>경제</item>
+        <item>정치</item>
+        <item>과학</item>
+        <item>스포츠</item>
+        <item>자연</item>
+        <item>패션</item>
+        <item>예술</item>
+        <item>음악</item>
+        <item>취미</item>
+        <item>자기개발</item>
+        <item>심리학</item>
+        <item>환경</item>
+        <item>교육</item>
+        <item>개그</item>
+        <item>풍경</item>
+        <item>인사</item>
+        <item>콘텐츠</item>
+    </string-array>
+
+    <array name="categories2_array">
+        <item>전체 주제</item>
+        <item>생활정보</item>
+        <item>설득</item>
+        <item>공감</item>
+        <item>소통</item>
+        <item>감정</item>
+        <item>예술성</item>
+        <item>창의성</item>
+        <item>칭찬</item>
+        <item>사과</item>
+        <item>불만</item>
+        <item>교류</item>
+        <item>고민</item>
+        <item>상담</item>
+        <item>가족</item>
+        <item>여행</item>
+        <item>음식</item>
+        <item>운동</item>
+        <item>양치질</item>
+        <item>식사</item>
+        <item>고양이</item>
+        <item>강아지</item>
+        <item>호랑이</item>
+        <item>사슴</item>
+        <item>사자</item>
+        <item>기린</item>
+        <item>판다</item>
+        <item>오리</item>
+        <item>비둘기</item>
+        <item>사람</item>
+        <item>하마</item>
+        <item>코뿔소</item>
+        <item>키보드</item>
+        <item>노트북</item>
+        <item>컴퓨터</item>
+        <item>마우스</item>
+        <item>오디오</item>
+        <item>TV</item>
+        <item>세탁기</item>
+        <item>냉장고</item>
+        <item>조명</item>
+        <item>에어컨</item>
+        <item>뉴스</item>
+        <item>팁/노하우</item>
+        <item>교육</item>
+        <item>기술</item>
+        <item>건강</item>
+        <item>경제</item>
+        <item>문화</item>
+        <item>정치</item>
+        <item>과학</item>
+        <item>정보요청</item>
+        <item>의견수렴</item>
+        <item>추천</item>
+        <item>도움 요청</item>
+        <item>모임</item>
+        <item>기념일</item>
+        <item>이벤트</item>
+        <item>회의</item>
+        <item>약속</item>
+        <item>일정 관리</item>
+        <item>프로모션</item>
+        <item>구인/구직</item>
+        <item>음식점</item>
+        <item>의류</item>
+        <item>아르바이트</item>
+        <item>서비스</item>
+        <item>제품 출시</item>
+        <item>할인 행사</item>
+        <item>분실물</item>
+        <item>발견물</item>
+        <item>사건사고</item>
+        <item>재난사고</item>
+        <item>불법 행위</item>
+        <item>신고</item>
+        <item>교통사고</item>
+        <item>아이디어 제안</item>
+        <item>피드백 요청</item>
+        <item>협동</item>
+        <item>타협</item>
+        <item>정책 제안</item>
+        <item>개선안</item>
+        <item>프로젝트 제안</item>
+        <item>출혈</item>
+        <item>사망</item>
+        <item>살인</item>
+        <item>칼</item>
+        <item>흉기</item>
+        <item>사고</item>
+        <item>시신</item>
+        <item>폭행</item>
+        <item>협박</item>
+        <item>성폭행</item>
+        <item>성폭력</item>
+        <item>성기</item>
+        <item>성기 노출</item>
+        <item>노상방뇨</item>
+        <item>섹스</item>
+        <item>음란물</item>
+        <item>성매매</item>
+        <item>책</item>
+        <item>상품</item>
+        <item>공지사항</item>
+        <item>일반</item>
+        <item>제안</item>
+        <item>도움말</item>
+        <item>생활</item>
+        <item>잡화</item>
+        <item>영양</item>
+        <item>정신건강</item>
+        <item>질병</item>
+        <item>의학정보</item>
+        <item>건강관리</item>
+        <item>심리</item>
+        <item>피트니스</item>
+        <item>여행지 추천</item>
+        <item>여행 팁</item>
+        <item>숙소 정보</item>
+        <item>맛집</item>
+        <item>교통</item>
+        <item>여행기</item>
+        <item>여행사진</item>
+        <item>여행 계획</item>
+        <item>레시피</item>
+        <item>요리법</item>
+        <item>음식 리뷰</item>
+        <item>맛집 추천</item>
+        <item>식품 정보</item>
+        <item>건강 식품</item>
+        <item>요리 사진</item>
+        <item>음식 문화</item>
+        <item>IT</item>
+        <item>소프트웨어</item>
+        <item>하드웨어</item>
+        <item>프로그래밍</item>
+        <item>모바일</item>
+        <item>가젯</item>
+        <item>인터넷</item>
+        <item>혁신 기술</item>
+        <item>영화</item>
+        <item>음악</item>
+        <item>전시</item>
+        <item>공연</item>
+        <item>역사</item>
+        <item>예술</item>
+        <item>축제</item>
+        <item>문화 행사</item>
+        <item>주식</item>
+        <item>투자</item>
+        <item>부동산</item>
+        <item>재테크</item>
+        <item>금융</item>
+        <item>경제뉴스</item>
+        <item>소비자 정보</item>
+        <item>경제 동향</item>
+        <item>정치뉴스</item>
+        <item>선거</item>
+        <item>정책</item>
+        <item>국제정치</item>
+        <item>정치인</item>
+        <item>정치 토론</item>
+        <item>사회 이슈</item>
+        <item>물리학</item>
+        <item>화학</item>
+        <item>생물학</item>
+        <item>천문학</item>
+        <item>지구과학</item>
+        <item>과학뉴스</item>
+        <item>연구</item>
+        <item>발명</item>
+        <item>축구</item>
+        <item>농구</item>
+        <item>야구</item>
+        <item>테니스</item>
+        <item>배드민턴</item>
+        <item>골프</item>
+        <item>수영</item>
+        <item>사이클링</item>
+        <item>스키</item>
+        <item>스노우보드</item>
+        <item>마라톤</item>
+        <item>육상</item>
+        <item>유도</item>
+        <item>태권도</item>
+        <item>무술</item>
+        <item>산</item>
+        <item>바다</item>
+        <item>강</item>
+        <item>호수</item>
+        <item>공원</item>
+        <item>숲</item>
+        <item>정원</item>
+        <item>자연재해</item>
+        <item>환경보호</item>
+        <item>기후변화</item>
+        <item>식물</item>
+        <item>나무</item>
+        <item>꽃</item>
+        <item>돌</item>
+        <item>하늘</item>
+        <item>옷</item>
+        <item>액세서리</item>
+        <item>신발</item>
+        <item>가방</item>
+        <item>헤어스타일</item>
+        <item>뷰티팁</item>
+        <item>메이크업</item>
+        <item>패션 트렌드</item>
+        <item>패션쇼</item>
+        <item>디자이너</item>
+        <item>의류 브랜드</item>
+        <item>스타일링</item>
+        <item>회화</item>
+        <item>조각</item>
+        <item>사진</item>
+        <item>연극</item>
+        <item>문학</item>
+        <item>시</item>
+        <item>소설</item>
+        <item>춤</item>
+        <item>미술 전시</item>
+        <item>예술가</item>
+        <item>디자인</item>
+        <item>건축</item>
+        <item>팝</item>
+        <item>록</item>
+        <item>힙합</item>
+        <item>클래식</item>
+        <item>재즈</item>
+        <item>블루스</item>
+        <item>EDM</item>
+        <item>K팝</item>
+        <item>인디</item>
+        <item>컨트리</item>
+        <item>음악 리뷰</item>
+        <item>콘서트</item>
+        <item>음악 페스티벌</item>
+        <item>악기</item>
+        <item>음악 이론</item>
+        <item>독서</item>
+        <item>글쓰기</item>
+        <item>그림 그리기</item>
+        <item>사진 촬영</item>
+        <item>영화 감상</item>
+        <item>드라마 감상</item>
+        <item>요리</item>
+        <item>베이킹</item>
+        <item>정원 가꾸기</item>
+        <item>뜨개질</item>
+        <item>캠핑</item>
+        <item>하이킹</item>
+        <item>수집</item>
+        <item>게임</item>
+        <item>DIY</item>
+        <item>인형 제작</item>
+        <item>제작</item>
+        <item>학습법</item>
+        <item>시간관리</item>
+        <item>목표 설정</item>
+        <item>동기부여</item>
+        <item>생산성</item>
+        <item>강연</item>
+        <item>코칭</item>
+        <item>자격증</item>
+        <item>학위</item>
+        <item>훈련</item>
+        <item>기술 습득</item>
+        <item>자기관리</item>
+        <item>멘토링</item>
+        <item>심리치료</item>
+        <item>성격</item>
+        <item>스트레스 관리</item>
+        <item>인간관계</item>
+        <item>마음챙김</item>
+        <item>정신분석</item>
+        <item>행동</item>
+        <item>뇌과학</item>
+        <item>심리 테스트</item>
+        <item>자존감</item>
+        <item>재활용</item>
+        <item>에너지 절약</item>
+        <item>친환경 제품</item>
+        <item>지속 가능성</item>
+        <item>환경 보호</item>
+        <item>생태계</item>
+        <item>오염</item>
+        <item>녹색 기술</item>
+        <item>환경 정책</item>
+        <item>자연 보전</item>
+        <item>대기 오염</item>
+        <item>학교</item>
+        <item>대학</item>
+        <item>온라인 교육</item>
+        <item>학습 자료</item>
+        <item>교육 정책</item>
+        <item>교육 방법론</item>
+        <item>교수법</item>
+        <item>학습 환경</item>
+        <item>학습 동기</item>
+        <item>학생 생활</item>
+        <item>교사</item>
+        <item>학부모</item>
+        <item>진로 상담</item>
+        <item>짤</item>
+        <item>웃긴 내용</item>
+        <item>웃긴 사진</item>
+        <item>웃긴 대화</item>
+        <item>아재개그</item>
+        <item>드립</item>
+        <item>개그맨</item>
+        <item>개그우먼</item>
+        <item>계곡</item>
+        <item>산맥</item>
+        <item>오두막</item>
+        <item>집</item>
+        <item>안녕</item>
+        <item>반가움</item>
+        <item>소개</item>
+        <item>유튜브</item>
+        <item>네이버 카페</item>
+        <item>네이버 블로그</item>
+        <item>깃허브</item>
+        <item>다음 카페</item>
+        <item>구글</item>
+    </array>
+</resources>

@@ -20,6 +20,9 @@ data class NotificationComment (
     val userImg: String,
     override val time: Date,
     override var readed: Boolean = false,
+
+    @SerializedName("user_id")
+    override var userId: String = "",
 ) : LitePalSupport(), NotificationInterface, Parcelable
 
 
@@ -31,5 +34,8 @@ data class NotificationFavorite (
     val likeCount: Int,
     override val time: Date,
     override var readed: Boolean = false,
+
+    @SerializedName("user_id")
+    override var userId: String = "",
 ) : LitePalSupport(), NotificationInterface, Parcelable
 

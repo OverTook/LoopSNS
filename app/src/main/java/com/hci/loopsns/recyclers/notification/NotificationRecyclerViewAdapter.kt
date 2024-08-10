@@ -68,9 +68,9 @@ class NotificationRecyclerViewAdapter(private val mContext: Context, private val
                 }
 
                 holder.body.text = buildString {
-                    append("게시물에 ")
+                    append(mContext.getString(R.string.notification_comment_prefix))
                     append(item.likeCount)
-                    append("개의 좋아요가 달렸습니다.")
+                    append(mContext.getString(R.string.notification_comment_suffix))
                 }
 
                 holder.time.text = item.time.formatTo("yyyy-MM-dd HH:mm")

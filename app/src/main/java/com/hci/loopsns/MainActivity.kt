@@ -112,13 +112,13 @@ class MainActivity : AppCompatActivity(), SplashScreen.KeepOnScreenCondition, On
                                 PopupDialog.getInstance(this@MainActivity)
                                     .standardDialogBuilder()
                                     .createStandardDialog()
-                                    .setHeading("권한 요청")
+                                    .setHeading(getString(R.string.permission_request_notification_head))
                                     .setDescription(
-                                        "댓글 알림, 좋아요 알림 등의 작업을 위해서 알림 승인이 필요합니다."
+                                        getString(R.string.permission_request_notification_body)
                                     )
                                     .setIcon(R.drawable.location)
-                                    .setPositiveButtonText("허가")
-                                    .setNegativeButtonText("거부")
+                                    .setPositiveButtonText(getString(R.string.permission_request_notification_yes))
+                                    .setNegativeButtonText(getString(R.string.permission_request_notification_no))
                                     .build(object : StandardDialogActionListener {
                                         override fun onPositiveButtonClicked(dialog: Dialog) {
                                             dialog.dismiss()
@@ -128,7 +128,7 @@ class MainActivity : AppCompatActivity(), SplashScreen.KeepOnScreenCondition, On
                                         override fun onNegativeButtonClicked(dialog: Dialog) {
                                             dialog.dismiss()
                                             notificationComplete = true
-                                            Toast.makeText(this@MainActivity, "알림 수신을 거부하셨습니다.", Toast.LENGTH_SHORT).show()
+                                            Toast.makeText(this@MainActivity, getString(R.string.opting_out_of_alarm), Toast.LENGTH_SHORT).show()
                                         }
                                     })
                                     .show()
@@ -258,7 +258,7 @@ class MainActivity : AppCompatActivity(), SplashScreen.KeepOnScreenCondition, On
             ActivityResultContracts.RequestPermission()) { isGranted ->
             notificationComplete = true
             if (!isGranted) {
-                Snackbar.make(findViewById(R.id.main), "알림 권한이 거부되었습니다.", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(findViewById(R.id.main), getString(R.string.deny_alarm_permission), Snackbar.LENGTH_SHORT).show()
             }
         }
 
@@ -286,10 +286,10 @@ class MainActivity : AppCompatActivity(), SplashScreen.KeepOnScreenCondition, On
             ActivityResultContracts.RequestMultiplePermissions()) {
             if(it[Manifest.permission.ACCESS_COARSE_LOCATION]!! && !it[Manifest.permission.ACCESS_FINE_LOCATION]!!) {
                 //대략적 위치
-                Snackbar.make(findViewById(R.id.main), "정확한 위치 정보를 받아올 수 없어 정확성이 떨어집니다.", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(findViewById(R.id.main), getString(R.string.less_accurate_no_precise_location_information), Snackbar.LENGTH_SHORT).show()
             } else if(!it[Manifest.permission.ACCESS_COARSE_LOCATION]!! && !it[Manifest.permission.ACCESS_FINE_LOCATION]!!) {
                 //거부
-                Snackbar.make(findViewById(R.id.main), "권한이 거부되어 정상적인 이용이 불가능합니다.", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(findViewById(R.id.main), getString(R.string.deny_permission_not_available), Snackbar.LENGTH_SHORT).show()
             }
             locationPermissionCheckEnd()
         }
@@ -300,13 +300,13 @@ class MainActivity : AppCompatActivity(), SplashScreen.KeepOnScreenCondition, On
             PopupDialog.getInstance(this)
                 .standardDialogBuilder()
                 .createStandardDialog()
-                .setHeading("권한 요청")
+                .setHeading(getString(R.string.permission_request_gps_head))
                 .setDescription(
-                    "정상적인 서비스 이용을 위해 위치 서비스 권한이 필요합니다."
+                    getString(R.string.permission_request_gps_body)
                 )
                 .setIcon(R.drawable.location)
-                .setPositiveButtonText("허가")
-                .setNegativeButtonText("거부")
+                .setPositiveButtonText(getString(R.string.permission_request_gps_yes))
+                .setNegativeButtonText(getString(R.string.permission_request_gps_no))
                 .build(object : StandardDialogActionListener {
                     override fun onPositiveButtonClicked(dialog: Dialog) {
                         dialog.dismiss()
@@ -318,7 +318,7 @@ class MainActivity : AppCompatActivity(), SplashScreen.KeepOnScreenCondition, On
 
                     override fun onNegativeButtonClicked(dialog: Dialog) {
                         dialog.dismiss()
-                        Toast.makeText(this@MainActivity, "권한이 거부되어 정상적인 이용이 불가능합니다.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@MainActivity, getString(R.string.deny_permission_not_available), Toast.LENGTH_SHORT).show()
                         locationPermissionCheckEnd()
                     }
                 })
@@ -326,7 +326,7 @@ class MainActivity : AppCompatActivity(), SplashScreen.KeepOnScreenCondition, On
         } else if (ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.ACCESS_FINE_LOCATION)
             != PackageManager.PERMISSION_GRANTED) {
 
-            Snackbar.make(findViewById(R.id.main), "정확한 위치 정보를 받아올 수 없어 정확성이 떨어집니다.", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(findViewById(R.id.main), getString(R.string.less_accurate_no_precise_location_information), Snackbar.LENGTH_SHORT).show()
             locationPermissionCheckEnd()
         }
     }

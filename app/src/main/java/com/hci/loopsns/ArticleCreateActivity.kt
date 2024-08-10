@@ -140,7 +140,7 @@ class ArticleCreateActivity : AppCompatActivity(), View.OnClickListener {
             override fun onResponse(call: Call<ArticleCreateResponse>, response: Response<ArticleCreateResponse>) {
                 animation.fadeOut(200)
                 if(!response.isSuccessful) {
-                    Snackbar.make(findViewById(R.id.main), "게시글 작성에 실패했습니다. 오류 코드 " + response.code(), Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(findViewById(R.id.main), getString(R.string.fail_create_post_error_code) + response.code(), Snackbar.LENGTH_SHORT).show()
                     return
                 }
 
@@ -158,7 +158,7 @@ class ArticleCreateActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             override fun onFailure(call: Call<ArticleCreateResponse>, err: Throwable) {
-                Snackbar.make(findViewById(R.id.main), "게시글 작성 요청 중 오류가 발생했습니다. $err", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(findViewById(R.id.main), getString(R.string.error_post_creation_request) + "$err", Snackbar.LENGTH_SHORT).show()
             }
         })
     }
@@ -273,65 +273,6 @@ class ArticleCreateActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
             R.id.add_photo_layout -> {
-//                PictureSelector.create(this)
-//                    .openSystemGallery(SelectMimeType.ofImage())
-//                    .setCropEngine { fragment, srcUri, destinationUri, dataSource, requestCode ->
-//                        UCrop.of(srcUri, destinationUri, dataSource).withAspectRatio(1F, 1F).start(fragment.requireContext(), fragment, requestCode)
-//                    }
-//                    .setCompressEngine(CompressFileEngine { context, source, call ->
-//                        Luban.with(context).load(source).ignoreBy(100)
-//                            .setCompressListener(object  : OnNewCompressListener {
-//                                override fun onStart() {
-//                                    Log.e("Compress Started", "Start!")
-//                                }
-//
-//                                override fun onSuccess(source: String?, compressFile: File?) {
-//                                    if(source == null || compressFile == null) {
-//                                        Snackbar.make(findViewById(R.id.main), "이미지 압축 엔진에 이상이 있습니다. 파일이 없습니다.", Snackbar.LENGTH_SHORT).show()
-//                                        Log.e("Compress Failed", "File Null")
-//                                        return
-//                                    }
-//                                    Log.e("Compress Success", "Good " + source + " - " + compressFile.absolutePath)
-//                                    call.onCallback(source, compressFile.absolutePath)
-//                                }
-//
-//                                override fun onError(source: String?, e: Throwable?) {
-//                                    if(e == null) {
-//                                        return
-//                                    }
-//                                    Snackbar.make(findViewById(R.id.main), "이미지 압축 엔진에 이상이 있습니다.", Snackbar.LENGTH_SHORT).show()
-//                                    Log.e("Compress Failed", e.toString())
-//                                }
-//                            }).launch()
-//                    })
-//
-//                    .forSystemResultActivity(object : OnResultCallbackListener<LocalMedia?> {
-//                        override fun onResult(result: ArrayList<LocalMedia?>) {
-//                            if(result.size > 1) {
-//                                Snackbar.make(findViewById(R.id.main), "사진은 한 장을 넘길 수 없습니다.", Snackbar.LENGTH_SHORT).show()
-//                                return
-//                            }
-//                            result.forEach {
-//                                if(it != null) {
-//                                    picture = it.availablePath
-//                                    Glide.with(this@ArticleCreateActivity)
-//                                        .load(it.availablePath)
-//                                        .thumbnail(Glide.with(this@ArticleCreateActivity).load(R.drawable.picture_placeholder))
-//                                        .override(250.dp)
-//                                        .apply(RequestOptions.bitmapTransform(RoundedCorners(30)))
-//                                        .into(findViewById(R.id.attachment_picture))
-//
-//                                    findViewById<ImageButton>(R.id.attachment_delete).visibility = View.VISIBLE
-//
-//                                    return
-//                                }
-//                            }
-//                        }
-//
-//                        override fun onCancel() {
-//                        }
-//                    })
-
                 PictureSelector.create(this)
                     .openGallery(SelectMimeType.ofImage())
                     .setCompressEngine(CompressFileEngine { context, source, call ->
@@ -343,7 +284,7 @@ class ArticleCreateActivity : AppCompatActivity(), View.OnClickListener {
 
                                 override fun onSuccess(source: String?, compressFile: File?) {
                                     if(source == null || compressFile == null) {
-                                        Snackbar.make(findViewById(R.id.main), "이미지 압축 엔진에 이상이 있습니다. 파일이 없습니다.", Snackbar.LENGTH_SHORT).show()
+                                        Snackbar.make(findViewById(R.id.main), getString(R.string.problem_image_compression_engine_no_file), Snackbar.LENGTH_SHORT).show()
                                         Log.e("Compress Failed", "File Null")
                                         return
                                     }
@@ -355,7 +296,7 @@ class ArticleCreateActivity : AppCompatActivity(), View.OnClickListener {
                                     if(e == null) {
                                         return
                                     }
-                                    Snackbar.make(findViewById(R.id.main), "이미지 압축 엔진에 이상이 있습니다.", Snackbar.LENGTH_SHORT).show()
+                                    Snackbar.make(findViewById(R.id.main), getString(R.string.problem_image_compression_engine), Snackbar.LENGTH_SHORT).show()
                                     Log.e("Compress Failed", e.toString())
                                 }
                             }).launch()
@@ -367,7 +308,7 @@ class ArticleCreateActivity : AppCompatActivity(), View.OnClickListener {
                     .forResult(object : OnResultCallbackListener<LocalMedia?> {
                         override fun onResult(result: ArrayList<LocalMedia?>) {
                             if(result.size > 1) {
-                                Snackbar.make(findViewById(R.id.main), "사진은 한 장을 넘길 수 없습니다.", Snackbar.LENGTH_SHORT).show()
+                                Snackbar.make(findViewById(R.id.main), getString(R.string.no_more_than_one_photo), Snackbar.LENGTH_SHORT).show()
                                 return
                             }
                             result.forEach {
@@ -396,7 +337,7 @@ class ArticleCreateActivity : AppCompatActivity(), View.OnClickListener {
                 val inputText = findViewById<EditText>(R.id.contentText)
 
                 if(inputText.text.length <= 15) {
-                    Snackbar.make(findViewById(R.id.main), "내용이 충분하지 않습니다.", Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(findViewById(R.id.main), getString(R.string.not_enough_content), Snackbar.LENGTH_SHORT).show()
                     return
                 }
 
@@ -423,20 +364,20 @@ class ArticleCreateActivity : AppCompatActivity(), View.OnClickListener {
                         if(call.isCanceled) return
                         if(!response.isSuccessful) {
                             if(response.code() == 422) {
-                                Snackbar.make(findViewById(R.id.main), "부적절한 내용은 들어갈 수 없습니다.", Snackbar.LENGTH_SHORT).show()
+                                Snackbar.make(findViewById(R.id.main), getString(R.string.no_inappropriate_content), Snackbar.LENGTH_SHORT).show()
                             }
                             return
                         }
 
                         val result = response.body()!!
                         if(result.categories == null || result.categories.size != 2) {
-                            Snackbar.make(findViewById(R.id.main), "서버 내부 오류로 카테고리 분석이 불가능합니다.", Snackbar.LENGTH_SHORT).show()
+                            Snackbar.make(findViewById(R.id.main), getString(R.string.server_error_category_analysis_not_possible), Snackbar.LENGTH_SHORT).show()
                             return
                         }
 
                         SelectCategoryBottomSheet()
                             .setData(result.categories, result.keywords!!, ::createArticle)
-                            .show(supportFragmentManager, "SelectCategoryBottomSheetTag")
+                            .show(supportFragmentManager, "SelectCategoryBottomSheet")
                     }
 
                     override fun onFailure(call: Call<CategoryResponse>, err: Throwable) {

@@ -318,11 +318,11 @@ class SettingsActivity : AppCompatActivity(), View.OnClickListener, ProfileListe
                             ) {
                                 this@SettingsActivity.hideDarkOverlay()
                                 if(!response.isSuccessful) {
-                                    Snackbar.make(findViewById(R.id.main), "계정 삭제에 실패했습니다.", Snackbar.LENGTH_SHORT).show()
+                                    Snackbar.make(findViewById(R.id.main), getString(R.string.fail_account_deletion), Snackbar.LENGTH_SHORT).show()
                                     return
                                 }
 
-                                Toast.makeText(this@SettingsActivity, "계정이 삭제되었습니다.", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this@SettingsActivity, getString(R.string.account_delete), Toast.LENGTH_SHORT).show()
                                 FirebaseAuth.getInstance().signOut()
                                 val intent = Intent(
                                     this@SettingsActivity,

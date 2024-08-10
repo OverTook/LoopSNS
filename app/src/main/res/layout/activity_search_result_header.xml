@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:drawableEnd="@drawable/arrow_drop_down_30px"
             android:fontFamily="@font/pretendard_bold"
-            android:text="전체 주제"
+            android:text="@string/search_option_category_default"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:drawableEnd="@drawable/arrow_drop_down_30px"
             android:fontFamily="@font/pretendard_bold"
-            android:text="전체 주제"
+            android:text="@string/search_option_category_default"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -50,17 +50,17 @@
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="     내용     " />
+            android:text="@string/search_option_search_by_contents" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="키워드" />
+            android:text="@string/search_option_search_by_keywords" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="작성자" />
+            android:text="@string/search_option_search_by_writer" />
 
     </com.google.android.material.tabs.TabLayout>
 

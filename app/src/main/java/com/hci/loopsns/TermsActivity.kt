@@ -55,7 +55,7 @@ class TermsActivity : AppCompatActivity(), View.OnClickListener {
                 request = NetworkManager.apiService.getFAQ(Locale.getDefault().language)
             }
             else -> {
-                Toast.makeText(this, "유효하지 않은 요청입니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.invalid_request), Toast.LENGTH_SHORT).show()
                 finish()
             }
         }
@@ -66,7 +66,7 @@ class TermsActivity : AppCompatActivity(), View.OnClickListener {
                 response: Response<TermsOfAnyResponse>
             ) {
                 if(!response.isSuccessful) {
-                    Toast.makeText(this@TermsActivity, "약관을 받아오는 중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@TermsActivity, getString(R.string.error_getting_terms), Toast.LENGTH_SHORT).show()
                     finish()
                     return
                 }
@@ -82,7 +82,7 @@ class TermsActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             override fun onFailure(p0: Call<TermsOfAnyResponse>, p1: Throwable) {
-                Toast.makeText(this@TermsActivity, "약관을 받아오는 중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@TermsActivity, getString(R.string.error_getting_terms), Toast.LENGTH_SHORT).show()
                 finish()
             }
         })

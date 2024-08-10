@@ -132,9 +132,12 @@ class SubCommentsRecyclerViewAdapter(private val activity: ArticleDetailActivity
                         parentComment.uid,
                         {
                             activity.deleteComment(parentComment.uid)
+                        },
+                        {
+                            activity.createDeepLinkShare(parentComment.uid)
                         }
                     ) {
-                        activity.createDeepLinkShare(parentComment.uid)
+                        activity.report(parentComment.uid)
                     }.show(activity.supportFragmentManager, "CommentOptionBottomSheet")
                 }
 
@@ -173,9 +176,12 @@ class SubCommentsRecyclerViewAdapter(private val activity: ArticleDetailActivity
                         highlightComment!!.uid,
                         {
                             deleteSubCommentRequest(highlightComment!!.uid)
+                        },
+                        {
+                            activity.createDeepLinkShare(parentComment.uid, highlightComment!!.uid)
                         }
                     ) {
-                        activity.createDeepLinkShare(parentComment.uid, highlightComment!!.uid)
+                        activity.report(parentComment.uid, highlightComment!!.uid)
                     }.show(activity.supportFragmentManager, "CommentOptionBottomSheet")
                 }
 
@@ -211,9 +217,12 @@ class SubCommentsRecyclerViewAdapter(private val activity: ArticleDetailActivity
                         item.uid,
                         {
                             deleteSubCommentRequest(item.uid)
+                        },
+                        {
+                            activity.createDeepLinkShare(parentComment.uid, item.uid)
                         }
                     ) {
-                        activity.createDeepLinkShare(parentComment.uid, item.uid)
+                        activity.report(parentComment.uid, item.uid)
                     }.show(activity.supportFragmentManager, "CommentOptionBottomSheet")
                 }
 

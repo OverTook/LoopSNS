@@ -218,3 +218,8 @@ data class SearchResponse (
 
     val articles: List<ArticleDetail> //게시글 목록
 )
+
+data class ReportResponse (
+    val success: Boolean, //응답 성공 여부
+    val msg: String //응답 실패 시 오류 메시지
+)

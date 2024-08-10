@@ -2,7 +2,7 @@
 <litepal>
     <dbname value="loopsns" />
 
-    <version value="7" />
+    <version value="8" />
 
     <list>
         <mapping class="com.hci.loopsns.storage.models.NotificationComment"/>

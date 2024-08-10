@@ -145,7 +145,7 @@ class ArticleSearchActivity : AppCompatActivity(), View.OnClickListener,
 
     fun retrieveArticles(input: String) {
         if(input.length < 2) {
-            Toast.makeText(this, "검색은 최소 두글자입니다.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.searche_at_least_two_letters), Toast.LENGTH_SHORT).show()
             return
         }
 

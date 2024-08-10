@@ -23,7 +23,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ProfileMyLikeFragment : BaseProfileFragment(), AutoRefresherInterface {
+class ProfileMyLikeFragment : BaseProfileFragment() {
 
     override var requested: Boolean = false
     override var noMoreData: Boolean = false
@@ -55,7 +55,7 @@ class ProfileMyLikeFragment : BaseProfileFragment(), AutoRefresherInterface {
         ).enqueue(object : Callback<MyArticleResponse> {
             override fun onResponse(call: Call<MyArticleResponse>, response: Response<MyArticleResponse>) {
                 if(!response.isSuccessful) {
-                    Snackbar.make(requireView().findViewById(R.id.main), "게시글 목록을 받아올 수 없습니다.", Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(requireView().findViewById(R.id.main), getString(R.string.fail_get_list), Snackbar.LENGTH_SHORT).show()
                     this@ProfileMyLikeFragment.requestEnd(true)
                     return
                 }
@@ -71,7 +71,7 @@ class ProfileMyLikeFragment : BaseProfileFragment(), AutoRefresherInterface {
             }
 
             override fun onFailure(call: Call<MyArticleResponse>, err: Throwable) {
-                Snackbar.make(requireView().findViewById(R.id.main), "게시글 목록을 받아올 수 없습니다.", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(requireView().findViewById(R.id.main), getString(R.string.fail_get_list), Snackbar.LENGTH_SHORT).show()
                 this@ProfileMyLikeFragment.requestEnd(true)
                 Log.e("RetrieveLikeArticle Failed", err.toString())
             }
@@ -80,6 +80,11 @@ class ProfileMyLikeFragment : BaseProfileFragment(), AutoRefresherInterface {
 
     override fun onInitializeArticle() {
         if (noMoreData) return
+
+        if(!isInitialized()) {
+            Log.e("Not Initialized", "MyLike")
+            return
+        }
 
         NetworkManager.apiService.retrieveLikeArticle().enqueue(object : Callback<MyArticleResponse> {
             override fun onResponse(call: Call<MyArticleResponse>, response: Response<MyArticleResponse>) {

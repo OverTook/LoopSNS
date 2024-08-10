@@ -173,4 +173,11 @@ interface NetworkInterface {
         @Query("query") query: String,
         @Query("search_type") searchType: String
     ): Call<SearchResponse>
+
+    @POST("/report")
+    fun report(
+        @Query("article_id") articleId: String,
+        @Query("comment_id") commentId: String,
+        @Query("sub_comment_id") subCommentId: String,
+    ): Call<ReportResponse>
 }

@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="categories1_array">
+        <item>All subjects</item>
+        <item>Daily</item>
+        <item>Animal</item>
+        <item>Electronic</item>
+        <item>Information sharing</item>
+        <item>Ask</item>
+        <item>Schedule</item>
+        <item>Ads</item>
+        <item>Report</item>
+        <item>Proposal</item>
+        <item>Violent</item>
+        <item>Sexual</item>
+        <item>Other</item>
+        <item>Health</item>
+        <item>Travel</item>
+        <item>Food</item>
+        <item>Technology</item>
+        <item>Culture</item>
+        <item>Economy</item>
+        <item>Politic</item>
+        <item>Science</item>
+        <item>Sport</item>
+        <item>Nature</item>
+        <item>Fashion</item>
+        <item>Art</item>
+        <item>Music</item>
+        <item>Hobbies</item>
+        <item>Personal Development</item>
+        <item>Psychology</item>
+        <item>Environment</item>
+        <item>Education</item>
+        <item>Comedy</item>
+        <item>Landscape</item>
+        <item>Greetings</item>
+        <item>Content</item>
+    </array>
+
+    <array name="categories2_array">
+        <item>All subjects</item>
+        <item>Life</item>
+        <item>persuasion</item>
+        <item>empathy</item>
+        <item>communication</item>
+        <item>emotions</item>
+        <item>artistry</item>
+        <item>creativity</item>
+        <item>compliment</item>
+        <item>apology</item>
+        <item>complaint</item>
+        <item>family</item>
+        <item>travel</item>
+        <item>food</item>
+        <item>exercise</item>
+        <item>brushing teeth</item>
+        <item>eating</item>
+        <item>cat</item>
+        <item>dog</item>
+        <item>tiger</item>
+        <item>deer</item>
+        <item>lion</item>
+        <item>giraffe</item>
+        <item>panda</item>
+        <item>duck</item>
+        <item>pigeon</item>
+        <item>person</item>
+        <item>hippo</item>
+        <item>rhino</item>
+        <item>Keyboard</item>
+        <item>laptop</item>
+        <item>Computer</item>
+        <item>mouse</item>
+        <item>audio</item>
+        <item>TV</item>
+        <item>washing machine</item>
+        <item>refrigerator</item>
+        <item>light</item>
+        <item>air conditioner</item>
+        <item>News</item>
+        <item>tips/know-how</item>
+        <item>education</item>
+        <item>technology</item>
+        <item>health</item>
+        <item>economy</item>
+        <item>culture</item>
+        <item>politics</item>
+        <item>science</item>
+        <item>Information</item>
+        <item>opinion</item>
+        <item>concern</item>
+        <item>counseling</item>
+        <item>recommendation</item>
+        <item>help</item>
+        <item>meeting</item>
+        <item>anniversary</item>
+        <item>event</item>
+        <item>conference</item>
+        <item>appointment</item>
+        <item>calendar</item>
+        <item>Promotions</item>
+        <item>job openings</item>
+        <item>restaurants</item>
+        <item>clothing</item>
+        <item>part-time jobs</item>
+        <item>services</item>
+        <item>product launches</item>
+        <item>discounts</item>
+        <item>Lost &amp; Found</item>
+        <item>Accident</item>
+        <item>Incident</item>
+        <item>Disaster</item>
+        <item>Illegal activity</item>
+        <item>Report</item>
+        <item>Traffic accident</item>
+        <item>idea</item>
+        <item>request for feedback</item>
+        <item>collaboration</item>
+        <item>compromise</item>
+        <item>policy proposal</item>
+        <item>improvement</item>
+        <item>project proposal</item>
+        <item>bleeding</item>
+        <item>death</item>
+        <item>murder</item>
+        <item>knife</item>
+        <item>weapon</item>
+        <item>corpse</item>
+        <item>assault</item>
+        <item>threat</item>
+        <item>Sexual assault</item>
+        <item>sexual violence</item>
+        <item>genitals</item>
+        <item>genital exposure</item>
+        <item>street urination</item>
+        <item>sex</item>
+        <item>pornography</item>
+        <item>sex trafficking</item>
+        <item>books</item>
+        <item>products</item>
+        <item>announcements</item>
+        <item>general</item>
+        <item>events</item>
+        <item>offers</item>
+        <item>suggestions</item>
+        <item>merchandise</item>
+        <item>lifestyle</item>
+        <item>miscellaneous</item>
+        <item>Nutrition</item>
+        <item>Mental Health</item>
+        <item>Diseases</item>
+        <item>Medical Information</item>
+        <item>Healthcare</item>
+        <item>Psychology</item>
+        <item>Fitness</item>
+        <item>Destination recommendations</item>
+        <item>travel tips</item>
+        <item>accommodation information</item>
+        <item>transportation</item>
+        <item>travelogues</item>
+        <item>travel photos</item>
+        <item>travel planning</item>
+        <item>Recipes</item>
+        <item>cooking</item>
+        <item>food reviews</item>
+        <item>restaurant recommendations</item>
+        <item>food information</item>
+        <item>healthy food</item>
+        <item>food photography</item>
+        <item>food culture</item>
+        <item>IT</item>
+        <item>software</item>
+        <item>hardware</item>
+        <item>programming</item>
+        <item>mobile</item>
+        <item>gadgets</item>
+        <item>internet</item>
+        <item>innovative technology</item>
+        <item>Movies</item>
+        <item>music</item>
+        <item>exhibitions</item>
+        <item>performances</item>
+        <item>history</item>
+        <item>art</item>
+        <item>festivals</item>
+        <item>cultural events</item>
+        <item>Stocks</item>
+        <item>investing</item>
+        <item>real estate</item>
+        <item>finance</item>
+        <item>economic news</item>
+        <item>consumer information</item>
+        <item>economic trends</item>
+        <item>Political news</item>
+        <item>elections</item>
+        <item>policies</item>
+        <item>international politics</item>
+        <item>politicians</item>
+        <item>political debates</item>
+        <item>social issues</item>
+        <item>Physics</item>
+        <item>chemistry</item>
+        <item>biology</item>
+        <item>astronomy</item>
+        <item>earth science</item>
+        <item>science news</item>
+        <item>research</item>
+        <item>inventions</item>
+        <item>soccer</item>
+        <item>basketball</item>
+        <item>baseball</item>
+        <item>tennis</item>
+        <item>badminton</item>
+        <item>golf</item>
+        <item>swimming</item>
+        <item>cycling</item>
+        <item>skiing</item>
+        <item>snowboarding</item>
+        <item>marathons</item>
+        <item>track and field</item>
+        <item>judo</item>
+        <item>taekwondo</item>
+        <item>martial arts</item>
+        <item>mountains</item>
+        <item>oceans</item>
+        <item>rivers</item>
+        <item>lakes</item>
+        <item>parks</item>
+        <item>forests</item>
+        <item>gardens</item>
+        <item>natural disasters</item>
+        <item>environmental protection</item>
+        <item>climate change</item>
+        <item>plants</item>
+        <item>trees</item>
+        <item>flowers</item>
+        <item>stones</item>
+        <item>sky</item>
+        <item>clothes</item>
+        <item>accessories</item>
+        <item>shoes</item>
+        <item>bags</item>
+        <item>hairstyles</item>
+        <item>beauty tips</item>
+        <item>makeup</item>
+        <item>fashion trends</item>
+        <item>fashion shows</item>
+        <item>designers</item>
+        <item>clothing brands</item>
+        <item>styling</item>
+        <item>paintings</item>
+        <item>sculptures</item>
+        <item>photography</item>
+        <item>theater</item>
+        <item>literature</item>
+        <item>poetry</item>
+        <item>novels</item>
+        <item>dance</item>
+        <item>music</item>
+        <item>art exhibitions</item>
+        <item>artists</item>
+        <item>design</item>
+        <item>architecture</item>
+        <item>Pop</item>
+        <item>rock</item>
+        <item>hip-hop</item>
+        <item>classical</item>
+        <item>jazz</item>
+        <item>blues</item>
+        <item>EDM</item>
+        <item>K-pop</item>
+        <item>indie</item>
+        <item>country</item>
+        <item>music reviews</item>
+        <item>concerts</item>
+        <item>music festivals</item>
+        <item>musical instruments</item>
+        <item>music theory</item>
+        <item>Reading</item>
+        <item>writing</item>
+        <item>drawing</item>
+        <item>painting</item>
+        <item>photography</item>
+        <item>movie watching</item>
+        <item>drama watching</item>
+        <item>cooking</item>
+        <item>baking</item>
+        <item>gardening</item>
+        <item>knitting</item>
+        <item>camping</item>
+        <item>hiking</item>
+        <item>collecting</item>
+        <item>gaming</item>
+        <item>DIY</item>
+        <item>doll making</item>
+        <item>crafting</item>
+        <item>studying</item>
+        <item>time management</item>
+        <item>goal setting</item>
+        <item>motivation</item>
+        <item>productivity</item>
+        <item>speaking</item>
+        <item>coaching</item>
+        <item>certifications</item>
+        <item>degrees</item>
+        <item>training</item>
+        <item>skills acquisition</item>
+        <item>self-care</item>
+        <item>mentoring</item>
+        <item>Psychotherapy</item>
+        <item>counseling</item>
+        <item>personality</item>
+        <item>stress management</item>
+        <item>relationships</item>
+        <item>mindfulness</item>
+        <item>psychoanalysis</item>
+        <item>behavior</item>
+        <item>brain science</item>
+        <item>psychological testing</item>
+        <item>self-esteem</item>
+        <item>Recycling</item>
+        <item>energy saving</item>
+        <item>green products</item>
+        <item>sustainability</item>
+        <item>ecosystems</item>
+        <item>pollution</item>
+        <item>green technology</item>
+        <item>environmental policy</item>
+        <item>nature conservation</item>
+        <item>air pollution</item>
+        <item>school</item>
+        <item>university</item>
+        <item>online education</item>
+        <item>learning materials</item>
+        <item>education policy</item>
+        <item>education methodology</item>
+        <item>learning environment</item>
+        <item>learning motivation</item>
+        <item>student life</item>
+        <item>teachers</item>
+        <item>parents</item>
+        <item>career counseling</item>
+        <item>joke</item>
+        <item>funny</item>
+        <item>funny content</item>
+        <item>funny pictures</item>
+        <item>funny conversations</item>
+        <item>asides</item>
+        <item>drip</item>
+        <item>comedian</item>
+        <item>comedian woman</item>
+        <item>photo</item>
+        <item>valley</item>
+        <item>mountain</item>
+        <item>sea</item>
+        <item>mountain range</item>
+        <item>sky</item>
+        <item>trees</item>
+        <item>cabin</item>
+        <item>house</item>
+        <item>hello</item>
+        <item>welcome</item>
+        <item>introduction</item>
+        <item>YouTube</item>
+        <item>Naver Cafe</item>
+        <item>Naver Blog</item>
+        <item>GitHub</item>
+        <item>Daum Cafe</item>
+        <item>Google</item>
+    </array>
+</resources>

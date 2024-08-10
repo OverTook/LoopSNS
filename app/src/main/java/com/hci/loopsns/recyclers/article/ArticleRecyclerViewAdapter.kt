@@ -186,8 +186,11 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity): R
                     ArticleOptionBottomSheet().setData(
                         article.canDelete!!,
                         activity::deleteArticle,
+                        {
+                            activity.createDeepLinkShare("")
+                        }
                     ) {
-                        activity.createDeepLinkShare("")
+                        activity.report()
                     } .show(activity.supportFragmentManager, "ArticleOptionBottomSheet")
                 }
 
@@ -246,9 +249,12 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity): R
                         highlightComment!!.uid,
                         {
                             activity.deleteComment(highlightComment!!.uid)
+                        },
+                        {
+                            activity.createDeepLinkShare(highlightComment!!.uid)
                         }
                     ) {
-                        activity.createDeepLinkShare(highlightComment!!.uid)
+                        activity.report(highlightComment!!.uid)
                     }.show(activity.supportFragmentManager, "CommentOptionBottomSheet")
                 }
                 holder.replyButton.setOnClickListener {
@@ -303,9 +309,12 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity): R
                         item.uid,
                         {
                             activity.deleteComment(item.uid)
+                        },
+                        {
+                            activity.createDeepLinkShare(item.uid)
                         }
                     ) {
-                        activity.createDeepLinkShare(item.uid)
+                        activity.report(item.uid)
                     }.show(activity.supportFragmentManager, "CommentOptionBottomSheet")
                 }
                 holder.replyButton.setOnClickListener {

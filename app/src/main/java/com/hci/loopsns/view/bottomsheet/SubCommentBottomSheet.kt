@@ -91,7 +91,7 @@ class SubCommentBottomSheet(private val activity: ArticleDetailActivity) : Botto
             override fun onFailure(call: Call<CommentListResponse>, err: Throwable) {
                 this@SubCommentBottomSheet.requestEnd(true)
 
-                Snackbar.make(requireView().findViewById(R.id.main), "댓글을 불러오는 중 오류가 발생했습니다.", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(requireView().findViewById(R.id.main), getString(R.string.error_bring_comments), Snackbar.LENGTH_SHORT).show()
                 Log.e("Request More Comment Failed", err.toString())
             }
         })
@@ -147,7 +147,7 @@ class SubCommentBottomSheet(private val activity: ArticleDetailActivity) : Botto
             ) {
                 if(!response.isSuccessful) {
                     Log.e("SubCommentList Get Failed", "HTTP Code " + response.code())
-                    Toast.makeText(requireContext(), "댓글 정보 응답이 성공적이지 않습니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.error_comment_information_response), Toast.LENGTH_SHORT).show()
                     dismiss()
                     return
                 }
@@ -166,7 +166,7 @@ class SubCommentBottomSheet(private val activity: ArticleDetailActivity) : Botto
 
             override fun onFailure(call: Call<CommentListResponse>, err: Throwable) {
                 Log.e("SubCommentList Get Failed", err.toString())
-                Toast.makeText(requireContext(), "댓글 정보 요청에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.error_bring_comments) + err.toString(), Toast.LENGTH_SHORT).show()
                 dismiss()
             }
         })
@@ -261,7 +261,7 @@ class SubCommentBottomSheet(private val activity: ArticleDetailActivity) : Botto
                 )
 
                 //smoothScrollToPosition(recyclerView.getRecyclerView(), 1)
-                Snackbar.make(dialog?.window?.decorView!!, "댓글이 작성되었습니다.", Snackbar.LENGTH_SHORT)
+                Snackbar.make(dialog?.window?.decorView!!, getString(R.string.comment_make_success), Snackbar.LENGTH_SHORT)
                     .setAnchorView(view?.findViewById(R.id.comment_input_layout))
                     .show()
             }

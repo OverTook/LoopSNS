@@ -41,6 +41,7 @@ import com.hci.loopsns.network.CreateCommentRequest
 import com.hci.loopsns.network.LikeArticleRequest
 import com.hci.loopsns.network.LikeResponse
 import com.hci.loopsns.network.NetworkManager
+import com.hci.loopsns.network.ReportResponse
 import com.hci.loopsns.recyclers.article.ArticleRecyclerViewAdapter
 import com.hci.loopsns.storage.SettingManager
 import com.hci.loopsns.storage.models.NotificationComment
@@ -114,7 +115,7 @@ class ArticleDetailActivity() : AppCompatActivity(), SwipeRefreshLayout.OnRefres
                 return
             }
             
-            Toast.makeText(this, "게시글 정보가 유효하지 않습니다.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.post_information_invalid), Toast.LENGTH_SHORT).show()
             finish()
             return
         }
@@ -130,12 +131,12 @@ class ArticleDetailActivity() : AppCompatActivity(), SwipeRefreshLayout.OnRefres
             ) {
                 if(!response.isSuccessful) {
                     if (response.code() == 404) {
-                        Toast.makeText(this@ArticleDetailActivity, "삭제된 게시글입니다.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@ArticleDetailActivity, getString(R.string.deleted_post), Toast.LENGTH_SHORT).show()
                         finish()
                         return
                     }
                     Log.e("ArticleDetail Get Failed", "HTTP Code " + response.code())
-                    Toast.makeText(this@ArticleDetailActivity, "게시글 정보 응답이 성공적이지 않습니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ArticleDetailActivity, getString(R.string.post_information_response_not_successful), Toast.LENGTH_SHORT).show()
                     finish()
                     return
                 }
@@ -143,7 +144,7 @@ class ArticleDetailActivity() : AppCompatActivity(), SwipeRefreshLayout.OnRefres
                 val result = response.body()!!
                 article = result.article
                 if(article!!.writer == null) {
-                    article!!.writer = "알 수 없는 사용자"
+                    article!!.writer = getString(R.string.unknown_user_name)
                     article!!.userImg = ""
                 }
 
@@ -152,7 +153,7 @@ class ArticleDetailActivity() : AppCompatActivity(), SwipeRefreshLayout.OnRefres
 
             override fun onFailure(call: Call<ArticleDetailResponse>, err: Throwable) {
                 Log.e("ArticleDetail Get Failed", err.toString())
-                Toast.makeText(this@ArticleDetailActivity, "게시글 정보 요청에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@ArticleDetailActivity, getString(R.string.fail_request_post_information), Toast.LENGTH_SHORT).show()
                 finish()
             }
         })
@@ -167,7 +168,7 @@ class ArticleDetailActivity() : AppCompatActivity(), SwipeRefreshLayout.OnRefres
                         return
                     }
                     Log.e("CommentList Get Failed", "HTTP Code " + response.code())
-                    Toast.makeText(this@ArticleDetailActivity, "댓글 정보 응답이 성공적이지 않습니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ArticleDetailActivity, getString(R.string.error_comment_information_response), Toast.LENGTH_SHORT).show()
                     finish()
                     return
                 }
@@ -176,7 +177,7 @@ class ArticleDetailActivity() : AppCompatActivity(), SwipeRefreshLayout.OnRefres
                 comments = result.comments as ArrayList<Comment>
                 comments!!.forEach { comment ->
                     if(comment.writer == null) {
-                        comment.writer = "알 수 없는 사용자"
+                        comment.writer = getString(R.string.unknown_user_name)
                         comment.userImg = ""
                     }
                 }
@@ -190,7 +191,7 @@ class ArticleDetailActivity() : AppCompatActivity(), SwipeRefreshLayout.OnRefres
 
             override fun onFailure(call: Call<CommentListResponse>, err: Throwable) {
                 Log.e("CommentList Get Failed", err.toString())
-                Toast.makeText(this@ArticleDetailActivity, "댓글 정보 요청에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@ArticleDetailActivity, getString(R.string.error_bring_comments), Toast.LENGTH_SHORT).show()
                 finish()
             }
         })
@@ -213,7 +214,7 @@ class ArticleDetailActivity() : AppCompatActivity(), SwipeRefreshLayout.OnRefres
                             return
                         }
                         Log.e("Retrieve Comment Get Failed", "HTTP Code " + response.code())
-                        Toast.makeText(this@ArticleDetailActivity, "댓글 정보 요청에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@ArticleDetailActivity, getString(R.string.error_comment_information_response), Toast.LENGTH_SHORT).show()
                         finish()
                         return
                     }
@@ -224,7 +225,7 @@ class ArticleDetailActivity() : AppCompatActivity(), SwipeRefreshLayout.OnRefres
                         override fun onResponse(call: Call<CommentResponse>, response: Response<CommentResponse>) {
                             if(!response.isSuccessful) {
                                 Log.e("Retrieve Comment Get Failed", "HTTP Code " + response.code())
-                                Toast.makeText(this@ArticleDetailActivity, "댓글 정보 요청에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this@ArticleDetailActivity, getString(R.string.error_comment_information_response), Toast.LENGTH_SHORT).show()
                                 finish()
                                 return
                             }
@@ -236,7 +237,7 @@ class ArticleDetailActivity() : AppCompatActivity(), SwipeRefreshLayout.OnRefres
 
                         override fun onFailure(call: Call<CommentResponse>, err: Throwable) {
                             Log.e("Retrieve Comment Get Failed", err.toString())
-                            Toast.makeText(this@ArticleDetailActivity, "댓글 정보 요청에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@ArticleDetailActivity, getString(R.string.error_bring_comments), Toast.LENGTH_SHORT).show()
                             finish()
                         }
                     })
@@ -245,7 +246,7 @@ class ArticleDetailActivity() : AppCompatActivity(), SwipeRefreshLayout.OnRefres
 
                 override fun onFailure(call: Call<CommentResponse>, err: Throwable) {
                     Log.e("Retrieve Comment Get Failed", err.toString())
-                    Toast.makeText(this@ArticleDetailActivity, "댓글 정보 요청에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ArticleDetailActivity, getString(R.string.error_bring_comments), Toast.LENGTH_SHORT).show()
                     finish()
                 }
             })
@@ -259,7 +260,7 @@ class ArticleDetailActivity() : AppCompatActivity(), SwipeRefreshLayout.OnRefres
             override fun onResponse(call: Call<CommentResponse>, response: Response<CommentResponse>) {
                 if(!response.isSuccessful) {
                     Log.e("Retrieve Comment Get Failed", "HTTP Code " + response.code())
-                    Toast.makeText(this@ArticleDetailActivity, "댓글 정보 요청에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ArticleDetailActivity, getString(R.string.error_comment_information_response), Toast.LENGTH_SHORT).show()
                     finish()
                     return
                 }
@@ -270,7 +271,7 @@ class ArticleDetailActivity() : AppCompatActivity(), SwipeRefreshLayout.OnRefres
 
             override fun onFailure(call: Call<CommentResponse>, err: Throwable) {
                 Log.e("Retrieve Comment Get Failed", err.toString())
-                Toast.makeText(this@ArticleDetailActivity, "댓글 정보 요청에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@ArticleDetailActivity, getString(R.string.error_bring_comments), Toast.LENGTH_SHORT).show()
                 finish()
             }
         })
@@ -334,7 +335,7 @@ class ArticleDetailActivity() : AppCompatActivity(), SwipeRefreshLayout.OnRefres
             override fun onFailure(call: Call<CommentListResponse>, err: Throwable) {
                 this@ArticleDetailActivity.requestEnd(true)
 
-                Snackbar.make(findViewById(R.id.main), "댓글을 불러오는 중 오류가 발생했습니다.", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(findViewById(R.id.main), getString(R.string.error_bring_comments), Snackbar.LENGTH_SHORT).show()
                 Log.e("Request More Comment Failed", err.toString())
             }
         })
@@ -456,15 +457,16 @@ class ArticleDetailActivity() : AppCompatActivity(), SwipeRefreshLayout.OnRefres
         }
 
         if(article!!.isLiked!!.xor(adapter.originalLike)) {
-            FavoriteManager.getInstance().onFavoriteStateChanged(article!!, article!!.isLiked!!)
             addArticleLike(article!!.isLiked!!) //액티비티가 닫힐 때 요청 보내기
         }
     }
 
-    private fun addArticleLike(like: Boolean) {
+    private fun addArticleLike(like: Boolean, callback: (() -> Unit)? = null) {
         if(article == null || comments == null || (highlightComment.first && highlightComment.second == null)) {
             return
         }
+
+        FavoriteManager.getInstance().onFavoriteStateChanged(article!!, article!!.isLiked!!)
 
         NetworkManager.apiService.likeArticle(
             LikeArticleRequest(
@@ -473,6 +475,7 @@ class ArticleDetailActivity() : AppCompatActivity(), SwipeRefreshLayout.OnRefres
             )
         ).enqueue(object : Callback<LikeResponse> {
             override fun onResponse(call: Call<LikeResponse>, response: Response<LikeResponse>) {
+                callback?.invoke()
                 if (response.isSuccessful) return
 
                 if(article!!.isLiked == true) {
@@ -486,6 +489,7 @@ class ArticleDetailActivity() : AppCompatActivity(), SwipeRefreshLayout.OnRefres
             }
 
             override fun onFailure(call: Call<LikeResponse>, err: Throwable) {
+                callback?.invoke()
                 Log.e("ArticleLike Failed", err.toString())
                 if(article!!.isLiked == true) {
                     article!!.isLiked = false
@@ -504,24 +508,35 @@ class ArticleDetailActivity() : AppCompatActivity(), SwipeRefreshLayout.OnRefres
             return
         }
 
+        showDarkOverlay()
+
+        if(article!!.isLiked!!.xor(adapter.originalLike)) {
+            addArticleLike(article!!.isLiked!!) {
+                refresh()
+            }
+            return
+        }
+
+        refresh()
+    }
+
+    fun refresh() {
         val articleId = article!!.uid
         article = null
         comments = null
-
-        showDarkOverlay()
 
         NetworkManager.apiService.retrieveArticle(articleId).enqueue(object :
             Callback<ArticleDetailResponse> {
             override fun onResponse(call: Call<ArticleDetailResponse>, response: Response<ArticleDetailResponse>) {
                 if(!response.isSuccessful){
-                    Toast.makeText(this@ArticleDetailActivity, "게시글 정보 응답이 성공적이지 않습니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ArticleDetailActivity, getString(R.string.post_information_response_not_successful), Toast.LENGTH_SHORT).show()
                     finish()
                     return
                 }
 
                 article = response.body()!!.article
                 if(article!!.writer == null) {
-                    article!!.writer = "알 수 없는 사용자"
+                    article!!.writer = getString(R.string.unknown_user_name)
                     article!!.userImg = ""
                 }
 
@@ -531,7 +546,7 @@ class ArticleDetailActivity() : AppCompatActivity(), SwipeRefreshLayout.OnRefres
 
             override fun onFailure(call: Call<ArticleDetailResponse>, err: Throwable) {
                 Log.e("ArticleDetailActivity", "게시글 불러오기 실패 $err")
-                Toast.makeText(this@ArticleDetailActivity, "게시글 정보 요청에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@ArticleDetailActivity, getString(R.string.fail_request_post_information), Toast.LENGTH_SHORT).show()
                 finish()
             }
         })
@@ -540,7 +555,7 @@ class ArticleDetailActivity() : AppCompatActivity(), SwipeRefreshLayout.OnRefres
             Callback<CommentListResponse> {
             override fun onResponse(call: Call<CommentListResponse>, response: Response<CommentListResponse>) {
                 if(!response.isSuccessful){
-                    Toast.makeText(this@ArticleDetailActivity, "댓글 정보 응답이 성공적이지 않습니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ArticleDetailActivity, getString(R.string.error_comment_information_response), Toast.LENGTH_SHORT).show()
                     finish()
                     return
                 }
@@ -548,7 +563,7 @@ class ArticleDetailActivity() : AppCompatActivity(), SwipeRefreshLayout.OnRefres
                 comments = response.body()!!.comments as ArrayList<Comment>
                 comments!!.forEach { comment ->
                     if(comment.writer == null) {
-                        comment.writer = "알 수 없는 사용자"
+                        comment.writer = getString(R.string.unknown_user_name)
                         comment.userImg = ""
                     }
                 }
@@ -558,10 +573,11 @@ class ArticleDetailActivity() : AppCompatActivity(), SwipeRefreshLayout.OnRefres
 
             override fun onFailure(call: Call<CommentListResponse>, err: Throwable) {
                 Log.e("ArticleDetailActivity", "댓글 불러오기 실패 $err")
-                Toast.makeText(this@ArticleDetailActivity, "댓글 정보 요청에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@ArticleDetailActivity, getString(R.string.error_bring_comments), Toast.LENGTH_SHORT).show()
                 finish()
             }
         })
+
     }
 
     private fun createComment(comment: String) {
@@ -592,7 +608,7 @@ class ArticleDetailActivity() : AppCompatActivity(), SwipeRefreshLayout.OnRefres
                     )
                 )
 
-                Snackbar.make(findViewById(R.id.main), "댓글이 작성되었습니다.", Snackbar.LENGTH_SHORT)
+                Snackbar.make(findViewById(R.id.main), getString(R.string.comment_make_success), Snackbar.LENGTH_SHORT)
                     .setAnchorView(findViewById(R.id.comment_input_layout))
                     .show()
             }
@@ -635,15 +651,28 @@ class ArticleDetailActivity() : AppCompatActivity(), SwipeRefreshLayout.OnRefres
         }
     }
 
+    fun report(commentId: String = "", subCommentId: String = "") {
+        NetworkManager.apiService.report(article!!.uid, commentId, subCommentId).enqueue(object : Callback<ReportResponse> {
+            override fun onResponse(p0: Call<ReportResponse>, p1: Response<ReportResponse>) {
+                Toast.makeText(this@ArticleDetailActivity, getString(R.string.reported_successful), Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onFailure(p0: Call<ReportResponse>, p1: Throwable) {
+
+            }
+
+        })
+    }
+
     fun createDeepLinkShare(commentId: String, subCommentId: String = "") {
         val deepLink = this.createDeepLink(article!!.uid, commentId, subCommentId)
         val shareIntent = Intent().apply {
             action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_TEXT, "우리들의 연결고리! 루프에서 확인하세요. $deepLink")
+            putExtra(Intent.EXTRA_TEXT, getString(R.string.share_via_text) + deepLink)
             type = "text/plain"
         }
 
-        startActivity(Intent.createChooser(shareIntent, "공유 수단"))
+        startActivity(Intent.createChooser(shareIntent, getString(R.string.share_select_text)))
 
         Log.e("Deep Link", deepLink)
     }

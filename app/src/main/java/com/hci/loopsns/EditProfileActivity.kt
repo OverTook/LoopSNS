@@ -91,7 +91,7 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener,
                 findViewById<EditText>(R.id.profile_email_edit_text).isEnabled = false
             }
         } else {
-            Snackbar.make(findViewById(R.id.main), "토큰을 가져오는데 실패했습니다.", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(findViewById(R.id.main), getString(R.string.fail_get_token), Snackbar.LENGTH_SHORT).show()
         }
     }
 

@@ -131,7 +131,6 @@ class SettingManager {
 
     fun getCurrentLocaleContext(context: Context): Context {
         val currentLocale = sharedPreferences.getString(KEY_LANGUAGE, null)
-        Log.e("CURRENTLOCALE", currentLocale ?: "Auto")
         if(currentLocale == null) {
             val newConfig = Configuration()
             newConfig.setLocale(Resources.getSystem().configuration.locales[0])

@@ -54,7 +54,7 @@ class ProfileMyArticleFragment() : BaseProfileFragment() {
         ).enqueue(object : Callback<MyArticleResponse> {
             override fun onResponse(call: Call<MyArticleResponse>, response: Response<MyArticleResponse>) {
                 if(!response.isSuccessful) {
-                    Snackbar.make(requireView().findViewById(R.id.main), "게시글 목록을 받아올 수 없습니다.", Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(requireView().findViewById(R.id.main), getString(R.string.fail_get_list), Snackbar.LENGTH_SHORT).show()
                     this@ProfileMyArticleFragment.requestEnd(true)
                     return
                 }
@@ -70,7 +70,7 @@ class ProfileMyArticleFragment() : BaseProfileFragment() {
             }
 
             override fun onFailure(call: Call<MyArticleResponse>, err: Throwable) {
-                Snackbar.make(requireView().findViewById(R.id.main), "게시글 목록을 받아올 수 없습니다.", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(requireView().findViewById(R.id.main), getString(R.string.fail_get_list), Snackbar.LENGTH_SHORT).show()
                 this@ProfileMyArticleFragment.requestEnd(true)
                 Log.e("RetrieveMyArticle Failed", err.toString())
             }
@@ -79,6 +79,11 @@ class ProfileMyArticleFragment() : BaseProfileFragment() {
 
     override fun onInitializeArticle() {
         if (noMoreData) return
+
+        if(!isInitialized()) {
+            Log.e("Not Initialized", "MyArticle")
+            return
+        }
 
         NetworkManager.apiService.retrieveMyArticle().enqueue(object : Callback<MyArticleResponse> {
             override fun onResponse(call: Call<MyArticleResponse>, response: Response<MyArticleResponse>) {

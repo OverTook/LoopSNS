@@ -5,6 +5,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.lifecycleScope
 import com.hci.loopsns.MainActivity
+import com.hci.loopsns.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.system.exitProcess
@@ -24,7 +25,7 @@ class DoubleBackPressHandler(private val activity: ComponentActivity) {
             } else {
                 doubleBackToExitPressedOnce = true
                 //activity.toast("Press back again to exit")
-                Toast.makeText(activity, "'뒤로' 버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, activity.getString(R.string.double_back_to_exit), Toast.LENGTH_SHORT).show()
                 activity.lifecycleScope.launch {
                     delay(2000)
                     doubleBackToExitPressedOnce = false

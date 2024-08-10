@@ -15,8 +15,9 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.hci.loopsns.R
-import com.hci.loopsns.utils.CategorySelectEditText
-import com.txusballesteros.AutoscaleEditText
+import com.hci.loopsns.utils.EditTextAutoSizeUtil
+import com.hci.loopsns.utils.HashTagEditText
+import com.lb.auto_fit_textview.AutoResizeTextView
 import java.util.regex.Pattern
 import kotlin.reflect.KFunction2
 
@@ -36,30 +37,22 @@ class SelectCategoryBottomSheet : BottomSheetDialogFragment() {
         viewOfLayout.findViewById<TextView>(R.id.tag_2_article).text = categories[1]
 
         val keywordsList = listOf(
-            viewOfLayout.findViewById<EditText>(R.id.keyword_1_article),
-            viewOfLayout.findViewById<EditText>(R.id.keyword_2_article),
-            viewOfLayout.findViewById<EditText>(R.id.keyword_3_article),
-            viewOfLayout.findViewById<EditText>(R.id.keyword_4_article)
+            viewOfLayout.findViewById<HashTagEditText>(R.id.keyword_1_article),
+            viewOfLayout.findViewById<HashTagEditText>(R.id.keyword_2_article),
+            viewOfLayout.findViewById<HashTagEditText>(R.id.keyword_3_article),
+            viewOfLayout.findViewById<HashTagEditText>(R.id.keyword_4_article)
         )
         for(i in keywords.indices) {
-            keywordsList[i].setText(buildString {
-                append("#")
-                append(keywords[i])
-            })
+            EditTextAutoSizeUtil.setupAutoResize(keywordsList[i], requireContext())
+
+            if(keywords[i].isNotBlank()) {
+                keywordsList[i].setText(buildString {
+                    append("#")
+                    append(keywords[i])
+                })
+            }
+
             //keywordsList[i].addEventListener()
-            keywordsList[i].filters = arrayOf(
-                InputFilter { src, start, end, dst, dstart, dend ->
-                    //val ps = Pattern.compile("^[a-zA-Z0-9ㄱ-ㅎ가-흐]+$") //영문 숫자 한글
-                    //영문 숫자 한글 천지인 middle dot[ᆞ]
-                    val ps =
-                        Pattern.compile("^[a-zA-Z0-9ㄱ-ㅎ가-흐ㄱ-ㅣ가-힣#ᆢᆞ\\u318d\\u119E\\u11A2\\u2022\\u2025a\\u00B7\\uFE55\\s?!]+$")
-                    if (!ps.matcher(src).matches()) {
-                        return@InputFilter ""
-                    } else {
-                        return@InputFilter null
-                    }
-                }
-            )
         }
 
         viewOfLayout.findViewById<Button>(R.id.cancel).setOnClickListener {
@@ -68,21 +61,38 @@ class SelectCategoryBottomSheet : BottomSheetDialogFragment() {
 
         viewOfLayout.findViewById<Button>(R.id.submit).setOnClickListener {
             if(keywordsList.all { it.text.isNullOrBlank() }) {
-                Toast.makeText(requireContext(), "키워드는 비워둘 수 없습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.keyword_cannot_be_empty), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            if(keywordsList.any { (it.text?.length ?: 0) > 8 }) {
-                Toast.makeText(requireContext(), "키워드의 최대 길이는 8글자 입니다.", Toast.LENGTH_SHORT).show()
+            if(keywordsList.any { (it.text?.length ?: 0) > 21 }) {
+                Toast.makeText(requireContext(), getString(R.string.maximum_length_keyword_20), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+
 
             this.onSubmitAction(
                 categories,
                 listOf(
-                    keywordsList[0].text.toString(),
-                    keywordsList[1].text.toString(),
-                    keywordsList[2].text.toString(),
-                    keywordsList[3].text.toString()
+                    if ((keywordsList[0].text?.length ?: "".length) > 0) {
+                        keywordsList[0].text.toString().substring(1)
+                    } else {
+                        ""
+                    },
+                    if ((keywordsList[1].text?.length ?: "".length) > 0) {
+                        keywordsList[1].text.toString().substring(1)
+                    } else {
+                        ""
+                    },
+                    if ((keywordsList[2].text?.length ?: "".length) > 0) {
+                        keywordsList[2].text.toString().substring(1)
+                    } else {
+                        ""
+                    },
+                    if ((keywordsList[3].text?.length ?: "".length) > 0) {
+                        keywordsList[3].text.toString().substring(1)
+                    } else {
+                        ""
+                    }
                 )
             )
 
