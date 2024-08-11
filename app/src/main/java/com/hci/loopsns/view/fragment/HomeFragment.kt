@@ -339,8 +339,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
         requireActivity().runOnUiThread {
             viewOfLayout.findViewById<TextView>(R.id.overview_text).text = spannable
             viewOfLayout.findViewById<TextView>(R.id.overview_time).text = buildString {
+                append(getString(R.string.based_front))
                 append(currentDateTime.format(formatter))
-                append(getString(R.string.based))
+                append(getString(R.string.based_end))
             }
         }
     }

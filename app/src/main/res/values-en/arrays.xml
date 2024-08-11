@@ -11,8 +11,8 @@
         <item>Ads</item>
         <item>Report</item>
         <item>Proposal</item>
-        <item>Violent</item>
-        <item>Sexual</item>
+        <!--item>Violent</item>
+        <item>Sexual</item-->
         <item>Other</item>
         <item>Health</item>
         <item>Travel</item>
@@ -121,7 +121,7 @@
         <item>policy proposal</item>
         <item>improvement</item>
         <item>project proposal</item>
-        <item>bleeding</item>
+        <!--item>bleeding</item>
         <item>death</item>
         <item>murder</item>
         <item>knife</item>
@@ -136,7 +136,7 @@
         <item>street urination</item>
         <item>sex</item>
         <item>pornography</item>
-        <item>sex trafficking</item>
+        <item>sex trafficking</item-->
         <item>books</item>
         <item>products</item>
         <item>announcements</item>

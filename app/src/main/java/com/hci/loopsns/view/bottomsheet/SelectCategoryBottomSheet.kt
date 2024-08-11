@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -17,8 +16,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.hci.loopsns.R
 import com.hci.loopsns.utils.EditTextAutoSizeUtil
 import com.hci.loopsns.utils.HashTagEditText
-import com.lb.auto_fit_textview.AutoResizeTextView
-import java.util.regex.Pattern
 import kotlin.reflect.KFunction2
 
 class SelectCategoryBottomSheet : BottomSheetDialogFragment() {

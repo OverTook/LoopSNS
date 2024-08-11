@@ -9,12 +9,15 @@
     <string name="all_writing">전체 보기</string> <!--전체 보기-->
     <string name="location_loading">"위치를 가져오는 중입니다."</string> <!--위치를 가져오는 동안 표시될 텍스트-->
     <string name="time_loading">시간을 가져오는 중입니다.</string> <!--시간을 가져오는 동안 표시될 텍스트-->
-    <string name="article_list">게시글 목록</string> <!-- 내가 작성한 게시글 목록 -->
-    <string name="like_list">좋아요 목록</string> <!-- 내가 좋아요 표시한 게시글 목록-->
+    <string name="article_list">게시물 목록</string> <!-- 내가 작성한 게시물 목록 -->
+    <string name="like_list">좋아요 목록</string> <!-- 내가 좋아요 표시한 게시물 목록-->
 
+    <string name="activity_edit_profile">프로필 수정</string>
+    <string name="activity_edit_profile_name">이름</string>
+    <string name="activity_edit_profile_email">이메일</string>
 
     <string name="notifications_text">알림</string> <!--알림 탭 (댓글 알림 등 알림이 저장되는 페이지)-->
-    <string name="search_text">근처에서 검색해보세요.</string>  <!-- 상단 검색바에 표시될 placeholder -->
+    <string name="search_text">원하는 조건으로 검색해보세요.</string>  <!-- 상단 검색바에 표시될 placeholder -->
 
     <string name="settings_dark_mode">다크 모드</string> <!--설정창의 다크 모드 이름-->
     <string name="settings_text">설정</string> <!--설정창 이름-->
@@ -23,13 +26,16 @@
     <string name="settings_terms_of_use">이용 약관</string>  <!--설정창의 개인정보 이용 약관 이름-->
     <string name="settings_privacy_policy">개인 정보 처리 방침</string>  <!--설정창의 개인정보 개인 정보 처리 방침 메뉴 이름-->
     <string name="settings_faq">문의 사항</string>  <!--설정창의 문의 사항 메뉴 이름-->
-    <string name="settings_notifications">알람 설정</string>  <!--설정창의 알람 설정 메뉴 이름-->
+    <string name="settings_notifications">알림 설정</string>  <!--설정창의 알림 설정 메뉴 이름-->
     <string name="settings_logout">로그아웃</string>  <!--설정창의 로그아웃 메뉴 이름-->
     <string name="settings_unregister">계정 삭제</string>  <!--설정창의 계정 삭제 메뉴 이름-->
 
     <string name="nearby">" 인근 "</string>   <!--  ~~~인근 10km ~~~개의 게시물이 올라왔어요. 에서 "인근"  -->
     <string name="posts_came_up">개의 게시물이 올라왔어요.</string>  <!--  ~~~인근 10km ~~~개의 게시물이 올라왔어요. 에서 "개의 게시물이 올라왔어요."  -->
-    <string name="based">기준</string> <!-- 2024-12-22 12:00기준  에서 "기준" -->
+
+    <!-- based 수정 부분 -->
+    <string name="based_front">""</string> <!-- 2024-12-22 12:00기준  에서 "기준" -->
+    <string name="based_end">" 기준"</string> <!-- 2024-12-22 12:00기준  에서 "기준" -->
 
 
     <string name="settings_system_default">시스템 기본값</string> <!-- 설정에서 각 메뉴의 시스템 기본값 텍스트 -->
@@ -40,8 +46,8 @@
     <string name="settings_ask_app_restart_yes">예</string>  <!-- 설정에서 나타나는 팝업창의 승인 텍스트 -->
     <string name="settings_ask_app_restart_no">아니오</string>  <!-- 설정에서 나타나는 팝업창의 거부 텍스트 -->
     <string name="notifications_new_comment">새로운 댓글</string>  <!-- 새로운 댓글 알림 표시 텍스트 -->
-    <string name="article_detail">게시글 상세보기</string>  <!-- 게시글을 클릭해서 상세보기로 들어갔을때 상단 표시되는 이름 -->
-    <string name="bottom_sheet_option_delete">게시글 삭제</string>
+    <string name="article_detail">게시물 상세보기</string>  <!-- 게시물을 클릭해서 상세보기로 들어갔을때 상단 표시되는 이름 -->
+    <string name="bottom_sheet_option_delete">게시물 삭제하기</string>
     <string name="bottom_sheet_option_share">공유</string>
     <string name="bottom_sheet_option_report">신고</string>
     <string name="comment_highlight_fixed_reason">댓글 알림에 의해 상단 표시된 댓글입니다.</string>
@@ -51,10 +57,10 @@
     <string name="article_detail_comment_count_end">""</string>
     <string name="article_detail_sub_comment_count_start">"답글 "</string>
     <string name="article_detail_sub_comment_count_end">""</string>
-    <string name="settings_category_personal_info">개인 정보 설정</string>
+    <string name="settings_category_personal_info">개인정보 설정</string>
     <string name="settings_customer_service">고객 지원</string>
     <string name="settings_account_manage">계정 관리</string>
-    <string name="article_create_rules"><![CDATA[게시글 작성 시 규칙 준수\n \n 1. 모든 게시물은 커뮤니티 규칙 및 현행 법률을 준수해야 합니다.\n 2. 불법 행위, 차별, 혐오, 명예훼손, 사생활 침해 등의 포함하는 내용은 금지됩니다.\n \n <금지 행위>\n 1. 폭력성, 음란성, 혐오감을 주는 게시물 금지\n 2. 타인의 개인정보를 동의없이 공유하거나 침해하는 행위 금지\n 3. 타인의 명의를 도용한 게시물 및 댓글 금지\n 4. 의도적 도배 게시물 및 댓글 금지\n \n 게시글 작성 Tip!\n 1. 이웃들에게 도움이 되는 유익하고 신뢰할 수 있는 정보를 공유하세요!\n 2. 사실에 근거한 내용을 작성하고, 허위사실 유포를 피하세요!\n 3. 적절한 언어를 사용하여 이웃들에게 불쾌감을 주지 않도록 주의하세요!\n \n <신고 및 제재>\n 1. 규칙 위반 게시물은 신고 버튼을 통해 신고할 수 있습니다\n 2. 반복적인 규칙 위반 시 서비스 이용이 제한될 수 있습니다.\n -> 1차 경고: 경미한 규칙 위반 시 경고 메시지를 받게 됩니다.\n -> 2차 제한: 반복적인 규칙 위반 시 일정 기간 동안 게시물 작성 및 커뮤니티 활동이 제한됩니다.\n -> 3차 영구 제한: 심각한 규칙 위반 또는 반복적인 위반 시 영구적으로 서비스 이용이 제한될 수 있습니다.\n \n 첨부한 사진은 AI에 의해 자동 모자이크 처리 될 수 있습니다.]]></string>
+    <string name="article_create_rules"><![CDATA[게시물 작성 시 규칙 준수\n \n 1. 모든 게시물은 커뮤니티 규칙 및 현행 법률을 준수해야 합니다.\n 2. 불법 행위, 차별, 혐오, 명예훼손, 사생활 침해 등의 포함하는 내용은 금지됩니다.\n \n <금지 행위>\n 1. 폭력성, 음란성, 혐오감을 주는 게시물 금지\n 2. 타인의 개인정보를 동의없이 공유하거나 침해하는 행위 금지\n 3. 타인의 명의를 도용한 게시물 및 댓글 금지\n 4. 의도적 도배 게시물 및 댓글 금지\n \n 게시물 작성 Tip!\n 1. 이웃들에게 도움이 되는 유익하고 신뢰할 수 있는 정보를 공유하세요!\n 2. 사실에 근거한 내용을 작성하고, 허위사실 유포를 피하세요!\n 3. 적절한 언어를 사용하여 이웃들에게 불쾌감을 주지 않도록 주의하세요!\n \n <신고 및 제재>\n 1. 규칙 위반 게시물은 신고 버튼을 통해 신고할 수 있습니다\n 2. 반복적인 규칙 위반 시 서비스 이용이 제한될 수 있습니다.\n -> 1차 경고: 경미한 규칙 위반 시 경고 메시지를 받게 됩니다.\n -> 2차 제한: 반복적인 규칙 위반 시 일정 기간 동안 게시물 작성 및 커뮤니티 활동이 제한됩니다.\n -> 3차 영구 제한: 심각한 규칙 위반 또는 반복적인 위반 시 영구적으로 서비스 이용이 제한될 수 있습니다.\n \n 첨부한 사진은 AI에 의해 자동 모자이크 처리 될 수 있습니다.]]></string>
     <string name="location_edit_ask_warning_body"><![CDATA[위치를 바꾸는 경우 게시물의 신뢰성이 낮아질 수 있으며, 위치를 바꾼 후 정책을 위반한 것으로 판단되는 경우 운영 정책에 의해 삭제될 수 있습니다.\n계속하시겠습니까?]]></string>
     <string name="location_edit_ask_warning_head">위치 변경 경고</string>
     <string name="location_edit_ask_warning_yes">예</string>
@@ -113,13 +119,13 @@
     <string name="error_bring_comments">댓글을 불러오는 중 오류가 발생했습니다.</string>
     <string name="error_comment_information_response">댓글 정보 응답이 성공적이지 않습니다.</string>
     <string name="comment_make_success">댓글이 작성되었습니다.</string>
-    <string name="fail_get_list">게시글 목록을 받아올 수 없습니다.</string>
+    <string name="fail_get_list">게시물 목록을 받아올 수 없습니다.</string>
     <string name="no_location_permission">위치 권한이 없어 사용할 수 없습니다.</string>
     <string name="unable_get_current_location">현재 위치를 받아올 수 없습니다.</string>
     <string name="fail_marker_request">마커 요청에 실패했습니다.</string>
     <string name="fail_timeline_request">타임라인 요청에 실패했습니다.</string>
-    <string name="fail_create_post_error_code">"게시글 작성에 실패했습니다. 오류 코드 "</string>
-    <string name="error_post_creation_request">게시글 작성 요청 중 오류가 발생했습니다.</string>
+    <string name="fail_create_post_error_code">"게시물 작성에 실패했습니다. 오류 코드 "</string>
+    <string name="error_post_creation_request">게시물 작성 요청 중 오류가 발생했습니다.</string>
 
     <string name="problem_image_compression_engine_no_file">이미지 압축 엔진에 이상이 있습니다. 파일이 없습니다.</string>
     <string name="problem_image_compression_engine">이미지 압축 엔진에 이상이 있습니다.</string>
@@ -129,10 +135,10 @@
     <string name="not_enough_content">내용이 충분하지 않습니다.</string>
     <string name="no_inappropriate_content">부적절한 내용은 들어갈 수 없습니다.</string>
     <string name="server_error_category_analysis_not_possible">서버 내부 오류로 카테고리 분석이 불가능합니다.</string>
-    <string name="post_information_invalid">게시글 정보가 유효하지 않습니다.</string>
-    <string name="deleted_post">삭제된 게시글입니다.</string>
-    <string name="post_information_response_not_successful">게시글 정보 응답이 성공적이지 않습니다.</string>
-    <string name="fail_request_post_information">게시글 정보 요청에 실패했습니다.</string>
+    <string name="post_information_invalid">게시물 정보가 유효하지 않습니다.</string>
+    <string name="deleted_post">삭제된 게시물입니다.</string>
+    <string name="post_information_response_not_successful">게시물 정보 응답이 성공적이지 않습니다.</string>
+    <string name="fail_request_post_information">게시물 정보 요청에 실패했습니다.</string>
     <string name="searche_at_least_two_letters">검색은 최소 두글자입니다.</string>
     <string name="fail_get_token">토큰을 가져오는데 실패했습니다.</string>
     <string name="fail_change_profile_picture">프로필 사진 변경에 실패했습니다.</string>
@@ -171,13 +177,13 @@
     <string name="notification_comment_suffix">"개의 좋아요가 달렸습니다."</string>
 
     <string name="double_back_to_exit">\'뒤로\' 버튼을 한번 더 누르시면 종료됩니다.</string>
-    <string name="purpose_and_keyword_header">의도 및 키워드</string>
-    <string name="purpose_and_keyword_body">의도는 수정할 수 없으나, 키워드는 수정하실 수 있습니다.</string>
+    <string name="purpose_and_keyword_header">카테고리 및 키워드</string>     <!-- 현재는 의도를 카테고리라고 표시 -->
+    <string name="purpose_and_keyword_body">카테고리는 수정할 수 없으나, 키워드는 수정하실 수 있습니다.</string>    <!-- 현재는 의도를 카테고리라고 표시 -->
     <string name="purpose_and_keyword_cancel">취소</string>
     <string name="purpose_and_keyword_submit">작성</string>
     <string name="purpose_and_keyword_keyword_hint">#키워드</string>
     <string name="search_option_category_default">전체 주제</string>
-    <string name="search_option_search_by_contents">내용</string>
+    <string name="search_option_search_by_contents">" 내용 "</string>
     <string name="search_option_search_by_keywords">키워드</string>
     <string name="search_option_search_by_writer">작성자</string>
 </resources>

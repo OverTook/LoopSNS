@@ -39,7 +39,7 @@
                 android:layout_gravity="center"
                 android:fontFamily="@font/pretendard_medium"
                 android:gravity="center_vertical"
-                android:text="프로필 수정"
+                android:text="@string/activity_edit_profile"
                 android:textColor="@color/main_text"
                 android:textSize="20sp" />
 
@@ -74,7 +74,7 @@
         android:layout_marginStart="33dp"
         android:layout_marginTop="40dp"
         android:fontFamily="@font/pretendard_bold"
-        android:text="이름"
+        android:text="@string/activity_edit_profile_name"
         android:textColor="@color/sub_text_1"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -102,7 +102,7 @@
         android:layout_marginStart="33dp"
         android:layout_marginTop="15dp"
         android:fontFamily="@font/pretendard_bold"
-        android:text="이메일"
+        android:text="@string/activity_edit_profile_email"
         android:textColor="@color/sub_text_1"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"

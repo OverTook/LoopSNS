@@ -117,8 +117,9 @@ class SearchRecyclerViewAdapter(private val activity: ArticleSearchActivity) : R
 
         return ViewType.ARTICLE
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val inflater = parent.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val inflater = LayoutInflater.from(activity)
 //        if(currentMode and SearchMode.IsLoading == SearchMode.IsLoading) {
 //            return ItemLoadingViewHolder(inflater.inflate(R.layout.activity_search_result_loading, parent, false))
 //        }

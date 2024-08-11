@@ -9,12 +9,15 @@
     <string name="all_writing">View all</string> <!--전체 보기-->
     <string name="location_loading">"Fetching location."</string> <!--위치를 가져오는 동안 표시될 텍스트-->
     <string name="time_loading">Fetching time.</string> <!--시간을 가져오는 동안 표시될 텍스트-->
-    <string name="article_list">List of posts</string> <!-- 내가 작성한 게시글 목록 -->
-    <string name="like_list">Likes list</string> <!-- 내가 좋아요 표시한 게시글 목록-->
+    <string name="article_list">Posts</string> <!-- 내가 작성한 게시글 목록 -->
+    <string name="like_list">Likes</string> <!-- 내가 좋아요 표시한 게시글 목록-->
 
+    <string name="activity_edit_profile">Edit profile</string>
+    <string name="activity_edit_profile_name">Name</string>
+    <string name="activity_edit_profile_email">Email</string>
 
     <string name="notifications_text">Notifications</string> <!--알림 탭 (댓글 알림 등 알림이 저장되는 페이지)-->
-    <string name="search_text">Try searching near you.</string>  <!-- 상단 검색바에 표시될 placeholder -->
+    <string name="search_text">subject, keyword, intention, user name</string>  <!-- 상단 검색바에 표시될 placeholder -->
 
     <string name="settings_dark_mode">Dark Mode</string> <!--설정창의 다크 모드 이름-->
     <string name="settings_text">Settings</string> <!--설정창 이름-->
@@ -28,8 +31,9 @@
     <string name="settings_unregister">Delete account</string>  <!--설정창의 계정 삭제 메뉴 이름-->
 
     <string name="nearby">" Nearby "</string>   <!--  ~~~인근 10km ~~~개의 게시물이 올라왔어요. 에서 "인근"  -->
-    <string name="posts_came_up">" posts have been published."</string>  <!--  ~~~인근 10km ~~~개의 게시물이 올라왔어요. 에서 "개의 게시물이 올라왔어요."  -->
-    <string name="based">" Criteria"</string> <!-- 2024-12-22 12:00기준  에서 "기준" -->
+    <string name="posts_came_up">" new posts."</string>  <!--  ~~~인근 10km ~~~개의 게시물이 올라왔어요. 에서 "개의 게시물이 올라왔어요."  -->
+    <string name="based_front">"as of "</string> <!-- 2024-12-22 12:00기준  에서 "기준" -->
+    <string name="based_end">""</string> <!-- 2024-12-22 12:00기준  에서 "기준" -->
 
     <string name="settings_system_default">System defaults</string> <!-- 설정에서 각 메뉴의 시스템 기본값 텍스트 -->
     <string name="settings_on">On</string> <!-- 설정에서 각 메뉴의 켜짐 텍스트 -->
@@ -39,11 +43,11 @@
     <string name="settings_ask_app_restart_yes">Yes</string>  <!-- 설정에서 나타나는 팝업창의 승인 텍스트 -->
     <string name="settings_ask_app_restart_no">No</string>  <!-- 설정에서 나타나는 팝업창의 거부 텍스트 -->
     <string name="notifications_new_comment">New comment</string>  <!-- 새로운 댓글 알림 표시 텍스트 -->
-    <string name="article_detail">View post details</string>  <!-- 게시글을 클릭해서 상세보기로 들어갔을때 상단 표시되는 이름 -->
-    <string name="bottom_sheet_option_delete">Delete a post</string>
+    <string name="article_detail">View post in detail</string>  <!-- 게시글을 클릭해서 상세보기로 들어갔을때 상단 표시되는 이름 -->
+    <string name="bottom_sheet_option_delete">Delete posts</string>
     <string name="bottom_sheet_option_share">Share</string>
     <string name="bottom_sheet_option_report">Report</string>
-    <string name="comment_highlight_fixed_reason">The comment that is topped by the comment notification.</string>
+    <string name="comment_highlight_fixed_reason">Comment notification is shown at the top.</string>
     <string name="comment_writer_deleted">(Deleted)</string>
     <string name="comment_contents_deleted">This comment has been deleted.</string>
     <string name="article_detail_comment_count_start">"Comment "</string>
@@ -52,7 +56,7 @@
     <string name="article_detail_sub_comment_count_end">""</string>
     <string name="settings_category_personal_info">Privacy settings</string>
     <string name="settings_customer_service">Support</string>
-    <string name="settings_account_manage">Manage your account</string>
+    <string name="settings_account_manage">Manage account</string>
     <string name="article_create_rules"><![CDATA[Follow the rules when posting\n \n 1. All posts must comply with community rules and current laws.\n 2. Content that includes illegal activity, discrimination, hate, defamation, or invasion of privacy is prohibited.\n \n <Prohibited behaviour>\n 1. No violent, obscene, or hateful posts.\n 2. Do not share or invade other people\'s privacy without their consent\n 3. Do not post or comment using someone else\'s name\n 4. Do not intentionally flame\n \n Posting Tips!\n 1. Share useful and reliable information that will benefit your neighbours\n 2. Be factual and avoid spreading falsehoods! \n 3. Use appropriate language to avoid offending your neighbours!\n \n <Reporting and Sanctions>\n 1. You can report posts that violate the rules through the Report button\n 2. Repeated rule violations may result in service restrictions:\n -> 1st Warning: You will receive a warning message for minor rule violations. Repeated violations will result in restrictions on posting and community activities for a period of time.\n -> 2nd Restriction: Repeated violations will result in restrictions on posting and community activities for a period of time.\n -> 3rd Permanent Restriction: Serious or repeated violations may result in permanent restrictions on service use.\n \n Attached photos may be automatically mosaicked by AI.]]></string>
     <string name="location_edit_ask_warning_body"><![CDATA[Changing your location may reduce the credibility of your post, and if it\'s determined that you\'ve violated our policies after changing your location, it may be removed by our operating policies.\nSure you want to continue?]]></string>
     <string name="location_edit_ask_warning_head">Location change warning</string>
@@ -69,10 +73,10 @@
     <string name="toolbar_text_modify_location">Edit location</string>
     <string name="settings_notification_comment_setting">Receive comment notifications</string>
     <string name="settings_notification_head">Notification settings</string>
-    <string name="settings_notification_favorite_setting">Receive post resonance notifications</string>
+    <string name="settings_notification_favorite_setting">Receive empathy notifications</string>
     <string name="settings_unregister_head">Delete account</string>
-    <string name="settings_unregister_body"><![CDATA[Are you sure you want to delete your account?\nPlease enter Delete to continue.]]></string>
-    <string name="settings_unregister_warning">This is a sensitive operation that cannot be reversed.</string>
+    <string name="settings_unregister_body"><![CDATA[Are you sure you want to delete your account?\nPlease enter \'Delete\' to confirm.]]></string>
+    <string name="settings_unregister_warning">You cannot undo this action.</string>
     <string name="settings_unregister_repeat_word">Delete</string>
     <string name="settings_unregister_yes">Delete</string>
     <string name="settings_unregister_no">Cancel</string>
@@ -82,8 +86,8 @@
     <string name="settings_logout_body">Are you sure you want to log out?</string>
     <string name="settings_logout_yes">Yes</string>
     <string name="settings_logout_no">No</string>
-    <string name="no_articles">There are no posts.</string>
-    <string name="please_type_keywords">Please enter a search term.</string>
+    <string name="no_articles">No posts retrieved.</string>
+    <string name="please_type_keywords">Please enter subject, keyword, intention, or user name.</string>
     <string name="cant_get_current_location">Unable to get current location.</string>
     <string name="terms_of_use">Terms of Use</string>
     <string name="terms_of_information">Privacy policy</string>
@@ -93,19 +97,19 @@
     <string name="article_delete_body">Are you sure you want to delete the post?</string>
     <string name="article_delete_yes">Yes</string>
     <string name="article_delete_no">No</string>
-    <string name="comment_delete_head">Delete a comment</string>
+    <string name="comment_delete_head">Delete comments</string>
     <string name="comment_delete_body">Are you sure you want to delete the comment?</string>
     <string name="comment_delete_yes">Yes</string>
     <string name="comment_delete_no">No</string>
-    <string name="article_report_head">Report a post</string>
+    <string name="article_report_head">Report posts</string>
     <string name="article_report_body">Are you sure you want to report the post?</string>
     <string name="article_report_yes">Yes</string>
     <string name="article_report_no">No</string>
-    <string name="comment_report_head">Report a comment</string>
+    <string name="comment_report_head">Report comments</string>
     <string name="comment_report_body">Are you sure you want to report the comment?</string>
     <string name="comment_report_yes">Yes</string>
     <string name="comment_report_no">No</string>
-    <string name="comment_delete_option">Delete a comment</string>
+    <string name="comment_delete_option">Delete comments</string>
 
     <string name="keyword_cannot_be_empty">The keyword cannot be empty.</string>
     <string name="maximum_length_keyword_20">The maximum length of a keyword is 20 characters.</string>
@@ -151,7 +155,7 @@
     <string name="account_delete">Account deleted.</string>
     <string name="invalid_request">Invalid request.</string>
     <string name="error_getting_terms">There was an error getting the terms.</string>
-    <string name="reported_successful">The report is complete.</string>
+    <string name="reported_successful">The report was sent to the administrator.</string>
 
     <string name="share_via_text">"Check Loop for the following shared information: "</string>
     <string name="share_select_text">Shared means</string>
@@ -166,7 +170,7 @@
     <string name="permission_request_gps_yes">Permissions</string>
     <string name="permission_request_gps_no">Reject</string>
 
-    <string name="notification_comment_prefix">"Your poster has "</string>
+    <string name="notification_comment_prefix">""</string>
     <string name="notification_comment_suffix">" likes."</string>
 
     <string name="double_back_to_exit">Press the \'Back\' button one more time to exit.</string>
@@ -175,8 +179,8 @@
     <string name="purpose_and_keyword_cancel">Cancel</string>
     <string name="purpose_and_keyword_submit">Create</string>
     <string name="purpose_and_keyword_keyword_hint">#Keyword</string>
-    <string name="search_option_category_default">전체 주제</string>
-    <string name="search_option_search_by_contents">내용</string>
-    <string name="search_option_search_by_keywords">키워드</string>
-    <string name="search_option_search_by_writer">작성자</string>
+    <string name="search_option_category_default">All subjects</string>
+    <string name="search_option_search_by_contents">Contents</string>
+    <string name="search_option_search_by_keywords">Keywords</string>
+    <string name="search_option_search_by_writer">User name</string>
 </resources>

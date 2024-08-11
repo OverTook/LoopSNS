@@ -49,7 +49,6 @@
             android:autoSizeTextType="uniform"
             android:fontFamily="@font/pretendard_semi_bold"
             android:gravity="center_vertical"
-            android:text="ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ"
             android:textColor="@color/main_text"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@+id/top_location_image"

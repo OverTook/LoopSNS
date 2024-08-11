@@ -11,8 +11,8 @@
         <item>광고</item>
         <item>제보</item>
         <item>제안</item>
-        <item>폭력적</item>
-        <item>성인물</item>
+        <!--item>폭력적</item>
+        <item>성인물</item-->
         <item>기타</item>
         <item>건강</item>
         <item>여행</item>
@@ -122,7 +122,7 @@
         <item>정책 제안</item>
         <item>개선안</item>
         <item>프로젝트 제안</item>
-        <item>출혈</item>
+        <!--item>출혈</item>
         <item>사망</item>
         <item>살인</item>
         <item>칼</item>
@@ -138,7 +138,7 @@
         <item>노상방뇨</item>
         <item>섹스</item>
         <item>음란물</item>
-        <item>성매매</item>
+        <item>성매매</item-->
         <item>책</item>
         <item>상품</item>
         <item>공지사항</item>
