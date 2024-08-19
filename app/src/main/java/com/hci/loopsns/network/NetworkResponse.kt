@@ -75,8 +75,8 @@ data class ArticleDetail (
 
     var writer: String?, //글쓴이
     val contents: String, //내용
-    val cat1: String, //첫 번째 카테고리
-    val cat2: String, //두 번째 카테고리
+    val intention: String, //첫 번째 카테고리
+    val subject: String, //두 번째 카테고리
     val keywords: List<String>, //키워드
     val time: String, //게시글 작성 시간
     @SerializedName("comment_counts")
@@ -222,4 +222,11 @@ data class SearchResponse (
 data class ReportResponse (
     val success: Boolean, //응답 성공 여부
     val msg: String //응답 실패 시 오류 메시지
+)
+
+data class LocalitiesResponse (
+    val success: Boolean, //응답 성공 여부
+    val msg: String, //응답 실패 시 오류 메시지
+
+    val data: Map<String, Map<String, List<String>>>
 )

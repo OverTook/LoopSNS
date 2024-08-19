@@ -105,7 +105,7 @@ dependencies {
     //implementation("com.github.YarikSOffice:lingver:1.3.0") //다국어 처리
 
     implementation("com.saadahmedev.popup-dialog:popup-dialog:2.0.0") //다이얼로그
-    implementation("com.royrodriguez:transitionbutton:0.2.0") //로그인 UI 디자인용
+    //implementation("com.royrodriguez:transitionbutton:0.2.0") //로그인 UI 디자인용
 
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)

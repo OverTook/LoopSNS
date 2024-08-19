@@ -2,6 +2,7 @@ package com.hci.loopsns.network
 
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.http.Body
@@ -12,6 +13,7 @@ import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
+import retrofit2.http.Streaming
 
 interface NetworkInterface {
 
@@ -180,4 +182,17 @@ interface NetworkInterface {
         @Query("comment_id") commentId: String,
         @Query("sub_comment_id") subCommentId: String,
     ): Call<ReportResponse>
+
+    @GET("/load_addr_csv")
+    fun getAllLocalities(): Call<LocalitiesResponse>
+
+    @Streaming
+    @GET("/report_download")
+    fun downloadReport(
+        @Query("intentions") intentions: List<String>,
+        @Query("subjects") subjects: List<String>,
+        @Query("sido") loc1: String,
+        @Query("sigungu") loc2: String,
+        @Query("eupmyeondong") loc3: String,
+    ): Call<ResponseBody>
 }

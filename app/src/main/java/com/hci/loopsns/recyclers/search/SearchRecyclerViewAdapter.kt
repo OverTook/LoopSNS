@@ -246,8 +246,8 @@ class SearchRecyclerViewAdapter(private val activity: ArticleSearchActivity) : R
                 holder.contents.text = item.contents
                 holder.time.text =  item.time.toDate().formatTo("yyyy-MM-dd HH:mm")
 
-                holder.category1.text = item.cat1
-                holder.category2.text= item.cat2
+                holder.category1.text = item.intention
+                holder.category2.text= item.subject
 
                 holder.likeCount.text = item.likeCount.toString()
                 holder.commentCount.text = item.commentCount.toString()
@@ -370,5 +370,29 @@ class SearchRecyclerViewAdapter(private val activity: ArticleSearchActivity) : R
     fun reloadData() { //히스토리 내리는 거
         currentMode = currentMode and SearchMode.History.inv()
         this.notifyDataSetChanged()
+    }
+
+    fun updateCommentcount(articleId: String, increment: Int) {
+        for(i in searchResults.indices) {
+            if(searchResults[i].uid != articleId) {
+                continue
+            }
+
+            searchResults[i].commentCount += increment
+            notifyItemChanged(i + 1)
+            return
+        }
+    }
+
+    fun updateLikeCount(articleId: String, increment: Int) {
+        for(i in searchResults.indices) {
+            if(searchResults[i].uid != articleId) {
+                continue
+            }
+
+            searchResults[i].likeCount += increment
+            notifyItemChanged(i + 1)
+            return
+        }
     }
 }

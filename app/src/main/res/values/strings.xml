@@ -134,7 +134,7 @@
     <string name="no_more_than_one_photo">사진은 한 장을 넘길 수 없습니다.</string>
     <string name="not_enough_content">내용이 충분하지 않습니다.</string>
     <string name="no_inappropriate_content">부적절한 내용은 들어갈 수 없습니다.</string>
-    <string name="server_error_category_analysis_not_possible">서버 내부 오류로 카테고리 분석이 불가능합니다.</string>
+    <string name="server_error_category_analysis_not_possible">서버 내부 오류로 의도 및 주제 분석이 불가능합니다.</string>
     <string name="post_information_invalid">게시물 정보가 유효하지 않습니다.</string>
     <string name="deleted_post">삭제된 게시물입니다.</string>
     <string name="post_information_response_not_successful">게시물 정보 응답이 성공적이지 않습니다.</string>
@@ -177,12 +177,13 @@
     <string name="notification_comment_suffix">"개의 좋아요가 달렸습니다."</string>
 
     <string name="double_back_to_exit">\'뒤로\' 버튼을 한번 더 누르시면 종료됩니다.</string>
-    <string name="purpose_and_keyword_header">카테고리 및 키워드</string>     <!-- 현재는 의도를 카테고리라고 표시 -->
-    <string name="purpose_and_keyword_body">카테고리는 수정할 수 없으나, 키워드는 수정하실 수 있습니다.</string>    <!-- 현재는 의도를 카테고리라고 표시 -->
+    <string name="purpose_and_keyword_header">의도, 주제 및 키워드</string>     <!-- 현재는 의도를 카테고리라고 표시 -->
+    <string name="purpose_and_keyword_body">의도 및 주제는 수정할 수 없으나, 키워드는 수정하실 수 있습니다.</string>    <!-- 현재는 의도를 카테고리라고 표시 -->
     <string name="purpose_and_keyword_cancel">취소</string>
     <string name="purpose_and_keyword_submit">작성</string>
     <string name="purpose_and_keyword_keyword_hint">#키워드</string>
-    <string name="search_option_category_default">전체 주제</string>
+    <string name="search_option_category1_default">전체 의도</string>
+    <string name="search_option_category2_default">전체 주제</string>
     <string name="search_option_search_by_contents">" 내용 "</string>
     <string name="search_option_search_by_keywords">키워드</string>
     <string name="search_option_search_by_writer">작성자</string>

@@ -53,4 +53,5 @@
     <color name="icon_search">#9F9F9F</color>
     <color name="icon_history_delete">#9F9F9F</color>
     <color name="icon_history_back">#9F9F9F</color>
+    <color name="icon_summarize">#000000</color>
 </resources>

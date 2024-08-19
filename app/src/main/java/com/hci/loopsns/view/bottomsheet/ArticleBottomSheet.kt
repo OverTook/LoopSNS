@@ -1,6 +1,5 @@
 package com.hci.loopsns.view.bottomsheet
 
-import android.animation.ValueAnimator
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -8,30 +7,27 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewGroup.MarginLayoutParams
 import android.widget.Button
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.marginBottom
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.hci.loopsns.R
-import com.hci.loopsns.network.ArticleDetail
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.hci.loopsns.R
 import com.hci.loopsns.event.CommentListener
 import com.hci.loopsns.event.CommentManager
 import com.hci.loopsns.event.FavoriteListener
 import com.hci.loopsns.event.FavoriteManager
 import com.hci.loopsns.network.AddressResponse
 import com.hci.loopsns.network.AddressResult
+import com.hci.loopsns.network.ArticleDetail
 import com.hci.loopsns.network.Comment
 import com.hci.loopsns.network.NetworkManager
 import com.hci.loopsns.recyclers.timeline.ArticleRecyclerViewAdapter
-import com.skydoves.androidveil.VeilRecyclerFrameView
 import java.util.Locale
 
 class ArticleBottomSheet() : BottomSheetDialogFragment(), View.OnClickListener, CommentListener, FavoriteListener {

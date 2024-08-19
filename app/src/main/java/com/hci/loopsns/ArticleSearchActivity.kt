@@ -20,6 +20,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
+import com.hci.loopsns.event.CommentListener
+import com.hci.loopsns.event.CommentManager
+import com.hci.loopsns.event.FavoriteListener
+import com.hci.loopsns.event.FavoriteManager
+import com.hci.loopsns.network.ArticleDetail
+import com.hci.loopsns.network.Comment
 import com.hci.loopsns.network.NetworkManager
 import com.hci.loopsns.network.SearchResponse
 import com.hci.loopsns.recyclers.search.SearchMode
@@ -35,7 +41,7 @@ import kotlin.system.exitProcess
 
 
 class ArticleSearchActivity : AppCompatActivity(), View.OnClickListener,
-    TextView.OnEditorActionListener, View.OnFocusChangeListener {
+    TextView.OnEditorActionListener, View.OnFocusChangeListener, CommentListener, FavoriteListener {
 
     private lateinit var searchEditText: EditText
 
@@ -70,6 +76,9 @@ class ArticleSearchActivity : AppCompatActivity(), View.OnClickListener,
         }
 
         onBackPressedDispatcher.addCallback(onBackPressedCallback)
+
+        CommentManager.getInstance().registerCommentListener(this)
+        FavoriteManager.getInstance().registerFavoriteListener(this)
     }
 
 
@@ -213,5 +222,28 @@ class ArticleSearchActivity : AppCompatActivity(), View.OnClickListener,
 
         adapter.searchWithoutHistoryAdd()
         retrieveArticles(searchEditText.text.toString())
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        CommentManager.getInstance().removeCommentListener(this)
+        FavoriteManager.getInstance().removeFavoriteListener(this)
+    }
+
+    override fun onCommentDeleted(uid: String) {
+        adapter.updateCommentcount(uid, -1)
+    }
+
+    override fun onCommentCreated(comment: Comment) {
+        adapter.updateCommentcount(comment.articleId!!, 1)
+    }
+
+    override fun onFavoriteArticle(article: ArticleDetail) {
+        adapter.updateLikeCount(article.uid, 1)
+    }
+
+    override fun onUnfavoriteArticle(articleId: String) {
+        adapter.updateLikeCount(articleId, -1)
     }
 }

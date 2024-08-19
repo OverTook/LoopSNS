@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Loop</string>
-    <string name="google_sdk_id" translatable="false">775100543200-k9pr4r5j2n7tm1jd46tsoenqipg831cq.apps.googleusercontent.com</string>
     <string name="underlined_start_guest"><u>Getting started as a guest</u></string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="comment_hint">Enter your comment</string> <!--댓글 코멘트-->
@@ -179,7 +178,8 @@
     <string name="purpose_and_keyword_cancel">Cancel</string>
     <string name="purpose_and_keyword_submit">Create</string>
     <string name="purpose_and_keyword_keyword_hint">#Keyword</string>
-    <string name="search_option_category_default">All subjects</string>
+    <string name="search_option_category1_default">All intents</string>
+    <string name="search_option_category2_default">All subjects</string>
     <string name="search_option_search_by_contents">Contents</string>
     <string name="search_option_search_by_keywords">Keywords</string>
     <string name="search_option_search_by_writer">User name</string>

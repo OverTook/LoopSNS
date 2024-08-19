@@ -1,10 +1,15 @@
 package com.hci.loopsns.view.fragment
 
 import android.Manifest
+import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
@@ -18,7 +23,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -48,11 +55,22 @@ import com.hci.loopsns.network.NetworkManager
 import com.hci.loopsns.storage.NightMode
 import com.hci.loopsns.storage.SettingManager
 import com.hci.loopsns.utils.hideDarkOverlay
+import com.hci.loopsns.utils.hideGeneratingOverlay
 import com.hci.loopsns.utils.showDarkOverlay
+import com.hci.loopsns.utils.showGeneratingOverlay
 import com.hci.loopsns.view.bottomsheet.ArticleBottomSheet
+import com.hci.loopsns.view.bottomsheet.SummarizeBottomSheet
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
@@ -86,29 +104,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
-        viewOfLayout.findViewById<ImageButton>(R.id.gps_move_to_current_btn).setOnClickListener {
-            if(!this::currentLocation.isInitialized) {
-                Toast.makeText(requireContext(), getString(R.string.no_location_permission), Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            val cameraUpdate = CameraUpdateFactory.newLatLngZoom(currentLocation, 15f)
-            googleMap.animateCamera(cameraUpdate)
-        }
-
-        viewOfLayout.findViewById<ImageButton>(R.id.article_write_btn).setOnClickListener {
-            if(!this::currentLocation.isInitialized) {
-                Toast.makeText(requireContext(), getString(R.string.no_location_permission), Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            val intent = Intent(
-                requireActivity(),
-                ArticleCreateActivity::class.java
-            )
-            intent.putExtra("x", currentLocation.latitude)
-            intent.putExtra("y", currentLocation.longitude)
-            startActivity(intent)
-        }
+        viewOfLayout.findViewById<ImageButton>(R.id.gps_move_to_current_btn).setOnClickListener(this)
+        viewOfLayout.findViewById<ImageButton>(R.id.article_write_btn).setOnClickListener(this)
+        viewOfLayout.findViewById<ImageButton>(R.id.summarize_btn).setOnClickListener(this)
 
         viewOfLayout.findViewById<TextView>(R.id.filter).setOnClickListener(this)
 
@@ -194,7 +192,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
 
                 if(!response.isSuccessful) {
                     Log.e("Marker Request Error", "HTTP CODE" + response.code().toString())
-                    Snackbar.make(viewOfLayout.findViewById(R.id.main), getString(R.string.fail_create_post_error_code), Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(viewOfLayout.findViewById(R.id.main), getString(R.string.fail_marker_request), Snackbar.LENGTH_LONG).show();
                     return
                 }
 
@@ -496,9 +494,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
         }
     }
 
-    override fun onClick(view: View?) {
-        if(view == null) return
-
+    override fun onClick(view: View) {
         when(view.id) {
             R.id.filter -> {
                 startActivity(
@@ -508,6 +504,116 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
                     )
                 )
             }
+            R.id.gps_move_to_current_btn -> {
+                if(!this::currentLocation.isInitialized) {
+                    Toast.makeText(requireContext(), getString(R.string.no_location_permission), Toast.LENGTH_SHORT).show()
+                    return
+                }
+                val cameraUpdate = CameraUpdateFactory.newLatLngZoom(currentLocation, 15f)
+                googleMap.animateCamera(cameraUpdate)
+            }
+            R.id.article_write_btn -> {
+                if(!this::currentLocation.isInitialized) {
+                    Toast.makeText(requireContext(), getString(R.string.no_location_permission), Toast.LENGTH_SHORT).show()
+                    return
+                }
+
+                val intent = Intent(
+                    requireActivity(),
+                    ArticleCreateActivity::class.java
+                )
+                intent.putExtra("x", currentLocation.latitude)
+                intent.putExtra("y", currentLocation.longitude)
+                startActivity(intent)
+            }
+            R.id.summarize_btn -> {
+                if(childFragmentManager.findFragmentByTag("SummarizeBottomSheet") != null) return
+
+                SummarizeBottomSheet(::requestReport).show(childFragmentManager, "SummarizeBottomSheet")
+            }
         }
+    }
+
+    fun requestReport(call: Call<ResponseBody>) {
+        requireActivity().showGeneratingOverlay()
+
+        lifecycleScope.launch {
+            try {
+                val responseBody = withContext(Dispatchers.IO) {
+                    call.execute()
+                }
+                reportDownload(responseBody.body()!!)
+            } catch (e: Exception) {
+                requireActivity().hideGeneratingOverlay()
+                Log.e("Report Download Failed", e.toString())
+                Toast.makeText(activity, "보고서 다운로드에 실패했습니다. $e", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    suspend fun reportDownload(body: ResponseBody) {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH_mm_ss", Locale.getDefault())
+        val currentDateTime = dateFormat.format(System.currentTimeMillis())
+
+        try {
+            withContext(Dispatchers.IO) {
+                val contentValues = ContentValues().apply {
+                    put(MediaStore.MediaColumns.DISPLAY_NAME, "$currentDateTime 보고서.xlsx")
+                    put(MediaStore.MediaColumns.MIME_TYPE, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                }
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    val uri = requireActivity().contentResolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues)
+                    if(uri == null) {
+                        Toast.makeText(requireContext(), "보고서 다운로드 중 MediaStore 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+                        return@withContext
+                    }
+
+                    requireActivity().contentResolver.openOutputStream(uri).use { outputStream ->
+                        val inputStream = body.byteStream()
+                        val buffer = ByteArray(1024)
+                        var bytesRead: Int
+                        while (inputStream.read(buffer).also { bytesRead = it } != -1) {
+                            outputStream!!.write(buffer, 0, bytesRead)
+                        }
+                        outputStream!!.flush()
+                    }
+
+                    openFile(uri)
+                } else {
+                    val file = File(
+                        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+                        "$currentDateTime 보고서.xlsx"
+                    ) // 저장할 파일의 경로와 이름
+
+                    FileOutputStream(file).use { outputStream ->
+                        val inputStream = body.byteStream()
+                        val buffer = ByteArray(1024)
+                        var bytesRead: Int
+                        while (inputStream.read(buffer).also { bytesRead = it } != -1) {
+                            outputStream.write(buffer, 0, bytesRead)
+                        }
+                        outputStream.flush()
+                    }
+
+                    openFile(file.toUri())
+                }
+            }
+            requireActivity().hideGeneratingOverlay()
+
+            Toast.makeText(requireContext(), "보고서 다운로드가 완료되었습니다.", Toast.LENGTH_SHORT).show()
+        } catch (e: IOException) {
+            requireActivity().hideGeneratingOverlay()
+            Log.e("Report Download Failed", e.toString())
+            Toast.makeText(requireContext(), "보고서 다운로드 중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun openFile(fileUri: Uri) {
+        val intent = Intent(Intent.ACTION_VIEW).apply {
+            setDataAndType(fileUri, requireActivity().contentResolver.getType(fileUri))
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+        startActivity(Intent.createChooser(intent, "보고서 열기"))
     }
 }

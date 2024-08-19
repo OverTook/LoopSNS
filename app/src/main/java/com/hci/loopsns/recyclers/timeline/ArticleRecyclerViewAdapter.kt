@@ -98,7 +98,7 @@ class ArticleRecyclerViewAdapter(private val context: Context, private val artic
                 }
 
                 holder.contents.text = item.contents
-                holder.tag.text = item.cat1
+                holder.tag.text = item.intention
             }
             is NormalArticleViewHolder -> {
                 val item = articles[position - hotArticles.size]
@@ -108,8 +108,8 @@ class ArticleRecyclerViewAdapter(private val context: Context, private val artic
                 }
 
                 holder.contents.text = item.contents
-                holder.category1.text = item.cat1
-                holder.category2.text = item.cat2
+                holder.category1.text = item.intention
+                holder.category2.text = item.subject
 
                 val keywords = listOf(
                     holder.keywords1,

@@ -149,8 +149,8 @@ class ArticleRecyclerViewAdapter(private val activity: ArticleDetailActivity): R
                 holder.writer.text = article.writer
                 holder.time.text = article.time.toDate().formatTo("yyyy-MM-dd HH:mm")
 
-                holder.category1.text = article.cat1
-                holder.category2.text= article.cat2
+                holder.category1.text = article.intention
+                holder.category2.text= article.subject
 
                 val keywords = listOf(
                     holder.keywords1,

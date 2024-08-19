@@ -88,8 +88,8 @@ class ProfileRecyclerViewAdapter(private val activity: BaseProfileFragment, priv
                 holder.contents.text = item.contents
                 holder.time.text =  item.time.toDate().formatTo("yyyy-MM-dd HH:mm")
 
-                holder.category1.text = item.cat1
-                holder.category2.text= item.cat2
+                holder.category1.text = item.intention
+                holder.category2.text= item.subject
 
                 holder.likeCount.text = item.likeCount.toString()
                 holder.commentCount.text = item.commentCount.toString()
