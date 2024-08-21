@@ -10,12 +10,14 @@ import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.hci.loopsns.R
+import com.hci.loopsns.network.IntentionSubjectResponse
 import com.hci.loopsns.network.LocalitiesResponse
 import com.hci.loopsns.network.NetworkManager
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.Locale
 import kotlin.reflect.KFunction1
 
 
@@ -79,11 +81,28 @@ class SummarizeBottomSheet(private val reportDownloadAction: KFunction1<Call<Res
 
         })
 
-        cat1 = resources.getStringArray(R.array.categories1_array).drop(1)
-        cat2 = resources.getStringArray(R.array.categories2_array).drop(1)
 
-        cat1s = ArrayList(cat1)
-        cat2s = ArrayList(cat2)
+        NetworkManager.apiService.getIntentionsSubjects(Locale.getDefault().language).enqueue(object : Callback<IntentionSubjectResponse> {
+            override fun onResponse(
+                call: Call<IntentionSubjectResponse>,
+                response: Response<IntentionSubjectResponse>
+            ) {
+                if(!response.isSuccessful) {
+                    dismiss()
+                    return
+                }
+
+                cat1 = response.body()!!.intentions.drop(1)
+                cat2 = response.body()!!.subjects.drop(1)
+
+                cat1s = ArrayList(cat1)
+                cat2s = ArrayList(cat2)
+            }
+
+            override fun onFailure(p0: Call<IntentionSubjectResponse>, p1: Throwable) {
+                dismiss()
+            }
+        })
 
         return viewOfLayout
     }

@@ -212,13 +212,13 @@ class SearchRecyclerViewAdapter(private val activity: ArticleSearchActivity) : R
             }
             is SearhResultHeaderViewHolder -> {
                 holder.cat1.setOnClickListener {
-                    SearchSelectCategoryBottomSheet(activity, R.array.categories1_array) {
+                    SearchSelectCategoryBottomSheet(activity, activity.categoryAs) {
                         holder.cat1.text = it
                         activity.changeCategoryA(it)
                     }.show(activity.supportFragmentManager, "SearchSelectCategoryBottomSheet")
                 }
                 holder.cat2.setOnClickListener {
-                    SearchSelectCategoryBottomSheet(activity, R.array.categories2_array) {
+                    SearchSelectCategoryBottomSheet(activity, activity.categoryBs) {
                         holder.cat2.text = it
                         activity.changeCategoryB(it)
                     }.show(activity.supportFragmentManager, "SearchSelectCategoryBottomSheet")
@@ -319,6 +319,7 @@ class SearchRecyclerViewAdapter(private val activity: ArticleSearchActivity) : R
     @SuppressLint("NotifyDataSetChanged")
     fun search(text: String) {
         currentMode = SearchMode.IsLoading //3
+        if(text.isBlank()) return
 
         val index = historyItems.indexOfFirst { it.text == text }
         if (index != -1) {

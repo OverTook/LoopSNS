@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object NetworkManager {
-    private const val BASE_URL = "http://csgpu.kku.ac.kr:5126/"
+    private const val BASE_URL = "http://csgpu.kku.ac.kr:5127/"
 
     class FirebaseToken (
         var token: String,

@@ -26,6 +26,7 @@ import com.hci.loopsns.event.FavoriteListener
 import com.hci.loopsns.event.FavoriteManager
 import com.hci.loopsns.network.ArticleDetail
 import com.hci.loopsns.network.Comment
+import com.hci.loopsns.network.IntentionSubjectResponse
 import com.hci.loopsns.network.NetworkManager
 import com.hci.loopsns.network.SearchResponse
 import com.hci.loopsns.recyclers.search.SearchMode
@@ -37,6 +38,7 @@ import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.Locale
 import kotlin.system.exitProcess
 
 
@@ -52,6 +54,9 @@ class ArticleSearchActivity : AppCompatActivity(), View.OnClickListener,
     private var categoryB = ""
     private var currentType = "content"
     private var lastCall: Call<SearchResponse>? = null
+
+    lateinit var categoryAs: List<String>
+    lateinit var categoryBs: List<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,6 +81,25 @@ class ArticleSearchActivity : AppCompatActivity(), View.OnClickListener,
         }
 
         onBackPressedDispatcher.addCallback(onBackPressedCallback)
+
+        NetworkManager.apiService.getIntentionsSubjects(Locale.getDefault().language).enqueue(object : Callback<IntentionSubjectResponse> {
+            override fun onResponse(
+                call: Call<IntentionSubjectResponse>,
+                response: Response<IntentionSubjectResponse>
+            ) {
+                if(!response.isSuccessful) {
+                    finish()
+                    return
+                }
+
+                categoryAs = response.body()!!.intentions
+                categoryBs = response.body()!!.subjects
+            }
+
+            override fun onFailure(p0: Call<IntentionSubjectResponse>, p1: Throwable) {
+                finish()
+            }
+        })
 
         CommentManager.getInstance().registerCommentListener(this)
         FavoriteManager.getInstance().registerFavoriteListener(this)
@@ -152,8 +176,8 @@ class ArticleSearchActivity : AppCompatActivity(), View.OnClickListener,
         adapter.loadHistory()
     }
 
-    fun retrieveArticles(input: String) {
-        if(input.length < 2) {
+    fun retrieveArticles(input: String, force: Boolean = false) {
+        if(input.length < 2 && !force) {
             Toast.makeText(this, getString(R.string.searche_at_least_two_letters), Toast.LENGTH_SHORT).show()
             return
         }
@@ -201,27 +225,27 @@ class ArticleSearchActivity : AppCompatActivity(), View.OnClickListener,
     }
 
     fun changeCategoryA(category: String) {
-        Log.e("Cat A", category)
-        if(category == resources.getStringArray(R.array.categories1_array)[0]) {
+        if(category == categoryAs[0]) {
             this.categoryA = ""
         } else {
             this.categoryA = category
         }
 
         adapter.searchWithoutHistoryAdd()
-        retrieveArticles(searchEditText.text.toString())
+        //retrieveArticles(searchEditText.text.toString())
+        retrieveArticles("", true)
     }
 
     fun changeCategoryB(category: String) {
-        Log.e("Cat B", category)
-        if(category == resources.getStringArray(R.array.categories2_array)[0]) {
+        if(category == categoryBs[0]) {
             this.categoryB = ""
         } else {
             this.categoryB = category
         }
 
         adapter.searchWithoutHistoryAdd()
-        retrieveArticles(searchEditText.text.toString())
+        //retrieveArticles(searchEditText.text.toString())
+        retrieveArticles("", true)
     }
 
     override fun onDestroy() {

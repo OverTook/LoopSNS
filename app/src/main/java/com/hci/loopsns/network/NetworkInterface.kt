@@ -195,4 +195,7 @@ interface NetworkInterface {
         @Query("sigungu") loc2: String,
         @Query("eupmyeondong") loc3: String,
     ): Call<ResponseBody>
+
+    @GET("/intention_subject")
+    fun getIntentionsSubjects(@Query("language") language: String): Call<IntentionSubjectResponse>
 }

@@ -178,7 +178,7 @@
     <string name="purpose_and_keyword_cancel">Cancel</string>
     <string name="purpose_and_keyword_submit">Create</string>
     <string name="purpose_and_keyword_keyword_hint">#Keyword</string>
-    <string name="search_option_category1_default">All intents</string>
+    <string name="search_option_category1_default">All intentions</string>
     <string name="search_option_category2_default">All subjects</string>
     <string name="search_option_search_by_contents">Contents</string>
     <string name="search_option_search_by_keywords">Keywords</string>

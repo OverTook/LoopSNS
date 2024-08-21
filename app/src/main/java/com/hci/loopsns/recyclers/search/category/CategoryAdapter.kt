@@ -6,12 +6,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.hci.loopsns.ArticleCreateActivity
-import com.hci.loopsns.ArticleSearchActivity
 import com.hci.loopsns.R
-import com.hci.loopsns.view.bottomsheet.SearchSelectCategoryBottomSheet
 
-class CategoryAdapter(private val dataSet: Array<String>, private val clickAction: (String) -> Unit, private val dissmissAction: () -> Unit) : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
+class CategoryAdapter(private val dataSet: List<String>, private val clickAction: (String) -> Unit, private val dissmissAction: () -> Unit) : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
     // ViewHolder 정의
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {

@@ -1,25 +1,17 @@
 package com.hci.loopsns.view.bottomsheet
 
-import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.FrameLayout
-import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.hci.loopsns.ArticleSearchActivity
 import com.hci.loopsns.R
 import com.hci.loopsns.recyclers.search.category.CategoryAdapter
-import kotlin.reflect.KFunction1
 
-class SearchSelectCategoryBottomSheet(private val activity: ArticleSearchActivity, private val arrayId: Int, private val onClick: (String) -> Unit) : BottomSheetDialogFragment() {
+class SearchSelectCategoryBottomSheet(private val activity: ArticleSearchActivity, private val dataSet: List<String>, private val onClick: (String) -> Unit) : BottomSheetDialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -28,7 +20,7 @@ class SearchSelectCategoryBottomSheet(private val activity: ArticleSearchActivit
 
         val recyclerView: RecyclerView = viewOfLayout.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(activity)
-        recyclerView.adapter = CategoryAdapter(activity.resources.getStringArray(arrayId), onClick) {
+        recyclerView.adapter = CategoryAdapter(dataSet, onClick) {
             dismiss()
         }
 

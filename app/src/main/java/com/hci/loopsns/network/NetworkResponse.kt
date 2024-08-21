@@ -230,3 +230,11 @@ data class LocalitiesResponse (
 
     val data: Map<String, Map<String, List<String>>>
 )
+
+data class IntentionSubjectResponse (
+    val success: Boolean, //응답 성공 여부
+    val msg: String, //응답 실패 시 오류 메시지
+
+    val intentions: List<String>,
+    val subjects: List<String>,
+)

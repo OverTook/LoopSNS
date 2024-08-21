@@ -5,7 +5,6 @@ import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
 import android.util.AttributeSet
-import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
@@ -152,6 +151,12 @@ class HashTagEditText(context: Context, attrs: AttributeSet) : AppCompatEditText
 
         // 새로운 InputConnection을 생성하여 반환
         return CustomInputConnection(this, inputConnection, true)
+    }
+
+    override fun onSelectionChanged(selStart: Int, selEnd: Int) {
+        super.onSelectionChanged(selStart, selEnd)
+        //on selection move cursor to end of text
+        setSelection(this.length())
     }
 
     class CustomInputConnection(
