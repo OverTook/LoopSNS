@@ -183,4 +183,5 @@
     <string name="search_option_search_by_contents">Contents</string>
     <string name="search_option_search_by_keywords">Keywords</string>
     <string name="search_option_search_by_writer">User name</string>
+    <string name="settings_license_register">관리자 등록</string>
 </resources>
