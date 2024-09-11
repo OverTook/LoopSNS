@@ -192,8 +192,11 @@ class ArticleBottomSheet() : BottomSheetDialogFragment(), View.OnClickListener, 
             }
         }
 
-        requireActivity().runOnUiThread {
-            view?.findViewById<TextView>(R.id.location_name)?.text = addressText
+        try {
+            requireActivity().runOnUiThread {
+                view?.findViewById<TextView>(R.id.location_name)?.text = addressText
+            }
+        } catch (_: IllegalStateException) {
         }
     }
 
