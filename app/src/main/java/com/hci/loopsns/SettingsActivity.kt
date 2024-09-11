@@ -281,7 +281,7 @@ class SettingsActivity : AppCompatActivity(), View.OnClickListener, ProfileListe
 
                 MaterialDialog(this).show {
                     title(text = "관리자 라이센스 입력")
-                    message(text = "관리자 라이센스 키를 입력해주세요.\r\n등록이 완료된 후 앱이 재시작됩니다.\r\n(이미 등록된 키가 있는 경우 새로운 키로 대체됩니다.)")
+                    message(text = "관리자 라이센스 키를 입력해주세요.\r\n등록이 완료된 후 앱이 재시작됩니다.")
                     input(hint = "XXXX-XXXX-XXXX-XXXX", maxLength = 19)
                     onShow {
                         setActionButtonEnabled(WhichButton.POSITIVE, false)

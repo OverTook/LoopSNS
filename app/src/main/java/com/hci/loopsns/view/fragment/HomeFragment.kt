@@ -135,6 +135,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
                     requireView().findViewById<ImageButton>(R.id.summarize_btn).visibility = View.GONE
                     return@addOnCompleteListener
                 }
+
+                requireView().findViewById<ImageButton>(R.id.summarize_btn).visibility = View.VISIBLE
             } else {
                 requireView().findViewById<ImageButton>(R.id.summarize_btn).visibility = View.GONE
             }
