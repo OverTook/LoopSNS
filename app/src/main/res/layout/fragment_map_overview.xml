@@ -103,6 +103,7 @@
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="135dp"
         android:background="@drawable/map_overview_behave_btn_bg"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/googleMap"
         app:layout_constraintEnd_toEndOf="@+id/googleMap"
         app:srcCompat="@drawable/summarize_24px" />

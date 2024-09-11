@@ -89,7 +89,6 @@
             android:autoSizeTextType="uniform"
             android:fontFamily="@font/pretendard_bold"
             android:gravity="center"
-            android:text="예시 지역의 예시 하위 지역"
             android:textColor="@color/main_text"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"

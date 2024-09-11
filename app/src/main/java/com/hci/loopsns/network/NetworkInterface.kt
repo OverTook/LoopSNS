@@ -193,6 +193,11 @@ interface NetworkInterface {
         @Query("subjects") subjects: List<String>,
     ): Call<ResponseBody>
 
+    @POST("/license_add")
+    fun registerLicense(
+        @Query("license") license: String
+    ): Call<RegisterLicenseResponse>
+
     @GET("/intention_subject")
     fun getIntentionsSubjects(@Query("language") language: String): Call<IntentionSubjectResponse>
 }

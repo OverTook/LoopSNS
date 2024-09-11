@@ -7,6 +7,7 @@ import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
+import android.text.InputFilter
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.TextWatcher
@@ -23,7 +24,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.WhichButton
+import com.afollestad.materialdialogs.actions.getActionButton
 import com.afollestad.materialdialogs.actions.setActionButtonEnabled
+import com.afollestad.materialdialogs.callbacks.onShow
 import com.afollestad.materialdialogs.input.getInputField
 import com.afollestad.materialdialogs.input.input
 import com.afollestad.materialdialogs.list.listItemsMultiChoice
@@ -37,6 +40,7 @@ import com.hci.loopsns.event.ProfileManager
 import com.hci.loopsns.network.DeleteFcmTokenRequest
 import com.hci.loopsns.network.FcmTokenResponse
 import com.hci.loopsns.network.NetworkManager
+import com.hci.loopsns.network.RegisterLicenseResponse
 import com.hci.loopsns.network.UnregisterResponse
 import com.hci.loopsns.storage.NotificationType
 import com.hci.loopsns.storage.SettingManager
@@ -46,6 +50,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.Locale
+import java.util.regex.Pattern
 import kotlin.math.abs
 
 class SettingsActivity : AppCompatActivity(), View.OnClickListener, ProfileListener {
@@ -75,6 +80,7 @@ class SettingsActivity : AppCompatActivity(), View.OnClickListener, ProfileListe
 
         findViewById<AppCompatImageButton>(R.id.backButton).setOnClickListener(this)
 
+        findViewById<ConstraintLayout>(R.id.setting_license).setOnClickListener(this)
         findViewById<ConstraintLayout>(R.id.setting_logout).setOnClickListener(this)
         findViewById<ConstraintLayout>(R.id.setting_unregister).setOnClickListener(this)
         findViewById<ConstraintLayout>(R.id.setting_dark_mode).setOnClickListener(this)
@@ -266,6 +272,107 @@ class SettingsActivity : AppCompatActivity(), View.OnClickListener, ProfileListe
                     }
                 }
             }
+            R.id.setting_license -> {
+                val currentLocale = Locale.getDefault()
+                if(currentLocale != Locale.KOREA && currentLocale != Locale.KOREAN) {
+                    Snackbar.make(findViewById(R.id.main), "This feature is not available in countries other than South Korea.", Snackbar.LENGTH_SHORT).show()
+                    return
+                }
+
+                MaterialDialog(this).show {
+                    title(text = "관리자 라이센스 입력")
+                    message(text = "관리자 라이센스 키를 입력해주세요.\r\n등록이 완료된 후 앱이 재시작됩니다.\r\n(이미 등록된 키가 있는 경우 새로운 키로 대체됩니다.)")
+                    input(hint = "XXXX-XXXX-XXXX-XXXX", maxLength = 19)
+                    onShow {
+                        setActionButtonEnabled(WhichButton.POSITIVE, false)
+                    }
+
+                    positiveButton(text = "등록") { _ ->
+                        this@SettingsActivity.showDarkOverlay()
+                        NetworkManager.apiService.registerLicense(getInputField().text.toString()).enqueue(object  : Callback<RegisterLicenseResponse> {
+                            override fun onResponse(
+                                call: Call<RegisterLicenseResponse>,
+                                response: Response<RegisterLicenseResponse>
+                            ) {
+                                this@SettingsActivity.hideDarkOverlay()
+                                if(!response.isSuccessful) {
+                                    Toast.makeText(this@SettingsActivity, "올바르지 않은 라이센스 키 입니다.", Toast.LENGTH_LONG).show()
+                                    return
+                                }
+
+                                Toast.makeText(this@SettingsActivity, "관리자 등록이 완료되었습니다.", Toast.LENGTH_LONG).show()
+
+                                val refresh = Intent(context, MainActivity::class.java)
+                                refresh.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                                startActivity(refresh)
+                            }
+
+                            override fun onFailure(
+                                call: Call<RegisterLicenseResponse>,
+                                err: Throwable
+                            ) {
+                                Toast.makeText(this@SettingsActivity, "라이센스 키 등록 중 오류가 발생했습니다.", Toast.LENGTH_LONG).show()
+                                Log.e("라이센스 등록 오류", err.toString())
+                                return
+                            }
+
+                        })
+                    }
+                    negativeButton(text = "취소")
+                    getInputField().apply {
+                        var isEditing: Boolean = false
+
+                        filters = arrayOf(InputFilter { source, _, _, _, _, _ ->
+                            val allowedChars = "[a-zA-Z0-9-]+"
+                            if ((source.isNullOrBlank() || source.toString().matches(Regex(allowedChars))) || isEditing) {
+                                if(source.isNotEmpty() && source[0] == '-' && source.length == 1) {
+                                    ""
+                                } else {
+                                    source.toString().uppercase() // 입력을 대문자로 변환
+                                }
+                            } else {
+                                "" // 허용되지 않은 문자일 경우 빈 문자열 반환
+                            }
+                        })
+
+                        addTextChangedListener(object : TextWatcher {
+
+                            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                            }
+
+                            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                            }
+
+                            override fun afterTextChanged(s: Editable?) {
+                                if (isEditing) return
+
+                                isEditing = true
+
+                                clearComposingText()
+                                // 입력된 텍스트에서 기존 하이픈 제거
+                                val original = s.toString().replace("-", "")
+
+                                // 4자리마다 하이픈을 추가
+                                val formatted = StringBuilder()
+                                for (i in original.indices) {
+                                    formatted.append(original[i])
+                                    if ((i + 1) % 4 == 0 && i != original.lastIndex) {
+                                        formatted.append("-")
+                                    }
+                                }
+
+                                // 새롭게 포맷팅한 텍스트로 설정
+                                s?.replace(0, s.length, formatted.toString())
+
+                                setActionButtonEnabled(WhichButton.POSITIVE, original.length == 16)
+
+                                isEditing = false
+                            }
+                        })
+                    }
+
+                }
+            }
             R.id.setting_unregister -> {
                 val warningText = getString(R.string.settings_unregister_warning)
                 val originString = buildString {
@@ -309,6 +416,10 @@ class SettingsActivity : AppCompatActivity(), View.OnClickListener, ProfileListe
                     title(R.string.settings_unregister_head)
                     message(text = spannableString)
                     input()
+                    onShow {
+                        setActionButtonEnabled(WhichButton.POSITIVE, false)
+                    }
+
                     positiveButton(R.string.settings_unregister_yes) { _ ->
                         this@SettingsActivity.showDarkOverlay()
                         NetworkManager.apiService.unregister().enqueue(object : Callback<UnregisterResponse> {
