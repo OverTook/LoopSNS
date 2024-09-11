@@ -6,9 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.firebase.auth.FirebaseAuth
 import com.hci.loopsns.R
 import com.hci.loopsns.network.IntentionSubjectResponse
 import com.hci.loopsns.network.LocalitiesResponse
@@ -29,15 +31,9 @@ class SummarizeBottomSheet(private val reportDownloadAction: KFunction1<Call<Res
 
     private var cat1s: ArrayList<String> = ArrayList()
     private var cat2s: ArrayList<String> = ArrayList()
-    private var locality1: String = ""
-    private var locality2: String = ""
-    private var locality3: String = ""
 
     private lateinit var cat1btn: AppCompatButton
     private lateinit var cat2btn: AppCompatButton
-    private lateinit var loc1btn: AppCompatButton
-    private lateinit var loc2btn: AppCompatButton
-    private lateinit var loc3btn: AppCompatButton
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,15 +43,11 @@ class SummarizeBottomSheet(private val reportDownloadAction: KFunction1<Call<Res
 
         cat1btn = viewOfLayout.findViewById<AppCompatButton>(R.id.cat1)
         cat2btn = viewOfLayout.findViewById<AppCompatButton>(R.id.cat2)
-        loc1btn = viewOfLayout.findViewById<AppCompatButton>(R.id.location1)
-        loc2btn = viewOfLayout.findViewById<AppCompatButton>(R.id.location2)
-        loc3btn = viewOfLayout.findViewById<AppCompatButton>(R.id.location3)
+
+        fetchCustomClaims()
 
         cat1btn.setOnClickListener(this)
         cat2btn.setOnClickListener(this)
-        loc1btn.setOnClickListener(this)
-        loc2btn.setOnClickListener(this)
-        loc3btn.setOnClickListener(this)
 
         viewOfLayout.findViewById<Button>(R.id.report_download_btn).setOnClickListener(this)
 
@@ -107,6 +99,25 @@ class SummarizeBottomSheet(private val reportDownloadAction: KFunction1<Call<Res
         return viewOfLayout
     }
 
+    fun fetchCustomClaims() {
+        val auth = FirebaseAuth.getInstance()
+        val currentUser = auth.currentUser
+
+        currentUser?.getIdToken(true)?.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val idTokenResult = task.result
+                val claims = idTokenResult?.claims
+                if (claims != null) {
+                    requireView().findViewById<TextView>(R.id.manage_location).text = (claims["licenses"] as Map<*, *>)["region"] as String
+                    return@addOnCompleteListener
+                }
+                requireView().findViewById<TextView>(R.id.manage_location).text = "알 수 없는 지역"
+            } else {
+                requireView().findViewById<TextView>(R.id.manage_location).text = "오류 지역"
+            }
+        }
+    }
+
     override fun onClick(v: View) {
         if(childFragmentManager.findFragmentByTag("SummarizeSelectBottomSheet") != null) return
 
@@ -119,36 +130,11 @@ class SummarizeBottomSheet(private val reportDownloadAction: KFunction1<Call<Res
                 SummarizeSelectCategotyBottomSheet(cat2, cat2s, ::onCat2Changed)
                     .show(childFragmentManager, "SummarizeSelectBottomSheet")
             }
-            R.id.location1 -> {
-                SummarizeSelectLocationBottomSheet(arrayOf("전체 시/도") + localities.keys.toTypedArray(), ::onLocality1Changed)
-                    .show(childFragmentManager, "SummarizeSelectBottomSheet")
-            }
-            R.id.location2 -> {
-                if(locality1.isBlank()) {
-                    Toast.makeText(requireContext(), "상위 지역이 선택되지 않았습니다.", Toast.LENGTH_SHORT).show()
-                    return
-                }
-
-                SummarizeSelectLocationBottomSheet(arrayOf("전체 시/군/구") + localities[locality1]!!.keys.toTypedArray(), ::onLocality2Changed)
-                    .show(childFragmentManager, "SummarizeSelectBottomSheet")
-            }
-            R.id.location3 -> {
-                if(locality2.isBlank()) {
-                    Toast.makeText(requireContext(), "상위 지역이 선택되지 않았습니다.", Toast.LENGTH_SHORT).show()
-                    return
-                }
-
-                SummarizeSelectLocationBottomSheet(arrayOf("전체 읍/면/동") + localities[locality1]!![locality2]!!.toTypedArray(), ::onLocality3Changed)
-                    .show(childFragmentManager, "SummarizeSelectBottomSheet")
-            }
             R.id.report_download_btn -> {
                 reportDownloadAction(
                     NetworkManager.apiService.downloadReport(
                         cat1s,
                         cat2s,
-                        locality1,
-                        locality2,
-                        locality3
                     )
                 )
                 dismiss()
@@ -204,45 +190,4 @@ class SummarizeBottomSheet(private val reportDownloadAction: KFunction1<Call<Res
         }
     }
 
-    fun onLocality1Changed(text: String) {
-        if(locality1 != text) {
-            locality2 = ""
-            locality3 = ""
-            loc2btn.text = "전체 시/군/구"
-            loc3btn.text = "전체 읍/면/동"
-        }
-
-        if(text.contains("전체")) {
-            locality1 = ""
-            loc1btn.text = "전체 시/도"
-            return
-        }
-        locality1 = text
-        loc1btn.text = text
-    }
-
-    fun onLocality2Changed(text: String) {
-        if(locality2 != text) {
-            locality3 = ""
-            loc3btn.text = "전체 읍/면/동"
-        }
-
-        if(text.contains("전체")) {
-            locality2 = ""
-            loc2btn.text = "전체 시/군/구"
-            return
-        }
-        locality2 = text
-        loc2btn.text = text
-    }
-
-    fun onLocality3Changed(text: String) {
-        if(text.contains("전체")) {
-            locality3 = ""
-            loc3btn.text = "전체 읍/면/동"
-            return
-        }
-        locality3 = text
-        loc3btn.text = text
-    }
 }

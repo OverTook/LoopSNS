@@ -191,9 +191,6 @@ interface NetworkInterface {
     fun downloadReport(
         @Query("intentions") intentions: List<String>,
         @Query("subjects") subjects: List<String>,
-        @Query("sido") loc1: String,
-        @Query("sigungu") loc2: String,
-        @Query("eupmyeondong") loc3: String,
     ): Call<ResponseBody>
 
     @GET("/intention_subject")

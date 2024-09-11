@@ -43,6 +43,7 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.VisibleRegion
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 import com.hci.loopsns.ArticleCreateActivity
 import com.hci.loopsns.ArticleDetailActivity
 import com.hci.loopsns.R
@@ -111,8 +112,35 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnCameraIdleListe
         viewOfLayout.findViewById<TextView>(R.id.filter).setOnClickListener(this)
 
         initGPS()
+        fetchCustomClaims()
+
         return viewOfLayout
     }
+
+    fun fetchCustomClaims() {
+        val auth = FirebaseAuth.getInstance()
+        val currentUser = auth.currentUser
+
+        currentUser?.getIdToken(true)?.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val idTokenResult = task.result
+                val claims = idTokenResult?.claims
+                if (claims == null) {
+                    // Custom Claim 접근
+                    requireView().findViewById<ImageButton>(R.id.summarize_btn).visibility = View.GONE
+                    return@addOnCompleteListener
+                }
+
+                if(!claims.containsKey("licenses")) {
+                    requireView().findViewById<ImageButton>(R.id.summarize_btn).visibility = View.GONE
+                    return@addOnCompleteListener
+                }
+            } else {
+                requireView().findViewById<ImageButton>(R.id.summarize_btn).visibility = View.GONE
+            }
+        }
+    }
+
 
     fun initGPS(){
         val mapFragment = (childFragmentManager.findFragmentById(R.id.googleMap) as SupportMapFragment)
