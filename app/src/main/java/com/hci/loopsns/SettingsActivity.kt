@@ -15,6 +15,7 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
 import android.util.Log
 import android.view.View
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -39,8 +40,9 @@ import com.hci.loopsns.event.ProfileListener
 import com.hci.loopsns.event.ProfileManager
 import com.hci.loopsns.network.DeleteFcmTokenRequest
 import com.hci.loopsns.network.FcmTokenResponse
+import com.hci.loopsns.network.LicenseResponse
+import com.hci.loopsns.network.NetworkInterface
 import com.hci.loopsns.network.NetworkManager
-import com.hci.loopsns.network.RegisterLicenseResponse
 import com.hci.loopsns.network.UnregisterResponse
 import com.hci.loopsns.storage.NotificationType
 import com.hci.loopsns.storage.SettingManager
@@ -57,6 +59,7 @@ class SettingsActivity : AppCompatActivity(), View.OnClickListener, ProfileListe
 
     private val setting: SettingManager = SettingManager.getInstance()
     private lateinit var user: FirebaseUser
+    private lateinit var license: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,7 +83,9 @@ class SettingsActivity : AppCompatActivity(), View.OnClickListener, ProfileListe
 
         findViewById<AppCompatImageButton>(R.id.backButton).setOnClickListener(this)
 
-        findViewById<ConstraintLayout>(R.id.setting_license).setOnClickListener(this)
+        findViewById<ConstraintLayout>(R.id.setting_license_register).setOnClickListener(this)
+        findViewById<ConstraintLayout>(R.id.setting_license_delete).setOnClickListener(this)
+
         findViewById<ConstraintLayout>(R.id.setting_logout).setOnClickListener(this)
         findViewById<ConstraintLayout>(R.id.setting_unregister).setOnClickListener(this)
         findViewById<ConstraintLayout>(R.id.setting_dark_mode).setOnClickListener(this)
@@ -91,6 +96,35 @@ class SettingsActivity : AppCompatActivity(), View.OnClickListener, ProfileListe
         findViewById<ConstraintLayout>(R.id.setting_terms_of_use).setOnClickListener(this)
         findViewById<ConstraintLayout>(R.id.setting_terms_of_information).setOnClickListener(this)
         findViewById<ConstraintLayout>(R.id.setting_faq).setOnClickListener(this)
+
+        licenseCheck()
+    }
+
+    fun licenseCheck() {
+        val auth = FirebaseAuth.getInstance()
+        val currentUser = auth.currentUser
+
+        currentUser?.getIdToken(true)?.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val idTokenResult = task.result
+                val claims = idTokenResult?.claims
+                if (claims == null) {
+                    // Custom Claim 접근
+                    findViewById<ConstraintLayout>(R.id.setting_license_delete).visibility = View.GONE
+                    return@addOnCompleteListener
+                }
+
+                if(!claims.containsKey("licenses")) {
+                    findViewById<ConstraintLayout>(R.id.setting_license_delete).visibility = View.GONE
+                    return@addOnCompleteListener
+                }
+
+                license = (claims["licenses"] as Map<*, *>)["key"] as String
+                findViewById<ConstraintLayout>(R.id.setting_license_register).visibility = View.GONE
+            } else {
+                findViewById<ConstraintLayout>(R.id.setting_license_delete).visibility = View.GONE
+            }
+        }
     }
 
 
@@ -272,7 +306,7 @@ class SettingsActivity : AppCompatActivity(), View.OnClickListener, ProfileListe
                     }
                 }
             }
-            R.id.setting_license -> {
+            R.id.setting_license_register -> {
                 val currentLocale = Locale.getDefault()
                 if(currentLocale != Locale.KOREA && currentLocale != Locale.KOREAN) {
                     Snackbar.make(findViewById(R.id.main), "This feature is not available in countries other than South Korea.", Snackbar.LENGTH_SHORT).show()
@@ -289,10 +323,10 @@ class SettingsActivity : AppCompatActivity(), View.OnClickListener, ProfileListe
 
                     positiveButton(text = "등록") { _ ->
                         this@SettingsActivity.showDarkOverlay()
-                        NetworkManager.apiService.registerLicense(getInputField().text.toString()).enqueue(object  : Callback<RegisterLicenseResponse> {
+                        NetworkManager.apiService.registerLicense(getInputField().text.toString()).enqueue(object  : Callback<LicenseResponse> {
                             override fun onResponse(
-                                call: Call<RegisterLicenseResponse>,
-                                response: Response<RegisterLicenseResponse>
+                                call: Call<LicenseResponse>,
+                                response: Response<LicenseResponse>
                             ) {
                                 this@SettingsActivity.hideDarkOverlay()
                                 if(!response.isSuccessful) {
@@ -308,7 +342,7 @@ class SettingsActivity : AppCompatActivity(), View.OnClickListener, ProfileListe
                             }
 
                             override fun onFailure(
-                                call: Call<RegisterLicenseResponse>,
+                                call: Call<LicenseResponse>,
                                 err: Throwable
                             ) {
                                 Toast.makeText(this@SettingsActivity, "라이센스 키 등록 중 오류가 발생했습니다.", Toast.LENGTH_LONG).show()
@@ -371,6 +405,49 @@ class SettingsActivity : AppCompatActivity(), View.OnClickListener, ProfileListe
                         })
                     }
 
+                }
+            }
+            R.id.setting_license_delete -> {
+                val currentLocale = Locale.getDefault()
+                if(currentLocale != Locale.KOREA && currentLocale != Locale.KOREAN) {
+                    Snackbar.make(findViewById(R.id.main), "This feature is not available in countries other than South Korea.", Snackbar.LENGTH_SHORT).show()
+                    return
+                }
+
+                MaterialDialog(this).show() {
+                    title(text = "관리자 라이센스 제거")
+                    message(text = "등록된 관리자 라이센스를 제거하시겠습니까?")
+                    positiveButton(text = "제거") {
+                        this@SettingsActivity.showDarkOverlay()
+                        NetworkManager.apiService.deleteLicense(license).enqueue(
+                            object : Callback<LicenseResponse> {
+                                override fun onResponse(
+                                    call: Call<LicenseResponse>,
+                                    response: Response<LicenseResponse>
+                                ) {
+                                    this@SettingsActivity.hideDarkOverlay()
+                                    if(!response.isSuccessful) {
+                                        Toast.makeText(this@SettingsActivity, "관리자 라이센스 제거에 실패했습니다.", Toast.LENGTH_LONG).show()
+                                        return
+                                    }
+
+                                    Toast.makeText(this@SettingsActivity, "등록된 관리자 라이센스를 제거하였습니다.", Toast.LENGTH_LONG).show()
+
+                                    val refresh = Intent(context, MainActivity::class.java)
+                                    refresh.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                                    startActivity(refresh)
+                                }
+
+                                override fun onFailure(call: Call<LicenseResponse>, err: Throwable) {
+                                    Toast.makeText(this@SettingsActivity, "라이센스 키 제거 중 오류가 발생했습니다.", Toast.LENGTH_LONG).show()
+                                    Log.e("라이센스 제거 오류", err.toString())
+                                    return
+                                }
+
+                            }
+                        )
+                    }
+                    negativeButton(text = "취소")
                 }
             }
             R.id.setting_unregister -> {

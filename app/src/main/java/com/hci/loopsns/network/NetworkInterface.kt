@@ -196,7 +196,12 @@ interface NetworkInterface {
     @POST("/license_add")
     fun registerLicense(
         @Query("license") license: String
-    ): Call<RegisterLicenseResponse>
+    ): Call<LicenseResponse>
+
+    @DELETE("/license_delete")
+    fun deleteLicense(
+        @Query("license") license: String
+    ): Call<LicenseResponse>
 
     @GET("/intention_subject")
     fun getIntentionsSubjects(@Query("language") language: String): Call<IntentionSubjectResponse>

@@ -231,7 +231,7 @@ data class LocalitiesResponse (
     val data: Map<String, Map<String, List<String>>>
 )
 
-data class RegisterLicenseResponse (
+data class LicenseResponse (
     val success: Boolean, //응답 성공 여부
     val msg: String //응답 실패 시 오류 메시지
 )

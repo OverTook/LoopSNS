@@ -186,5 +186,6 @@
     <string name="search_option_search_by_contents">" 내용 "</string>
     <string name="search_option_search_by_keywords">키워드</string>
     <string name="search_option_search_by_writer">작성자</string>
-    <string name="settings_license_register">관리자 등록</string>
+    <string name="settings_license_register">관리자 라이센스 등록</string>
+    <string name="settings_license_remove">관리자 라이센스 제거</string>
 </resources>
