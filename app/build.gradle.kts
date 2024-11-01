@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.jetbrains.kotlin.android.kapt)
     id("com.google.gms.google-services")
     id("kotlin-parcelize")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
@@ -94,7 +95,7 @@ dependencies {
     implementation("io.github.lucksiege:ucrop:v3.11.2") //이미지 크롭
     //implementation (libs.pictureselector) //갤러리 라이브러리, Android 14 권한 문제로 제거
 
-    implementation("org.litepal.guolindev:core:3.2.3") //SQLite 사용 라이브러리
+    implementation("com.github.guolindev:litepal:master-SNAPSHOT") //SQLite 사용 라이브러리
 
     implementation("androidx.core:core-splashscreen:1.0.0") //스플래시 스크린
     implementation("com.github.skydoves:androidveil:1.1.4") //로딩하는 동안 데이터 가리기
